@@ -211,26 +211,6 @@
       .card h2{font-size:0.92rem;}
     }
   </style>
-  <script type="module">
-    import { initState, guardedRun } from "../../../js/entitlements.js";
-    document.addEventListener("DOMContentLoaded", () => {
-      initState();
-      // TSP Calculate
-      const tspBtn = document.querySelector('button[data-calc="tsp"]') || document.querySelector('button:contains("Calculate")');
-      if (tspBtn) {
-        tspBtn.onclick = (e) => {
-          guardedRun("tsp", () => window.calculateGrowth(), { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
-        };
-      }
-      // CSL Run Model
-      const cslBtn = document.querySelector('button[data-calc="csl"]') || document.querySelector('button:contains("Run Model")');
-      if (cslBtn) {
-        cslBtn.onclick = (e) => {
-          guardedRun("career-starter", () => window.runModel(), { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
-        };
-      }
-    });
-  </script>
 </head>
 <body>
   <a href="Investing_Home.html" class="back-btn"><button>← Back</button></a>
@@ -278,7 +258,7 @@
           <div><label>Years</label><input type="number" id="years" value="30"></div>
           <div><label>Expected Annual Inflation (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
         </div>
-  <button data-calc="tsp">Calculate</button>
+  <button onclick="calculateGrowth()">Calculate</button>
   <button onclick="saveTSPModel()" style="margin-left:8px">Save Model</button>
       </div>
       <div class="card">
@@ -317,7 +297,7 @@
           <span id="percentLabel">100%</span></div>
           <div><label for="earlyPay">Early Payment Monthly ($)</label><input type="number" id="earlyPay" value="0"></div>
         </div>
-  <button data-calc="csl">Run Model</button>
+  <button onclick="runModel()">Run Model</button>
   <button onclick="saveCSLModel()" style="margin-left:8px">Save Model</button>
       </div>
       <div class="card">
@@ -552,7 +532,5 @@
       });
     }
   </script>
-</body>
-</html>
 </body>
 </html>

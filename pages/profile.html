@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MilFi — Profile</title>
+  <meta name="description" content="MilFi Profile — local-only profile, calculator usage meter, plan, and preferences. Integrated with site-wide usage counters." />
+  <style>
+    /* ===== Visual theme (matches new About page vibe) ===== */
+    :root{--bg:#070a17;--ink:#eaf0ff;--muted:#9fb0d9;--brand:#7aa2ff;--accent:#3ddc97;--panel:rgba(255,255,255,.06);--stroke:rgba(255,255,255,.12);--radius:18px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,Inter,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background: radial-gradient(1200px 1200px at 10% -10%, #12204a 0%, transparent 60%),
+                  radial-gradient(900px 900px at 110% 10%, #172c6b 0%, transparent 55%),
+                  linear-gradient(180deg,#0b1226 0%, #070a17 60%);
+      position:relative; overflow-x:hidden}
+    .orb{position:absolute; filter:blur(40px); opacity:.35; mix-blend-mode:screen; pointer-events:none}
+    .orb.one{width:420px;height:420px;background:conic-gradient(from 10deg,#5ea8ff,#b9f2ff,#6df7c6,#5ea8ff); left:-120px; top:-120px; animation:float 16s ease-in-out infinite}
+    .orb.two{width:360px;height:360px;background:conic-gradient(from 220deg,#2acbff,#7aa2ff,#a1b8ff); right:-160px; top:20vh; animation:float 18s ease-in-out infinite reverse}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:30;backdrop-filter:blur(10px); background:rgba(7,10,23,.55); border-bottom:1px solid var(--stroke)}
+    .container{max-width:1100px;margin:0 auto;padding:18px}
+    .bar{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.2px}
+    .home{display:inline-flex;align-items:center;gap:.6rem;padding:.7rem 1rem;border-radius:999px;border:1px solid #2b3a7a;background:#111b3c;color:var(--ink);font-weight:800;text-decoration:none}
+
+    /* Layout */
+    main{padding:56px 0 40px}
+    .grid{display:grid;gap:16px}
+    .two{grid-template-columns:1.2fr .8fr}
+    @media (max-width:980px){.two{grid-template-columns:1fr}}
+
+    /* Cards */
+    .card{background:linear-gradient(180deg,#0c1427,#0b1324);border:1px solid #1f2a41;border-radius:var(--radius);box-shadow:0 10px 28px rgba(0,0,0,.35);overflow:hidden}
+    .head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #1e293b;font-weight:800;background:rgba(255,255,255,.03)}
+    .body{padding:16px}
+
+    /* Profile */
+    .avatar-wrap{display:flex;align-items:center;gap:14px}
+    .avatar{width:92px;height:92px;border-radius:16px;border:1px solid #273247;background:#0a1324;display:grid;place-items:center;overflow:hidden}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .initial{font-weight:900;font-size:1.7rem;color:#9fb6e9}
+
+    /* KPI ring */
+    .ring{--size:120px;position:relative;width:var(--size);height:var(--size)}
+    .ring svg{transform:rotate(-90deg)}
+    .ring .center{position:absolute;inset:0;display:grid;place-items:center;font-weight:900}
+
+    .muted{color:var(--muted)}
+    .small{font-size:.9rem;color:var(--muted)}
+
+    /* Form elements */
+    input,select{padding:.7rem .9rem;border-radius:12px;border:1px solid #273247;background:#0a1324;color:var(--ink)}
+    label{font-size:.9rem;color:#cbd5e1}
+    .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+    @media(max-width:720px){.row{grid-template-columns:1fr}}
+
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1rem;border-radius:999px;background:var(--brand);color:#0a0a0a;font-weight:800;border:0;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid #2f3b4e;color:var(--ink)}
+
+    /* Pills & chips */
+    .chip{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--stroke);font-size:.9rem}
+
+    /* Footer */
+    footer{padding:36px 0 22px;border-top:1px solid var(--stroke);margin-top:34px;color:var(--muted);text-align:center}
+  </style>
+  <script type="module">
+    import {
+      initState, getActiveUserId, setActiveUserId,
+      getPlan, setPlan, getUsage
+    } from "../js/entitlements.js";
+
+    function renderProfile() {
+      initState();
+      document.getElementById('profileUserId').value = getActiveUserId();
+      document.getElementById('planFree').checked = getPlan() === "free";
+      document.getElementById('planPro').checked = getPlan() === "pro";
+      const usage = getUsage("_global");
+      document.getElementById('usageMonth').textContent = usage.month;
+      document.getElementById('usageTotal').textContent = usage.total;
+      const tbody = document.getElementById('usageByCalc');
+      tbody.innerHTML = '';
+      Object.entries(usage.byCalc).forEach(([calc, count]) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${calc}</td><td>${count}</td>`;
+        tbody.appendChild(tr);
+      });
+      // Update plan badge from entitlements.js
+      const plan = getPlan();
+      const badge = document.getElementById('planBadge');
+      badge.textContent = "Plan: " + (plan === "pro" ? "Pro" : "Free");
+      badge.style.background = plan === "pro" ? "#123165" : "rgba(255,255,255,.06)";
+      badge.style.color = plan === "pro" ? "#ffd166" : "#bed4ff";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProfile();
+      document.getElementById('saveProfile').onclick = () => {
+        setActiveUserId(document.getElementById('profileUserId').value || "default");
+        setPlan(document.getElementById('planPro').checked ? "pro" : "free");
+        renderProfile();
+        document.getElementById('saveMsg').textContent = "Saved!";
+        setTimeout(()=>{document.getElementById('saveMsg').textContent='';},1500);
+      };
+      window.addEventListener("milfi:planChanged", renderProfile);
+      window.addEventListener("milfi:usageUpdated", renderProfile);
+    });
+  </script>
+</head>
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+
+  <header>
+    <div class="container bar">
+      <div class="brand"><span aria-hidden>🛡️</span><span>MilFi</span><span class="chip" id="hello"></span></div>
+      <!-- Single nav back to home (kept minimal per your spec) -->
+      <a class="home" href="/index.html">Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid two">
+
+      <!-- LEFT: Profile + Usage KPI (keeps integration with other pages) -->
+      <section class="card">
+        <div class="head">
+          <div class="avatar-wrap">
+            <div class="avatar" id="avatarBox"><span class="initial" id="avatarInitial">?</span></div>
+            <div>
+              <div style="font-size:1.2rem;font-weight:900" id="nameLine">Your Name</div>
+              <div class="small" id="metaLine">Branch • Paygrade</div>
+              <div class="small" id="stationLine">Duty: – • ETS: –</div>
+            </div>
+          </div>
+          <!-- Plan badge now always reflects entitlements.js status -->
+          <span class="chip" id="planBadge" aria-live="polite">Plan: Free</span>
+        </div>
+        <div class="body">
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div class="ring" aria-label="Monthly usage ring">
+              <svg width="120" height="120">
+                <circle cx="60" cy="60" r="52" stroke="#1f2a41" stroke-width="12" fill="none"></circle>
+                <circle id="ringFg" cx="60" cy="60" r="52" stroke="#60a5fa" stroke-width="12" stroke-linecap="round" fill="none" stroke-dasharray="0 999"></circle>
+              </svg>
+              <div class="center" id="ringCenter">0%</div>
+            </div>
+            <div>
+              <div style="font-size:2rem;font-weight:900" id="usageBig">0 / 50</div>
+              <div class="small" id="usageNote">Free members can calculate up to 50 times per month.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Quick profile edits (no link grid) -->
+      <section class="card">
+        <div class="head">Preferences</div>
+        <div class="body">
+          <div class="row">
+            <div>
+              <label for="fullName">Full name</label>
+              <input id="fullName" placeholder="e.g., Thomas Nolan" />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="you@service.mil" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="branch">Branch</label>
+              <select id="branch">
+                <option value="">Select</option>
+                <option>Army</option><option>Navy</option><option>Marine Corps</option>
+                <option>Air Force</option><option>Space Force</option><option>Coast Guard</option><option>Guard/Reserve</option>
+              </select>
+            </div>
+            <div>
+              <label for="paygrade">Paygrade</label>
+              <select id="paygrade">
+                <option value="">Select</option>
+                <optgroup label="Enlisted"><option>E-1</option><option>E-2</option><option>E-3</option><option>E-4</option><option>E-5</option><option>E-6</option><option>E-7</option><option>E-8</option><option>E-9</option></optgroup>
+                <optgroup label="Officer"><option>O-1</option><option>O-2</option><option>O-3</option><option>O-4</option><option>O-5</option><option>O-6</option></optgroup>
+                <optgroup label="Warrant"><option>W-1</option><option>W-2</option><option>W-3</option><option>W-4</option><option>W-5</option></optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="station">Duty station</label>
+              <input id="station" placeholder="e.g., Annapolis, MD" />
+            </div>
+            <div>
+              <label for="ets">ETS/Rotation date</label>
+              <input id="ets" type="date" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="theme">Theme</label>
+              <select id="theme"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
+            </div>
+            <div>
+              <label for="avatarInput">Avatar</label>
+              <input type="file" id="avatarInput" accept="image/*" />
+              <div class="small">Stays on this device.</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn" id="saveProfile">Save Profile</button>
+            <span id="saveMsg" class="small" aria-live="polite"></span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Plan & data management (kept for integration; minimal UI) -->
+    <section class="card" style="margin-top:16px">
+      <div class="head">Plan & Data</div>
+      <div class="body">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <button class="btn ghost" id="downgrade">Free</button>
+          <button class="btn" id="upgrade">Go Pro</button>
+          <span class="small">Promo: use <b>MILFI-PRO</b> in other tools if available.</span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" id="exportAll">Export JSON</button>
+          <label class="btn" for="importAll">Import JSON</label>
+          <input id="importAll" type="file" accept="application/json" style="display:none" />
+          <button class="btn ghost" id="clearAll">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Read-only usage breakdown (no quick links) -->
+    <div class="card">
+      <div class="head">Usage Breakdown</div>
+      <div class="body">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="flex:1">
+            <div style="font-size:1.2rem;font-weight:900" id="usageBig2">0</div>
+            <div class="small" id="usageNote2">Free members can calculate up to 50 times per month.</div>
+          </div>
+          <div class="ring" aria-label="Monthly usage ring">
+            <svg width="120" height="120">
+              <circle cx="60" cy="60" r="52" stroke="#1f2a41" stroke-width="12" fill="none"></circle>
+              <circle id="ringFg2" cx="60" cy="60" r="52" stroke="#60a5fa" stroke-width="12" stroke-linecap="round" fill="none" stroke-dasharray="0 999"></circle>
+            </svg>
+            <div class="center" id="ringCenter2">0%</div>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <b>Per-tool usage:</b>
+          <div id="usageTable2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+
+  <footer>© <span id="year"></span> MilFi — Profile</footer>
+  <script type="module">
+    import {
+      initState, getActiveUserId, setActiveUserId,
+      getPlan, setPlan, getUsage
+    } from "../js/entitlements.js";
+
+    function renderProfile() {
+      initState();
+      document.getElementById('profileUserId').value = getActiveUserId();
+      document.getElementById('planFree').checked = getPlan() === "free";
+      document.getElementById('planPro').checked = getPlan() === "pro";
+      const usage = getUsage("_global");
+      document.getElementById('usageMonth').textContent = usage.month;
+      document.getElementById('usageTotal').textContent = usage.total;
+      const tbody = document.getElementById('usageByCalc');
+      tbody.innerHTML = '';
+      Object.entries(usage.byCalc).forEach(([calc, count]) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${calc}</td><td>${count}</td>`;
+        tbody.appendChild(tr);
+      });
+      // Update plan badge from entitlements.js
+      const plan = getPlan();
+      const badge = document.getElementById('planBadge');
+      badge.textContent = "Plan: " + (plan === "pro" ? "Pro" : "Free");
+      badge.style.background = plan === "pro" ? "#123165" : "rgba(255,255,255,.06)";
+      badge.style.color = plan === "pro" ? "#ffd166" : "#bed4ff";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProfile();
+      document.getElementById('saveProfile').onclick = () => {
+        setActiveUserId(document.getElementById('profileUserId').value || "default");
+        setPlan(document.getElementById('planPro').checked ? "pro" : "free");
+        renderProfile();
+        document.getElementById('saveMsg').textContent = "Saved!";
+        setTimeout(()=>{document.getElementById('saveMsg').textContent='';},1500);
+      };
+      window.addEventListener("milfi:planChanged", renderProfile);
+      window.addEventListener("milfi:usageUpdated", renderProfile);
+    });
+  </script>
+  <script>
+    // ===== Keys shared across the site =====
+    const PROFILE_KEY = 'milfi_profile_v1';
+    const PLAN_KEY    = 'milfi_plan_v1';
+    // Site-wide shared usage counter that other calculators increment
+    const SHARED_USAGE_KEY = 'milfi_calc_usage'; // {month:"YYYY-MM", total:Number, days:{YYYY-MM-DD:true}}
+    const SHARED_BY_TOOL_KEY = 'milfi_calc_usage_byTool'; // {tsp:Number,budget:Number,va:Number,starter:Number,toolkit:Number,...}
+
+    // Fallback (legacy local page counter) to preserve backward compat
+    const LOCAL_USAGE_KEY = 'milfi_usage_v1';
+
+    const TOOLS_LABELS = { tsp:'TSP Planner', budget:'Budget', va:'VA Estimator', starter:'Career Starter', toolkit:'All-in-One Toolkit' };
+
+    const $ = (id)=>document.getElementById(id);
+    const year = $('year'); year.textContent = new Date().getFullYear();
+
+    // ===== Profile state =====
+    function readJSON(k, d){ try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch{return d} }
+    function writeJSON(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+    function initials(name){ if(!name) return '?'; const parts=name.trim().split(/\s+/).slice(0,2); return parts.map(p=>p[0]?.toUpperCase()||'').join('')||'?'; }
+
+    function applyTheme(){ const p=readJSON(PROFILE_KEY,{}); const t=p.theme||'system'; const root=document.documentElement; if(t==='dark') root.dataset.theme='dark'; else if(t==='light') root.dataset.theme='light'; else root.removeAttribute('data-theme'); }
+
+    function renderProfile(){
+      const p=readJSON(PROFILE_KEY,{});
+      $('nameLine').textContent = p.fullName || 'Your Name';
+      $('metaLine').textContent = (p.branch||'—') + ' • ' + (p.paygrade||'—');
+      $('stationLine').textContent = 'Duty: ' + (p.station||'—') + ' • ETS: ' + (p.ets||'—');
+      $('hello').textContent = p.fullName ? ('Hi, '+p.fullName.split(' ')[0]) : '';
+      if(p.avatar){ $('avatarBox').innerHTML = '<img alt="Avatar" src="'+p.avatar+'" />'; }
+      else{ $('avatarBox').innerHTML = '<span class="initial">'+initials(p.fullName)+'</span>'; }
+      // form
+      $('fullName').value=p.fullName||''; $('email').value=p.email||''; $('branch').value=p.branch||''; $('paygrade').value=p.paygrade||''; $('station').value=p.station||''; $('ets').value=p.ets||''; $('theme').value=p.theme||'system';
+      applyTheme();
+    }
+
+    function saveProfile(){
+      const p=readJSON(PROFILE_KEY,{});
+      p.fullName=$('fullName').value.trim();
+      p.email=$('email').value.trim();
+      p.branch=$('branch').value; p.paygrade=$('paygrade').value;
+      p.station=$('station').value.trim(); p.ets=$('ets').value;
+      p.theme=$('theme').value;
+      writeJSON(PROFILE_KEY,p);
+      renderProfile();
+      $('saveMsg').textContent='Saved ✓'; setTimeout(()=>$('saveMsg').textContent='',1500);
+    }
+
+    $('avatarInput').addEventListener('change', (e)=>{
+      const f=e.target.files?.[0]; if(!f) return; const r=new FileReader();
+      r.onload=()=>{ const p=readJSON(PROFILE_KEY,{}); p.avatar=r.result; writeJSON(PROFILE_KEY,p); renderProfile(); };
+      r.readAsDataURL(f);
+    });
+    $('saveProfile').addEventListener('click', saveProfile);
+    ;['fullName','email','branch','paygrade','station','ets','theme'].forEach(id=>$(id).addEventListener('change', saveProfile));
+
+    // ===== Plan =====
+    function renderPlan(){
+      // Sync with Dashboard2.html plan key
+      let tier = 'free';
+      if(localStorage.getItem('milfi_plan')){
+        tier = localStorage.getItem('milfi_plan').toLowerCase() === 'pro' ? 'pro' : 'free';
+      } else {
+        const plan=readJSON(PLAN_KEY,{}); tier=plan.tier||'free';
+      }
+      // Write back to both keys for cross-page sync
+      localStorage.setItem('milfi_plan', tier==='pro'?'Pro':'Free');
+      const plan=readJSON(PLAN_KEY,{}); plan.tier=tier; writeJSON(PLAN_KEY,plan);
+      const badge=$('planBadge'); badge.textContent='Plan: '+(tier==='pro'?'Pro':'Free'); badge.style.background = tier==='pro'?'#123165':'rgba(255,255,255,.06)'; badge.style.color=tier==='pro'?'#ffd166':'#bed4ff';
+    }
+    function setPlan(tier){
+      // Sync with Dashboard2.html plan key
+      localStorage.setItem('milfi_plan', tier==='pro'?'Pro':'Free');
+      const plan=readJSON(PLAN_KEY,{}); plan.tier=tier; plan.since=plan.since||new Date().toISOString(); writeJSON(PLAN_KEY,plan);
+      renderPlan(); renderUsage();
+    }
+    $('upgrade').addEventListener('click', ()=>setPlan('pro'));
+    $('downgrade').addEventListener('click', ()=>setPlan('free'));
+
+    // ===== Usage (read shared counters other pages update) =====
+    function monthNow(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0'); }
+
+    function readSharedUsage(){
+      let u = readJSON(SHARED_USAGE_KEY,{});
+      const m = monthNow();
+      if(u.month !== m){ u = {month:m,total:0,days:{}}; }
+      const byTool = readJSON(SHARED_BY_TOOL_KEY,{});
+      return {u, byTool};
+    }
+
+    function fallbackLocalUsage(){
+      // Back-compat for older pages that used LOCAL_USAGE_KEY structure
+      let u = readJSON(LOCAL_USAGE_KEY,{});
+      if(!u.month) u.month = monthNow();
+      u.days = u.days || {};
+      u.total = u.total || 0;
+      u.byTool = u.byTool || {};
+      return {u, byTool:u.byTool};
+    }
+
+    function renderUsage(){
+      // Sync usage with Dashboard2.html
+      let tier = 'free';
+      if(localStorage.getItem('milfi_plan')){
+        tier = localStorage.getItem('milfi_plan').toLowerCase() === 'pro' ? 'pro' : 'free';
+      } else {
+        const plan=readJSON(PLAN_KEY,{}); tier=plan.tier||'free';
+      }
+      // Get usage from Dashboard2.html key
+      let used = 0;
+      if(localStorage.getItem('milfi_uses')){
+        used = parseInt(localStorage.getItem('milfi_uses'),10)||0;
+      } else {
+        let {u} = readSharedUsage(); used = u.total||0;
+      }
+      const limit = tier==='pro' ? Infinity : 25;
+      const pct = limit===Infinity?100:Math.min(100, Math.round((used/limit)*100));
+      $('usageBig').textContent = used + ' / ' + (limit===Infinity?'∞':limit);
+      $('usageNote').textContent = tier==='pro' ? 'Pro: unlimited uses' : ('Free limit: '+(limit===Infinity?'∞':limit)+'/month');
+      const r=52; const C=2*Math.PI*r; const dash = limit===Infinity?C:(C*(pct/100));
+      $('ringFg').setAttribute('stroke-dasharray', dash+' '+(C-dash));
+      $('ringCenter').textContent = limit===Infinity?'∞':(pct+'%');
+
+      // Days active last 7
+      const days=u.days||{}; const now=new Date(); let cnt=0; for(let i=0;i<7;i++){ const d=new Date(now); d.setDate(now.getDate()-i); const k=d.toISOString().slice(0,10); if(days[k]) cnt++; }
+      $('daysActive').textContent = 'Days active last 7: '+cnt;
+
+      // Table of per-tool counts (read-only)
+      const table=$('usageTable'); table.innerHTML='';
+      const entries = Object.keys(TOOLS_LABELS).map(k=>[TOOLS_LABELS[k], byTool[k]||0]);
+      entries.forEach(([label,val])=>{
+        const l=document.createElement('div'); l.textContent=label; table.appendChild(l);
+        const v=document.createElement('div'); v.textContent=val; v.style.textAlign='right'; table.appendChild(v);
+      });
+    }
+
+    // --- Connect to shared calculator usage counter ---
+function updateCalcUsage() {
+  let u = JSON.parse(localStorage.getItem('milfi_calc_usage')||'{}');
+  const m = new Date().toISOString().slice(0,7);
+  if(u.month !== m) u = {month:m, total:0};
+  const used = u.total || 0;
+  const limit = 50; // Or pull from plan if needed
+  document.getElementById('usageBig').textContent = used + ' / ' + limit;
+  document.getElementById('planBadge').textContent = (used >= limit ? 'Plan: Limit Reached' : 'Plan: Free');
+}
+window.addEventListener('storage', updateCalcUsage);
+document.addEventListener('DOMContentLoaded', updateCalcUsage);
+
+    // --- Connect to dashboard usage tracking ---
+function updateDashboardUsage() {
+  // Total usage
+  const total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+  const limit = localStorage.getItem('milfi_plan')==='Pro' ? 'Unlimited' : '25';
+  document.getElementById('usageBig').textContent = total + ' / ' + limit;
+  document.getElementById('planBadge').textContent = (localStorage.getItem('milfi_plan')==='Pro' ? 'Plan: Pro' : 'Plan: Free');
+  // Per-tool usage (optional, can be shown in chips or a table)
+  const tools = [
+    {key:'milfi_uses_toolkit', label:'Toolkit'},
+    {key:'milfi_uses_budget', label:'Budget'},
+    {key:'milfi_uses_tsp', label:'TSP'},
+    {key:'milfi_uses_va', label:'VA Loan'},
+    {key:'milfi_uses_starter', label:'Starter Loan'},
+    {key:'milfi_uses_fire', label:'FIRE'}
+  ];
+  let toolStr = tools.map(t => `${t.label}: ${parseInt(localStorage.getItem(t.key)||'0',10)}`).join(' | ');
+  let chip = document.getElementById('usageChip');
+  if(chip) chip.innerHTML = 'Uses this month: <span id="usageBig">' + total + ' / ' + limit + '</span><br><span style="font-size:12px;color:#94a3b8">' + toolStr + '</span>';
+}
+window.addEventListener('storage', updateDashboardUsage);
+document.addEventListener('DOMContentLoaded', updateDashboardUsage);
+
+    // ===== Data export/import/clear =====
+    $('exportAll').addEventListener('click', ()=>{
+      const dump = {
+        profile: readJSON(PROFILE_KEY,{}),
+        plan: readJSON(PLAN_KEY,{}),
+        shared_usage: readJSON(SHARED_USAGE_KEY,{}),
+        shared_byTool: readJSON(SHARED_BY_TOOL_KEY,{})
+      };
+      const blob=new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
+      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='milfi_profile.json'; a.click(); URL.revokeObjectURL(url);
+    });
+    $('importAll').addEventListener('change', async (e)=>{
+      const f=e.target.files?.[0]; if(!f) return; try{ const txt=await f.text(); const obj=JSON.parse(txt);
+        if(obj.profile) writeJSON(PROFILE_KEY,obj.profile);
+        if(obj.plan) writeJSON(PLAN_KEY,obj.plan);
+        if(obj.shared_usage) writeJSON(SHARED_USAGE_KEY,obj.shared_usage);
+        if(obj.shared_byTool) writeJSON(SHARED_BY_TOOL_KEY,obj.shared_byTool);
+        renderProfile(); renderPlan(); renderUsage(); alert('Imported ✓');
+      }catch{ alert('Import failed'); } finally { e.target.value=''; }
+    });
+    $('clearAll').addEventListener('click', ()=>{ if(confirm('Clear all MilFi profile data on this device?')){ localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(PLAN_KEY); /* do not clear shared counters here */ renderProfile(); renderPlan(); renderUsage(); }});
+
+    // ===== Init =====
+    if(!readJSON(PLAN_KEY,{}).tier){ writeJSON(PLAN_KEY,{tier:'free', since:new Date().toISOString()}); }
+    renderProfile();
+    renderPlan();
+    renderUsage();
+  </script>
+  <script>
+    function milfiProfile(getKey, setValue) {
+      let profile = {};
+      try { profile = JSON.parse(localStorage.getItem('milfi_profile') || '{}'); } catch(e) {}
+      if (typeof getKey === 'string') {
+        if (setValue !== undefined) {
+          profile[getKey] = setValue;
+          localStorage.setItem('milfi_profile', JSON.stringify(profile));
+          return setValue;
+        }
+        return profile[getKey];
+      }
+      return profile;
+    }
+    function updateProfileModeStatus() {
+      const mode = milfiProfile('mode') || 'free';
+      document.getElementById('profileMode').value = mode;
+      document.getElementById('profileModeStatus').textContent =
+        mode === 'pro' ? 'Pro Mode (Unlimited): No usage limits.' : 'Free Mode: Usage limits apply.';
+    }
+    document.getElementById('profileMode').addEventListener('change', function() {
+      milfiProfile('mode', this.value);
+      updateProfileModeStatus();
+    });
+    updateProfileModeStatus();
+  </script>
+</body>
+</html>

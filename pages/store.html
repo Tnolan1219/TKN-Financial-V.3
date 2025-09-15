@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Store | TKN Financial</title>
+  <meta name="description" content="Shop TKN Financial products and resources." />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Inter, Roboto, Ubuntu, Helvetica, Arial;
+      background: linear-gradient(120deg, #0b1220 60%, #60a5fa 100%);
+      color: #e5e7eb;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 32px 18px;
+      background: rgba(17,24,39,0.92);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(30,40,70,.18);
+      margin-top: 48px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 900;
+      color: #60a5fa;
+      text-align: center;
+    }
+    .store-links {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 32px 0 24px 0;
+      align-items: center;
+    }
+    .store-link {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);
+      color: #0a0a0a;
+      font-weight: 700;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 10px rgba(96,165,250,.13);
+      transition: background .18s, color .18s;
+    }
+    .store-link:hover {
+      background: linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+      color: #fff;
+    }
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+      margin: 24px 0;
+    }
+    .photo-item {
+      background: rgba(30,40,70,0.18);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(30,40,70,.10);
+      transition: transform .18s;
+    }
+    .photo-item:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 24px rgba(96,165,250,.18);
+    }
+    .photo-item img {
+      width: 100%;
+      display: block;
+      height: 140px;
+      object-fit: cover;
+    }
+    .qr-section {
+      text-align: center;
+      margin: 32px 0 0 0;
+    }
+    .qr-section img {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 2px 10px rgba(96,165,250,.13);
+      background: #fff;
+      padding: 8px;
+    }
+    .muted {
+      color: #94a3b8;
+      font-size: .98rem;
+      margin-top: 8px;
+    }
+    .back-btn {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  text-decoration: none;
+  filter: drop-shadow(0 1px 4px #60a5fa);
+    }
+    @media (max-width:700px){.container{padding:0 8px}.grid{gap:14px}}
+    @media (max-width:700px){
+      .container{padding:0 2px}
+      .grid{gap:6px}
+      .card{padding:8px 2px 6px 2px;}
+      h1{font-size:1.02rem;}
+      .card h2{font-size:0.92rem;}
+    }
+  </style>
+</head>
+    <a href="/index.html" style="position:fixed;top:18px;left:18px;z-index:1000;text-decoration:none;"><button style="padding:8px 18px;border-radius:999px;background:#60a5fa;color:#0a0a0a;font-weight:700;border:none;box-shadow:0 2px 10px rgba(96,165,250,.13);cursor:pointer;">Home</button></a>
+
+
+
+<body>
+  <div class="container">
+    <h1>Shop TKN Financial</h1>
+    <div class="store-links">
+      <a class="store-link" href="https://www.etsy.com/shop/TKNfinance?ref=shop-header-name&listing_id=1834815283&from_page=listing#items" target="_blank" rel="noopener">Visit our Etsy Store</a>
+      <!-- Add more store links below as needed -->
+    </div>
+    <h2 style="margin-top:32px;">Featured Products</h2>
+    <div class="photo-gallery">
+      <!-- Updated photo items with correct images -->
+
+      <a class="photo-item" href="https://tknfinance.etsy.com/listing/1834815283" target="_blank" rel="noopener">
+   <img src="assets2.html" alt="TKN Financial RE Model" />
+      </a>
+      <a class="photo-item" href="https://tknfinance.etsy.com/listing/1853186647" target="_blank" rel="noopener">
+        <img src="/images/monthly_budget.jpg" alt="Simple Monthly Budget" />
+      </a>
+      <a class="photo-item" href="https://tknfinance.etsy.com/listing/1762514612" target="_blank" rel="noopener">
+        <img src="/images/portfolio_tracker.jpg" alt="Investment Portfolio Allocation and Tracker" />
+      </a>
+
+
+
+    </div>
+    <div class="qr-section">
+      <h2>Scan to Shop</h2>
+      <!-- Replace src with your own QR code image linking to your Etsy store -->
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://www.etsy.com/shop/YOUR_SHOP_NAME" alt="QR code to Etsy store" />
+      <div class="muted">Scan the QR code above to visit our Etsy store on your phone.</div>
+    </div>
+  </div>
+</body>
+</html>

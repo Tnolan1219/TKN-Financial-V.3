@@ -1,0 +1,310 @@
+/* ==========================================================
+   edustyle.css — Mil‑Fi Education UI
+   Changelog (2025‑09‑06)
+   - Added motion tokens (--t-quick, --t-slow) + spacing scale
+   - Unified focus rings, hover/active states, and reduced‑motion support
+   - Smoothed tabs, cards, buttons, tables, breadcrumbs, TOC
+   - Added pill nav for mobile, callouts, toasts, utilities
+   - Kept class names compatible with existing Education HTML
+   ========================================================== */
+
+/* -------------------- Theme tokens (preserve) -------------------- */
+:root{
+  /* Colors */
+  --bg:#4570e6;           /* page background - slightly brighter */
+  --bg-grad-1:#d6def2;    /* gradient start - slightly brighter */
+  --bg-grad-2:#5f86f0;    /* gradient end - slightly brighter */
+  --surface:#0f172a;      /* header/footer glass */
+  --panel:rgba(17,24,39,.92);
+  --card:rgba(20,30,60,.82);
+  --text:#e8ecff;
+  --muted:#94a3b8;
+  --sub:#c7d2fe;
+  --accent:#7aa2ff;       /* primary brand */
+  --accent-2:#60a5fa;     /* alt accent */
+  --ring:#1d4ed8;         /* focus ring hue */
+  --input:#1e2749;
+  --ok:#3ddc97; --warn:#ffd166; --bad:#ef476f;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 12px 28px rgba(0,0,0,.32);
+  --radius:16px;
+  --accent-gradient:linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);
+
+
+  /* Motion + spacing */
+  --t-quick:160ms cubic-bezier(.2,.6,.2,1);
+  --t-slow:260ms cubic-bezier(.2,.6,.2,1);
+  --space-2:8px;  --space-3:12px; --space-4:16px; --space-6:24px;
+  --space-8:32px; --space-10:40px; --space-12:48px; --space-16:64px;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce){
+  :root{ --t-quick: 0ms linear; --t-slow: 0ms linear; }
+  *{ transition:none !important; animation:none !important; }
+}
+
+/* -------------------- Base / reset -------------------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,Arial,sans-serif;
+  color:var(--text);
+  background:
+    url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="%230b1020"/><circle cx="20" cy="20" r="1.5" fill="%237aa2ff" opacity="0.12"/><circle cx="10" cy="10" r="1.5" fill="%237aa2ff" opacity="0.12"/><circle cx="30" cy="30" r="1.5" fill="%237aa2ff" opacity="0.12"/></svg>'),
+    radial-gradient(1200px 600px at -10% -10%, rgba(96,165,250,.14), transparent 55%),
+    radial-gradient(900px 420px at 110% -10%, rgba(99,102,241,.13), transparent 55%),
+    linear-gradient(180deg,var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+  line-height:1.58; letter-spacing:.2px;
+}
+img{max-width:100%; height:auto; display:block}
+a{color:var(--accent); text-decoration:none; transition:color var(--t-quick), opacity var(--t-quick)}
+a:hover{opacity:.9}
+
+.container{max-width:1100px; margin:0 auto; padding:0 var(--space-4)}
+.hidden{display:none !important}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.badge{display:inline-flex; align-items:center; gap:6px; padding:.25rem .55rem; border-radius:999px; background:#0b2c50; color:#93c5fd; border:1px solid #1e3a8a; font-size:.78rem}
+
+/* -------------------- Header / top nav -------------------- */
+.site-header{
+  position:sticky; top:0; z-index:50; backdrop-filter:blur(10px);
+  background:rgba(2,6,23,.6); border-bottom:1px solid #1f2937;
+  transition: box-shadow var(--t-quick), background var(--t-quick);
+}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); padding:12px 0}
+.brand{font-weight:900; letter-spacing:.2px; color:#cfe3ff}
+
+/* Tabs across the top */
+.edu-nav{display:flex; flex-wrap:wrap; gap:8px}
+.edu-nav .tab{
+  display:inline-flex; align-items:center; gap:8px; padding:12px 18px;
+  border-radius:12px; border:1px solid #24306b; color:#e8ecff;
+  background:linear-gradient(90deg,#0b2c50 60%,#1e3a8a 100%);
+  font-size:1.08rem; font-weight:800; letter-spacing:.1px;
+  box-shadow:0 2px 8px rgba(30,40,70,.10);
+  transition:background .18s, color .18s, box-shadow .18s;
+}
+.edu-nav .tab.active,
+.edu-nav .tab:hover{
+  background:var(--panel);
+  color:#fff;
+  border-color:var(--accent);
+  box-shadow:0 8px 32px rgba(60,100,200,.13);
+}
+.edu-nav .tab:active{transform:translateY(0)}
+.edu-nav .tab.active{background:var(--panel); border-color:#24306b; color:var(--text); box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), var(--shadow)}
+
+/* Mobile pill scroll */
+@media (max-width:860px){
+  .edu-nav{overflow:auto; scrollbar-width:none; -ms-overflow-style:none}
+  .edu-nav::-webkit-scrollbar{display:none}
+}
+
+/* -------------------- Breadcrumbs -------------------- */
+.breadcrumbs{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:.95rem; margin:12px 0 6px}
+.breadcrumbs a{color:#edf0f6}
+.breadcrumbs span{opacity:.6}
+
+/* -------------------- Page head -------------------- */
+.page-head{margin:10px 0 14px}
+.page-head .lede{color:var(--sub); max-width:70ch}
+.page-head .meta{color:var(--muted); font-size:.9rem}
+
+/* -------------------- On‑page TOC -------------------- */
+.toc {
+  background: linear-gradient(90deg, rgba(122,162,255,0.10) 0%, rgba(96,165,250,0.13) 100%);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(96,165,250,.13);
+  padding: 18px 20px;
+  margin: 16px 0 24px;
+  transition: box-shadow .18s, background .18s;
+}
+.toc-title {
+  margin: 0 0 10px 0;
+  font-size: 1.08rem;
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: .1px;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+.toc a {
+  color: #dbe6ff;
+  position: relative;
+  font-weight: 700;
+  padding: 2px 0;
+  border-radius: 6px;
+  transition: background .18s, color .18s;
+}
+.toc a:hover {
+  color: #fff;
+  background: var(--accent-gradient);
+  box-shadow: 0 2px 8px rgba(96,165,250,.13);
+}
+.toc a.is-active {
+  color: #fff;
+  font-weight: 900;
+  background: var(--accent-gradient);
+  box-shadow: 0 2px 12px rgba(96,165,250,.18);
+}
+.toc a.is-active::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transform: translateY(-50%);
+}
+
+/* -------------------- Sections & cards -------------------- */
+.edu-section,
+.card {
+  background: linear-gradient(90deg, rgba(122,162,255,0.10) 0%, rgba(96,165,250,0.13) 100%);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(96,165,250,.13), var(--shadow);
+  padding: 22px 24px;
+  color: var(--text);
+  transition: box-shadow .18s, background .18s, border-color .18s;
+}
+.edu-section:hover,
+.card:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 18px 40px rgba(96,165,250,.18), 0 12px 40px rgba(0,0,0,.35);
+  border-color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(96,165,250,0.18) 0%, rgba(122,162,255,0.18) 100%);
+}
+.card.clickable { cursor: pointer; }
+.card.clickable:active { transform: translateY(0); }
+
+.subsection + .subsection{margin-top:12px}
+
+/* -------------------- Buttons -------------------- */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:.7rem 1rem; border-radius:12px; border:1px solid #2b3a7a; background:#16214a; color:var(--text); font-weight:800; cursor:pointer; transition:transform var(--t-quick), box-shadow var(--t-quick), background var(--t-quick), border-color var(--t-quick), opacity var(--t-quick)}
+
+      .btn{
+        display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.1rem;border-radius:999px;
+        background:var(--accent-gradient);
+        color:#0a0a0a;font-weight:800;border:0;cursor:pointer;
+        box-shadow:0 6px 20px rgba(96,165,250,.26);
+        font-size:1.01em;
+        transition:background .18s, box-shadow .18s, color .18s;
+      }
+      .btn:hover{
+        background:linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+        color:#fff;
+        box-shadow:0 10px 32px rgba(96,165,250,.18);
+      }
+      .btn.secondary{
+        background:rgba(27, 47, 74, 0.92);
+        color:var(--text);
+        border:1px solid #2f3b4e;
+        box-shadow:none;
+      }
+      .btn.secondary:hover{
+        background:var(--brand);
+        color:#0a0a0a;
+        border-color:var(--brand);
+      }
+
+/* Loading state (add .is-loading) */
+.btn.is-loading{position:relative; color:transparent}
+.btn.is-loading::after{content:""; position:absolute; width:16px; height:16px; border:2px solid rgba(255,255,255,.5); border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Row of CTAs */
+.cta-row{display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 4px}
+
+/* -------------------- Forms -------------------- */
+label{font-size:.9rem; color:#b7c2ff}
+input,select,textarea{width:100%; padding:10px 12px; border-radius:12px; background:#0d1330; border:1px solid #26306a; color:var(--text); outline:none; transition:border-color var(--t-quick), box-shadow var(--t-quick)}
+input:focus,select:focus,textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(96,165,250,.18)}
+
+/* -------------------- Tables -------------------- */
+table{width:100%; border-collapse:separate; border-spacing:0 8px}
+th{font-size:12px; color:var(--muted); text-align:left}
+td,th{padding:8px 10px}
+tr{background:#0f1633; border:1px solid #26306a; transition:background var(--t-quick)}
+tr:hover{background:#111a3d}
+tr td:first-child, tr th:first-child{border-top-left-radius:10px; border-bottom-left-radius:10px}
+tr td:last-child, tr th:last-child{border-top-right-radius:10px; border-bottom-right-radius:10px}
+
+/* -------------------- Dividers & links list -------------------- */
+.divider{height:1px; background:linear-gradient(90deg,transparent,#27306a,transparent); margin:18px 0}
+.links{list-style:none; margin:6px 0; padding:0; display:grid; gap:6px}
+.links li{display:flex; align-items:center; gap:8px}
+.links a{color:#cfe3ff}
+.links a::after{content:"↗"; font-size:.85em; opacity:.7; margin-left:6px}
+
+/* -------------------- Footer -------------------- */
+.site-footer{border-top:1px solid #1f2937; background:rgba(2,6,23,.6); margin-top:var(--space-8)}
+.site-footer .container{padding:var(--space-3) var(--space-4); color:var(--muted); font-size:.92rem}
+
+/* -------------------- Focus visibility & accessibility -------------------- */
+:focus-visible{outline:none; box-shadow:0 0 0 3px rgba(29,78,216,.35)}
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{border-color:var(--ring)}
+
+/* -------------------- Utilities -------------------- */
+.grid{display:grid; gap:16px}
+.grid.cols-2{grid-template-columns:1fr 1fr}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:980px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+.right{margin-left:auto}
+
+/* Callouts */
+.callout{border:1px solid var(--border); border-radius:12px; padding:12px 14px; background:rgba(255,255,255,.03)}
+.callout.ok{border-color:rgba(61,220,151,.35); background:rgba(61,220,151,.06)}
+.callout.warn{border-color:rgba(255,209,102,.35); background:rgba(255,209,102,.06)}
+.callout.bad{border-color:rgba(239,71,111,.35); background:rgba(239,71,111,.06)}
+
+/* Toasts (position your container fixed via HTML/JS) */
+.toast{background:#0f1633; border:1px solid #26306a; color:var(--text); padding:10px 12px; border-radius:12px; box-shadow:var(--shadow); display:flex; align-items:center; gap:10px}
+.toast.ok{border-color:#1f7c58}
+.toast.warn{border-color:#8a6d1f}
+.toast.bad{border-color:#7a233c}
+
+/* -------------------- Floating cart (widget shell) -------------------- */
+.floating-cart{position:fixed; right:18px; bottom:18px; z-index:60; width:320px; max-width:90vw; background:rgba(15,23,42,.96); border:1px solid var(--border); border-radius:16px; box-shadow:0 18px 42px rgba(0,0,0,.45); overflow:hidden; transition:transform var(--t-quick), opacity var(--t-quick)}
+.floating-cart.hidden{opacity:0; pointer-events:none; transform:translateY(6px)}
+.floating-cart .cart-head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:rgba(255,255,255,.03); border-bottom:1px solid var(--border)}
+.floating-cart .cart-title{font-weight:800; font-size:.98rem}
+.floating-cart .cart-badge{background:#0b2c50; color:#cfe3ff; border:1px solid #1e3a8a; border-radius:999px; padding:.2rem .5rem; font-size:.78rem}
+.floating-cart .cart-body{max-height:320px; overflow:auto; padding:10px 12px; display:grid; gap:10px}
+.floating-cart .cart-item{display:flex; align-items:center; justify-content:space-between; gap:10px; background:#0f1633; border:1px solid #26306a; border-radius:12px; padding:8px 10px; transition:background var(--t-quick), transform var(--t-quick)}
+.floating-cart .cart-item:hover{background:#121a3f; transform:translateY(-1px)}
+.floating-cart .cart-item .name{font-weight:600}
+.floating-cart .cart-item .meta{color:var(--muted); font-size:.9rem}
+.floating-cart .cart-foot{border-top:1px solid var(--border); padding:10px 12px; display:flex; gap:8px; align-items:center; justify-content:flex-end; background:rgba(255,255,255,.02)}
+.cart-toggle{position:fixed; right:18px; bottom:18px; z-index:61; width:52px; height:52px; border-radius:999px; border:1px solid #2b3a7a; background:linear-gradient(180deg,#2d50b9,#1b2a6f); color:#e9edff; display:flex; align-items:center; justify-content:center; box-shadow:0 14px 28px rgba(0,0,0,.45); cursor:pointer; transition:transform var(--t-quick), box-shadow var(--t-quick)}
+.cart-toggle:hover{transform:translateY(-1px); box-shadow:0 18px 36px rgba(0,0,0,.5)}
+.cart-toggle .count{position:absolute; top:-6px; right:-6px; min-width:22px; height:22px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; background:#ef476f; color:#fff; border-radius:999px; font-size:.8rem; font-weight:800; border:2px solid #0b1020}
+
+/* -------------------- Page‑specific hooks (examples) -------------------- */
+.page-pay{ --accent: var(--accent-2); }
+.page-pay .edu-section{ background:linear-gradient(180deg,#0d1630,#0b1324); }
+
+/* -------------------- Media tweaks -------------------- */
+@media (max-width:780px){
+  .edu-nav .tab{padding:8px 10px}
+  .toc{padding:10px 12px}
+  .floating-cart{right:12px; bottom:12px; width:92vw}
+}
+
+/* -------------------- Usage notes -------------------- */
+/*
+- Add .is-active to TOC links as the user scrolls (JS can manage)
+- Use .card.clickable for cards that navigate somewhere
+- Use .btn.is-loading for async actions; spinner is CSS‑only
+- Toggle floating cart by adding/removing .hidden on .floating-cart
+- Page‑level accent tweak: add class to <body> e.g., <body class="page-pay">
+*/

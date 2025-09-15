@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mil-Fi TSP & Career Starter Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(17,24,39,0.92);
+      --card: rgba(20,30,60,0.82);
+      --text: #e8ecff;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --input: #1e2749;
+      --good: #3ddc97;
+      --warn: #ffd166;
+      --bad: #ef476f;
+  --radius: 12px;
+      --shadow: 0 8px 32px rgba(30,40,70,.18);
+      --brand-gradient: linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);
+      --glass-blur: blur(14px);
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at -10% -10%, rgba(96,165,250,.14), transparent 55%),
+        radial-gradient(900px 420px at 110% -10%, rgba(99,102,241,.13), transparent 55%),
+        linear-gradient(180deg, var(--bg), #0b1020 40%, #0a0f1a);
+      min-height: 100vh;
+    }
+    .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 18px 8px 12px 8px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(30,40,70,.18), var(--shadow);
+  margin-top: 18px;
+    }
+    header {
+  text-align: center;
+  margin-bottom: 18px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(96,165,250,.06);
+    }
+    h1 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+  letter-spacing: .1px;
+  text-shadow: 0 1px 6px rgba(96,165,250,.08);
+    }
+    .tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  justify-content: center;
+    }
+    .tab {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(31,41,55,0.92);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: 0.98rem;
+  transition: background .18s, color .18s, border .18s;
+    }
+    .tab.active {
+  background: var(--brand-gradient);
+  color: #0a0a0a;
+  border-color: var(--accent);
+  box-shadow: 0 1px 4px rgba(96,165,250,.10);
+    }
+    .section {
+      display: none;
+      animation: fadeIn .4s;
+    }
+    .section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    .card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(30,40,70,.12), var(--shadow);
+  padding: 16px 10px 12px 10px;
+  margin-bottom: 14px;
+  backdrop-filter: var(--glass-blur);
+  transition: transform .18s, box-shadow .18s, border .18s;
+  border: 1px solid transparent;
+    }
+    .card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 16px 48px rgba(60,100,200,.18), var(--shadow);
+  border-color: var(--accent);
+  background: linear-gradient(120deg, rgba(96,165,250,.08) 0%, var(--card) 100%);
+    }
+    .card h2 {
+  margin: 0 0 8px;
+  font-size: 1.08rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: .05px;
+  text-shadow: 0 1px 4px rgba(96,165,250,.06);
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+    .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+    }
+    label {
+  display: block;
+  margin-top: 6px;
+  color: #b7c2ff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  margin-bottom: 1px;
+    }
+    input, select {
+  width: 100%;
+  padding: 8px 8px;
+  margin-top: 3px;
+  background-color: var(--input);
+  color: var(--text);
+  border: 1px solid rgba(96,165,250,.08);
+  border-radius: 8px;
+  font-size: 0.98em;
+  box-shadow: 0 1px 4px rgba(30,40,70,.08);
+  transition: border .18s;
+    }
+    input:focus, select:focus {
+  border-color: var(--accent);
+    }
+    button {
+  background: var(--brand-gradient);
+  border: none;
+  color: #0a0a0a;
+  padding: 8px 18px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 0.98em;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(96,165,250,.10);
+  transition: background .18s, color .18s;
+    }
+    button:hover {
+      background: linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+      color: #fff;
+    }
+    .results, .summary, .metrics {
+  margin-top: 10px;
+  background: linear-gradient(120deg, rgba(96,165,250,.07) 0%, var(--input) 100%);
+  padding: 10px 8px;
+  border-radius: 10px;
+  font-size: 0.98em;
+  box-shadow: 0 1px 4px rgba(30,40,70,.08);
+  border: 1px solid rgba(96,165,250,.05);
+    }
+    .results span, .summary span, .metrics span {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.98em;
+    }
+    canvas {
+  margin-top: 10px;
+  background: #1a2244;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 1px 4px rgba(30,40,70,.08);
+    }
+    .fund-explainer {
+  font-size: 0.92em;
+  color: #b0bbff;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-style: italic;
+    }
+    .back-btn {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  text-decoration: none;
+  filter: drop-shadow(0 1px 4px #60a5fa);
+    }
+    @media (max-width:700px){.container{padding:0 8px}.grid{gap:14px}}
+    @media (max-width:700px){
+      .container{padding:0 2px}
+      .grid{gap:6px}
+      .card{padding:8px 2px 6px 2px;}
+      h1{font-size:1.02rem;}
+      .card h2{font-size:0.92rem;}
+    }
+  </style>
+  <script type="module">
+    import { initState, guardedRun } from "../../../js/entitlements.js";
+    document.addEventListener("DOMContentLoaded", () => {
+      initState();
+      // TSP Calculate
+      const tspBtn = document.querySelector('button[data-calc="tsp"]') || document.querySelector('button:contains("Calculate")');
+      if (tspBtn) {
+        tspBtn.onclick = (e) => {
+          guardedRun("tsp", () => window.calculateGrowth(), { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+      // CSL Run Model
+      const cslBtn = document.querySelector('button[data-calc="csl"]') || document.querySelector('button:contains("Run Model")');
+      if (cslBtn) {
+        cslBtn.onclick = (e) => {
+          guardedRun("career-starter", () => window.runModel(), { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+    });
+  </script>
+</head>
+<body>
+  <a href="Investing_Home.html" class="back-btn"><button>← Back</button></a>
+  <div class="container">
+    <header>
+      <h1>Mil-Fi TSP & Career Starter Hub</h1>
+      <div class="tabs" role="tablist" aria-label="Sections">
+        <div class="tab active" data-target="#tspSection">TSP Calculator</div>
+        <div class="tab" data-target="#cslSection">Career Starter Loan</div>
+      </div>
+    </header>
+    <section id="tspSection" class="section active" role="tabpanel">
+      <div class="card">
+        <h2>TSP Fund Allocation</h2>
+        <div class="grid">
+          <div>
+            <label>G Fund (%)</label><input type="number" id="gFund" value="30">
+            <div class="fund-explainer">Government Securities – virtually risk-free, low returns.</div>
+          </div>
+          <div>
+            <label>F Fund (%)</label><input type="number" id="fFund" value="20">
+            <div class="fund-explainer">Fixed Income Index – bonds, moderate risk.</div>
+          </div>
+          <div>
+            <label>C Fund (%)</label><input type="number" id="cFund" value="20">
+            <div class="fund-explainer">Common Stock Index – tracks the S&P 500.</div>
+          </div>
+          <div>
+            <label>S Fund (%)</label><input type="number" id="sFund" value="20">
+            <div class="fund-explainer">Small Cap Index – U.S. small/mid-sized companies.</div>
+          </div>
+          <div>
+            <label>I Fund (%)</label><input type="number" id="iFund" value="10">
+            <div class="fund-explainer">International Stock Index – foreign developed markets.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Investment Settings</h2>
+        <div class="grid">
+          <div><label>Initial Investment ($)</label><input type="number" id="initial" value="10000"></div>
+          <div><label>Monthly Contribution ($)</label><input type="number" id="monthly" value="500"></div>
+          <div><label>Employer Match (%)</label><input type="number" id="match" value="5"></div>
+          <div><label>Annual Contribution Increase (%)</label><input type="number" id="increase" value="0"></div>
+          <div><label>Years</label><input type="number" id="years" value="30"></div>
+          <div><label>Expected Annual Inflation (%)</label><input type="number" id="inflation" value="2.5" step="0.1"></div>
+        </div>
+  <button data-calc="tsp">Calculate</button>
+  <button onclick="saveTSPModel()" style="margin-left:8px">Save Model</button>
+      </div>
+      <div class="card">
+        <h2>Growth Projection</h2>
+        <div class="results" style="margin-bottom:8px;">
+          <h3>Summary</h3>
+          <span id="totalInvested"></span>
+          <span id="totalValue"></span>
+          <span id="totalGain"></span>
+        </div>
+        <canvas id="growthChart" height="150"></canvas>
+        <div style="margin-top:10px">
+          <h3 style="margin-bottom:4px; color:var(--accent); font-size:0.98em;">Portfolio Value by Year</h3>
+          <table id="yearlyTable" style="width:100%;margin-top:6px;border-collapse:collapse;background:var(--input);border-radius:8px;overflow:hidden;">
+            <thead>
+              <tr style="background:rgba(96,165,250,.08);color:var(--accent);font-weight:700;">
+                <th style="padding:6px 8px;text-align:left;">Year</th>
+                <th style="padding:6px 8px;text-align:right;">Portfolio Value</th>
+              </tr>
+            </thead>
+            <tbody id="yearlyTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section id="cslSection" class="section" role="tabpanel">
+      <div class="card">
+        <h2>Career Starter Loan Investment Model</h2>
+        <div class="grid">
+          <div><label for="loanAmount">Loan Amount ($)</label><input type="number" id="loanAmount" value="25000"></div>
+          <div><label for="interestRate">Interest Rate (%)</label><input type="number" id="interestRate" value="3"></div>
+          <div><label for="loanTerm">Loan Term (Years)</label><input type="number" id="loanTerm" value="5"></div>
+          <div><label for="monthlyInvest">Monthly Investment ($)</label><input type="number" id="monthlyInvest" value="0"></div>
+          <div><label for="investRate">Expected Annual Return (%)</label><input type="number" id="investRate" value="7"></div>
+          <div><label for="percentInvest">% of Loan Invested</label><input type="range" id="percentInvest" min="0" max="100" value="100" oninput="document.getElementById('percentLabel').textContent = this.value + '%'">
+          <span id="percentLabel">100%</span></div>
+          <div><label for="earlyPay">Early Payment Monthly ($)</label><input type="number" id="earlyPay" value="0"></div>
+        </div>
+  <button data-calc="csl">Run Model</button>
+  <button onclick="saveCSLModel()" style="margin-left:8px">Save Model</button>
+      </div>
+      <div class="card">
+        <h2>Results & Metrics</h2>
+        <div class="summary" id="summary"></div>
+        <div class="metrics" id="metrics"></div>
+        <canvas id="modelChart"></canvas>
+      </div>
+    </section>
+  </div>
+  <script>
+    // Tabs logic
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelector(tab.getAttribute('data-target')).classList.add('active');
+      });
+    });
+    // TSP Calculator
+    const fundReturns = { g: 2.5, f: 4.0, c: 10.0, s: 12.0, i: 7.0 };
+
+    // Save TSP Model to localStorage and update usage
+    function saveTSPModel() {
+      const model = {
+        g: parseFloat(document.getElementById("gFund").value),
+        f: parseFloat(document.getElementById("fFund").value),
+        c: parseFloat(document.getElementById("cFund").value),
+        s: parseFloat(document.getElementById("sFund").value),
+        i: parseFloat(document.getElementById("iFund").value),
+        initial: parseFloat(document.getElementById("initial").value),
+        monthly: parseFloat(document.getElementById("monthly").value),
+        match: parseFloat(document.getElementById("match").value),
+        increase: parseFloat(document.getElementById("increase").value),
+        years: parseInt(document.getElementById("years").value),
+        inflation: parseFloat(document.getElementById("inflation").value)
+      };
+      localStorage.setItem('milfi_tsp_model', JSON.stringify(model));
+      // Usage count
+      let uses = parseInt(localStorage.getItem('milfi_uses_tsp')||'0',10);
+      localStorage.setItem('milfi_uses_tsp', String(uses+1));
+      let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+      localStorage.setItem('milfi_uses', String(total+1));
+      // Optionally trigger dashboard update
+      localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+      alert('TSP model saved! Dashboard will update on refresh.');
+    }
+
+    // Save Career Starter Loan Model to localStorage and update usage
+    function saveCSLModel() {
+      const model = {
+        loanAmount: parseFloat(document.getElementById('loanAmount').value),
+        interestRate: parseFloat(document.getElementById('interestRate').value),
+        loanTerm: parseInt(document.getElementById('loanTerm').value),
+        monthlyInvest: parseFloat(document.getElementById('monthlyInvest').value),
+        investRate: parseFloat(document.getElementById('investRate').value),
+        percentInvest: parseFloat(document.getElementById('percentInvest').value),
+        earlyPay: parseFloat(document.getElementById('earlyPay').value)
+      };
+      localStorage.setItem('milfi_csl_model', JSON.stringify(model));
+      // Usage count
+      let uses = parseInt(localStorage.getItem('milfi_uses_starter')||'0',10);
+      localStorage.setItem('milfi_uses_starter', String(uses+1));
+      let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+      localStorage.setItem('milfi_uses', String(total+1));
+      // Optionally trigger dashboard update
+      localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+      alert('Career Starter Loan model saved! Dashboard will update on refresh.');
+    }
+    function calculateGrowth() {
+      const initial = parseFloat(document.getElementById("initial").value);
+      const monthly = parseFloat(document.getElementById("monthly").value);
+      const matchPercent = parseFloat(document.getElementById("match").value) / 100;
+      const increase = parseFloat(document.getElementById("increase").value) / 100;
+      const years = parseInt(document.getElementById("years").value);
+      const months = years * 12;
+      const g = parseFloat(document.getElementById("gFund").value) / 100;
+      const f = parseFloat(document.getElementById("fFund").value) / 100;
+      const c = parseFloat(document.getElementById("cFund").value) / 100;
+      const s = parseFloat(document.getElementById("sFund").value) / 100;
+      const i = parseFloat(document.getElementById("iFund").value) / 100;
+      const inflation = parseFloat(document.getElementById("inflation").value) || 0;
+      const effectiveAnnualReturn = (g * fundReturns.g + f * fundReturns.f + c * fundReturns.c + s * fundReturns.s + i * fundReturns.i);
+      const netAnnualReturn = effectiveAnnualReturn - inflation;
+      const rate = effectiveAnnualReturn / 100 / 12;
+      let balance = initial;
+      let currentContribution = monthly;
+      let totalInvested = initial;
+      let data = [];
+      let yearlyData = [];
+      for (let m = 1; m <= months; m++) {
+        if (m % 12 === 0) currentContribution *= (1 + increase);
+        const match = currentContribution * matchPercent;
+        const totalMonthly = currentContribution + match;
+        balance += totalMonthly;
+        balance *= (1 + rate);
+        totalInvested += currentContribution;
+        data.push(Number(balance.toFixed(2)));
+        if (m % 12 === 0) {
+          yearlyData.push(Number(balance.toFixed(2)));
+        }
+      }
+      const labels = Array.from({ length: months }, (_, i) => `Month ${i + 1}`);
+      const finalBalance = balance.toFixed(2);
+      document.getElementById("totalInvested").textContent = `Total Invested (Your Contribution): $${totalInvested.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById("totalValue").textContent = `Projected Final Value: $${parseFloat(finalBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById("totalGain").textContent = `Total Gain: $${(parseFloat(finalBalance) - totalInvested).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      // Show net annual return in results
+      let netReturnColor = netAnnualReturn >= 0 ? 'var(--good)' : 'var(--bad)';
+      let netReturnText = `<span style='color:${netReturnColor}'>Net Annual Return (after inflation): <strong>${netAnnualReturn.toFixed(2)}%</strong></span>`;
+      if(document.getElementById("netReturnResult")) {
+        document.getElementById("netReturnResult").innerHTML = netReturnText;
+      } else {
+        const resultDiv = document.querySelector('.results');
+        if(resultDiv) {
+          const span = document.createElement('span');
+          span.id = "netReturnResult";
+          span.innerHTML = netReturnText;
+          resultDiv.appendChild(span);
+        }
+      }
+      const ctx = document.getElementById("growthChart").getContext("2d");
+      if (window.myChart) window.myChart.destroy();
+      window.myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "TSP Account Value",
+            data,
+            borderColor: "#60a5fa",
+            backgroundColor: "rgba(96,165,250,0.18)",
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            tooltip: {
+              mode: "index",
+              intersect: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { color: "#e8ecff" },
+              grid: { color: "#2c3e50" }
+            },
+            x: {
+              ticks: { color: "#e8ecff" },
+              grid: { color: "#2c3e50" }
+            }
+          }
+        }
+      });
+      // Yearly table below
+      const yearlyTableBody = document.getElementById("yearlyTableBody");
+      if (yearlyTableBody) {
+        yearlyTableBody.innerHTML = yearlyData.map((val, idx) =>
+          `<tr style='border-bottom:1px solid rgba(96,165,250,.07);'>
+            <td style='padding:4px 8px;'>${idx+1}</td>
+            <td style='padding:4px 8px;text-align:right;'>$${parseFloat(val).toLocaleString(undefined,{maximumFractionDigits:2})}</td>
+          </tr>`
+        ).join("");
+      }
+    }
+    // Career Starter Loan Model
+    function formatCurrency(num) {
+      return '$' + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function runModel() {
+      const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+      const rate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+      const years = parseInt(document.getElementById('loanTerm').value);
+      const n = years * 12;
+      const monthlyInvest = parseFloat(document.getElementById('monthlyInvest').value);
+      const investRate = parseFloat(document.getElementById('investRate').value) / 100 / 12;
+      const investPercent = parseFloat(document.getElementById('percentInvest').value) / 100;
+      const earlyPay = parseFloat(document.getElementById('earlyPay').value);
+      const investedPrincipal = loanAmount * investPercent;
+      const monthlyPayment = (loanAmount * rate) / (1 - Math.pow(1 + rate, -n));
+      let remainingLoan = loanAmount;
+      let portfolio = investedPrincipal;
+      let totalPayments = 0;
+      let dataPoints = [];
+      for (let i = 1; i <= n; i++) {
+        const interest = remainingLoan * rate;
+        const principal = monthlyPayment - interest + earlyPay;
+        remainingLoan -= principal;
+        portfolio = (portfolio + monthlyInvest) * (1 + investRate);
+        totalPayments += monthlyPayment + earlyPay;
+        dataPoints.push({ x: i, loan: Math.max(remainingLoan, 0), investment: portfolio });
+      }
+      const netProfit = portfolio - totalPayments;
+      const cashOnCash = ((portfolio - investedPrincipal) / investedPrincipal) * 100;
+      const irr = (Math.pow(portfolio / investedPrincipal, 1 / years) - 1) * 100;
+      document.getElementById('summary').innerHTML = `
+        <span>Monthly Loan Payment: <strong>${formatCurrency(monthlyPayment)}</strong></span>
+        <span>Total Payments (Including Early): <strong>${formatCurrency(totalPayments)}</strong></span>
+        <span>Ending Investment Value: <strong>${formatCurrency(portfolio)}</strong></span>
+        <span>Net P/L: <strong style="color: ${netProfit >= 0 ? 'var(--good)' : 'var(--bad)'}">${formatCurrency(netProfit)}</strong></span>
+      `;
+      document.getElementById('metrics').innerHTML = `
+        <span>Cash-on-Cash Return: <strong>${cashOnCash.toFixed(2)}%</strong></span>
+        <span>IRR: <strong>${irr.toFixed(2)}%</strong></span>
+      `;
+      const ctx = document.getElementById('modelChart').getContext('2d');
+      if (window.modelChart && typeof window.modelChart.destroy === 'function') {
+        window.modelChart.destroy();
+      }
+      window.modelChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dataPoints.map(d => `Month ${d.x}`),
+          datasets: [
+            { label: 'Remaining Loan', data: dataPoints.map(d => d.loan), borderColor: '#ef476f', fill: false },
+            { label: 'Investment Value', data: dataPoints.map(d => d.investment), borderColor: '#3ddc97', fill: false }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: '#e8ecff' } } },
+          scales: {
+            x: { ticks: { color: '#b7c2ff' } },
+            y: { ticks: { color: '#b7c2ff' } }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+</body>
+</html>

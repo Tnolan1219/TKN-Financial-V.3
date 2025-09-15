@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All‑in‑One Budget & FIRE Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --bg: #0b1020;          /* deep navy */
+      --card: #111732;        /* slightly lighter */
+      --muted: #7c8db5;       /* slate */
+      --text: #e8ecf7;        /* near white */
+      --accent: #6ea8ff;      /* azure */
+      --accent-2: #9ef6d0;    /* mint */
+      --warn: #ffb86b;        /* amber */
+      --danger: #ff6b6b;      /* coral */
+      --ok: #42d392;          /* green */
+      --ring: 20, 500px;      /* blur, spread */
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background:
+        url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="%230b1220"/><circle cx="20" cy="20" r="1.5" fill="%2360a5fa" opacity="0.12"/><circle cx="10" cy="10" r="1.5" fill="%2360a5fa" opacity="0.12"/><circle cx="30" cy="30" r="1.5" fill="%2360a5fa" opacity="0.12"/></svg>'),
+        radial-gradient(1200px 600px at -10% -10%, rgba(96,165,250,.14), transparent 55%),
+        radial-gradient(900px 420px at 110% -10%, rgba(99,102,241,.13), transparent 55%),
+        linear-gradient(180deg, var(--bg), #0b1020 40%, #0a0f1a);
+      min-height:100vh;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+
+    .container{ max-width: 1200px; margin: 0 auto; padding: 24px; }
+    header{ display:flex; gap:16px; align-items:center; justify-content:space-between; margin-bottom: 18px; }
+    .brand{ display:flex; align-items:center; gap:12px; }
+    .brand .logo{
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(130deg, var(--accent), #a37bff);
+      box-shadow: 0 10px 25px rgba(110,168,255,.25), inset 0 0 30px rgba(255,255,255,.25);
+    }
+    h1{ font-size: clamp(22px, 2.6vw, 32px); margin:0; letter-spacing:.2px; }
+    .muted{ color: var(--muted); }
+
+    .toolbar{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.08); color:var(--text);
+      background: linear-gradient(180deg, #192248, #121833);
+      padding:10px 14px; border-radius:12px; font-weight:600; cursor:pointer; transition:.2s ease;
+      box-shadow: 0 6px 20px rgba(10,15,40,.25);
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+    .btn.secondary{ background: linear-gradient(180deg, #152035, #0f1528); color:#cfe1ff; }
+    .btn.ghost{ background: transparent; border-color: rgba(255,255,255,.15); color:#cfe1ff; }
+    .btn.warn{ background: linear-gradient(180deg, #3a230e, #2b1a0a); border-color:#5b3a19; color:#ffd8a8; }
+
+    /* Tabs */
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tab{ padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; color:#cbd8ff;
+          border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg,#121a36,#0e142b); }
+    .tab.active{ background: linear-gradient(180deg, #1b2750, #10183a); color:#fff; border-color:#2e3b74; }
+
+    /* Layout */
+    .grid{ display:grid; grid-template-columns: 1.15fr .85fr; gap:18px; }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      background: var(--glass, linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)));
+      border:1px solid #1f2a41;
+      border-radius:var(--radius,18px);
+      box-shadow:0 8px 32px rgba(30,40,70,.18), var(--shadow,0 12px 40px rgba(0,0,0,.35));
+      padding:24px 18px 18px 18px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      min-height:220px;
+      backdrop-filter:var(--glass-blur, blur(14px));
+      transition:transform .18s cubic-bezier(.4,2,.3,1), box-shadow .18s;
+    }
+    .card h2{margin:0 0 10px;font-size:1.22rem;color:var(--accent);font-weight:800;letter-spacing:.1px;}
+    .card h2{ font-size:18px; margin: 0 0 10px; }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .row-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+    .row-4{ display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+    @media (max-width: 720px){ .row, .row-3, .row-4{ grid-template-columns: 1fr; } }
+
+    label{ font-size:.88rem; color:#c6d3ff; display:block; margin-bottom:6px; }
+    input[type="text"], input[type="number"], select{ width:100%; background:#0b1228; color:#eaf1ff; border:1px solid #1d2a53; border-radius:12px; padding:12px 12px; outline:none; transition:border .2s; }
+    input[type="number"]::placeholder, input[type="text"]::placeholder{ color:#7f90be; }
+    input:focus{ border-color:#3c57a5; box-shadow: 0 0 0 4px rgba(62, 108, 255, .12); }
+
+    .table{ width:100%; border-collapse: collapse; }
+    .table th, .table td{ padding:10px 10px; border-bottom: 1px dashed rgba(255,255,255,.08); }
+    .table th{ text-align:left; color:#9eb2ff; font-weight:600; }
+    .table td input{ width:100%; padding:8px 10px; }
+    .table .del{
+      background:#2a1030; border:1px solid #603b79; color:#f7ceff; padding:6px 10px; border-radius:10px; cursor:pointer; font-weight:700;
+    }
+
+    .kpis{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin: 10px 0 0; }
+    .kpi{ background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:14px; }
+    .kpi .label{ color:#b6c6ff; font-size:.8rem; }
+    .kpi .value{ font-weight:800; font-size:1.3rem; margin-top:4px; letter-spacing:.3px; }
+    @media (max-width: 980px){ .kpis{ grid-template-columns: repeat(2, 1fr); } }
+
+    .section-title{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top: 8px; }
+    .section-title h2{ margin:0; }
+
+    .switch{ display:inline-flex; align-items:center; gap:8px; }
+    .switch input{ appearance:none; width:46px; height:26px; background:#1a254a; border-radius:20px; position:relative; outline:none; cursor:pointer; transition:.2s; border:1px solid rgba(255,255,255,.12); }
+    .switch input:checked{ background:#2442a9; }
+    .switch input:before{ content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; background:#fff; border-radius:50%; transition:.2s; }
+    .switch input:checked:before{ transform: translateX(20px); }
+
+    .hint{ font-size:.82rem; color:#a6b5e8; }
+    .small{ font-size:.78rem; }
+    .pill{ display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); }
+
+    .footer{ margin: 24px 0 6px; color:#9fb1df; font-size:.82rem; }
+    .link{ color:#a9d4ff; text-decoration:none; border-bottom:1px dotted rgba(169,212,255,.4); }
+
+    .sep{ height:1px; background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.0)); margin:12px 0; }
+
+    .budget-dragging {
+      opacity: 0.5;
+    }
+    .budget-drop-target {
+      outline: 2px dashed #6ea8ff;
+      background: rgba(110,168,255,0.08);
+    }
+    .card {
+      transition: transform .18s, box-shadow .18s, border .18s;
+    }
+    .card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 16px 48px rgba(60,100,200,.18), var(--shadow);
+      border-color: var(--accent);
+      background: linear-gradient(120deg, rgba(96,165,250,.08) 0%, var(--card) 100%);
+    }
+
+  </style>
+</head>
+<body>
+  <a href="Investing_Home.html" style="position:fixed;top:18px;left:18px;z-index:1000;text-decoration:none;"><button style="padding:8px 18px;border-radius:999px;background:#60a5fa;color:#0a0a0a;font-weight:700;border:none;box-shadow:0 2px 10px rgba(96,165,250,.13);cursor:pointer;">← Back</button></a>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Budget Studio + FIRE Planner</h1>
+          <div class="muted small">A beautiful, robust calculator for everyone — plan your spending, savings, and path to Financial Independence.</div>
+        </div>
+      </div>
+      <div class="toolbar">
+  <button class="btn" id="saveBtn" title="Save Budget inputs to this browser">Save Budget Model</button>
+  <button class="btn secondary" id="loadBtn" title="Load Budget inputs from this browser">Load Budget Model</button>
+  <button class="btn" id="saveFireBtn" title="Save FIRE projection to this browser">Save FIRE Model</button>
+  <button class="btn secondary" id="loadFireBtn" title="Load FIRE projection from this browser">Load FIRE Model</button>
+  <button class="btn ghost" id="exportBtn" title="Download a backup JSON file">Export JSON</button>
+  <label class="btn ghost" for="importFile" title="Import a JSON backup" style="cursor:pointer;">Import JSON<input id="importFile" type="file" accept="application/json" style="display:none"></label>
+  <button class="btn warn" id="resetBtn" title="Reset all values">Reset</button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <div class="tab active" data-target="#budget">Budget</div>
+      <div class="tab" data-target="#fire">Retierment</div>
+    </div>
+
+    <!-- BUDGET -->
+    <section id="budget" class="tab-panel" role="tabpanel" aria-labelledby="Budget" style="margin-top:14px;">
+      <div class="grid">
+        <!-- Left: Inputs table -->
+        <div class="card">
+          <div class="section-title">
+            <h2>Incomes & Expenses</h2>
+            <div class="switch">
+              <span class="small">Monthly</span>
+              <input id="periodToggle" type="checkbox" aria-label="Toggle to annual" />
+              <span class="small">Annual</span>
+            </div>
+          </div>
+          <div class="hint">Enter your <strong>net take‑home income</strong> and your planned expenses by category. Add or remove rows as needed.</div>
+          <div class="sep"></div>
+
+          <div class="row">
+            <div>
+              <label>Monthly Net Income ($)</label>
+              <input type="number" id="netIncome" min="0" step="0.01" placeholder="e.g., 5500" />
+            </div>
+            <div>
+              <label>Other Income ($/mo)</label>
+              <input type="number" id="otherIncome" min="0" step="0.01" placeholder="e.g., 300" />
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <table class="table" id="budgetTable">
+              <thead>
+                <tr>
+                  <th style="width:36%">Category</th>
+                  <th style="width:18%">Planned ($/mo)</th>
+                  <th style="width:18%">Actual ($/mo)</th>
+                  <th style="width:18%">Notes</th>
+                  <th style="width:10%"></th>
+                </tr>
+              </thead>
+              <tbody id="budgetBody"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="5" style="padding-top:12px;">
+                    <button class="btn" id="addCategory">+ Add Category</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="label">Total Income</div><div class="value" id="kpiIncome">$0</div></div>
+            <div class="kpi"><div class="label">Total Expenses (Planned)</div><div class="value" id="kpiExpenses">$0</div><div class="muted small">Does not include investments.</div></div>
+            <div class="kpi"><div class="label">Total Investments (Planned)</div><div class="value" id="kpiInvesting">$0</div><div class="muted small">Monthly amount set aside for investing.</div></div>
+            <div class="kpi"><div class="label">Savings / Month</div><div class="value" id="kpiSavings">$0</div></div>
+            <div class="kpi"><div class="label">Savings Rate</div><div class="value" id="kpiRate">0%</div></div>
+          </div>
+        </div>
+
+        <!-- Right: Visuals -->
+        <div class="card">
+          <div class="section-title">
+            <h2>Budget Wheel</h2>
+            <div class="pill small"><input type="checkbox" id="showActual" style="margin-right:6px">Show Actual vs. Planned</div>
+          </div>
+          <div class="hint">See where your money goes. Hover for exact amounts; edit the table and this wheel updates live.</div>
+          <div style="height:440px; margin-top:8px"><canvas id="wheel"></canvas></div>
+          <div class="sep"></div>
+          <div class="section-title" style="margin-top:18px;">
+            <h2>Cash Flow Bar Chart</h2>
+          </div>
+          <div class="hint">Visualize your monthly cash in, out, and investing. Edit the table and chart updates live.</div>
+          <div style="height:260px; margin-top:8px"><canvas id="cashflowBar"></canvas></div>
+          <div class="row">
+            <div>
+              <label>Quick Template</label>
+              <select id="templateSelect">
+                <option value="custom">— Keep current —</option>
+                <option value="fiftyThirtyTwenty">50 / 30 / 20</option>
+                <option value="zeroBased">Zero‑Based (maximize savings)</option>
+                <option value="balancedFamily">Balanced Family</option>
+              </select>
+            </div>
+            <div style="display:flex; align-items:flex-end; gap:8px;">
+              <button class="btn" id="applyTemplate">Apply Template</button>
+              <span class="small muted">Templates scale to your income.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIRE -->
+    <section id="fire" class="tab-panel" hidden role="tabpanel" aria-labelledby="FIRE" style="margin-top:14px;">
+      <div class="card" style="margin-bottom:24px;">
+        <div class="section-title">
+          <h2>FIRE Planner</h2>
+          <button class="btn secondary" id="toggleTSP" style="margin-left:18px;">Use TSP Inputs</button>
+        </div>
+        <div id="tspInputs" style="display:none; margin-top:18px;">
+          <!-- ...existing TSP input fields... -->
+        </div>
+        <div class="row-3">
+          <div><label>Current Portfolio ($)</label><input type="number" id="fiCurrent" min="0" step="0.01" value="25000">
+            <div class="muted small">How much you have invested now.</div></div>
+          <div><label>Monthly Invest ($)</label><input type="number" id="fiMonthly" min="0" step="0.01" value="1200">
+            <div class="muted small">How much you plan to invest each month.</div></div>
+          <div><label>Expected Annual Return (%)</label><input type="number" id="fiReturn" step="0.1" value="7">
+            <div class="muted small">Average yearly growth rate (after inflation).</div></div>
+        </div>
+        <div class="row-3" style="margin-top:8px;">
+          <div><label>Inflation Assumption (%)</label><input type="number" id="fiInflation" step="0.1" value="2.5">
+            <div class="muted small">How much you expect prices to rise per year.</div></div>
+          <div><label>Withdrawal Rate (%/yr)</label><input type="number" id="fiWR" step="0.1" value="4">
+            <div class="muted small">Percent of portfolio withdrawn yearly in retirement.</div></div>
+          <div><label>Projection Horizon (yrs)</label><input type="number" id="fiHorizon" min="5" max="60" step="1" value="40">
+            <div class="muted small">How many years to project into the future.</div></div>
+        </div>
+        <div class="row" style="margin-top:8px; align-items:end;">
+          <div>
+            <label>Annual Spend in Retirement ($)</label>
+            <input type="number" id="fiSpend" min="0" step="0.01" value="100000" />
+            <div class="muted small">How much you plan to spend per year after retiring.</div>
+            <div class="small muted" style="margin-top:6px;">
+              FI Number = <span class="pill"><span id="fiNumber">$0</span></span>
+            </div>
+            <div class="muted small">Your FI Number is the portfolio size needed to retire safely.</div>
+          </div>
+          <div>
+            <label class="small" style="visibility:hidden">.</label>
+            <div class="pill" style="justify-content:space-between; width:100%">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <input id="useBudgetSpend" type="checkbox">
+                <span class="small">Use my <strong>Budget's annual expenses</strong> as spend</span>
+              </div>
+              <button class="btn" id="runFIRE">Run Projection</button>
+            </div>
+          </div>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="label">Years to FI (est.)</div><div class="value" id="kpiYearsFI">—</div><div class="muted small">How long until you reach financial independence.</div></div>
+          <div class="kpi"><div class="label">FI Number</div><div class="value" id="kpiFINum">—</div><div class="muted small">Portfolio needed to retire safely.</div></div>
+          <div class="kpi"><div class="label">Withdrawal @ FI / yr</div><div class="value" id="kpiFIWithdraw">—</div><div class="muted small">Annual withdrawal at FI (using your rate).</div></div>
+          <div class="kpi"><div class="label">Ending Portfolio</div><div class="value" id="kpiFEnd">—</div><div class="muted small">Projected portfolio value at end of horizon.</div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:24px;">
+        <div class="section-title"><h2>Portfolio & Withdrawals Over Time</h2><button class="btn ghost small" id="dlFirePng">Download PNG</button></div>
+        <div style="height:420px; margin-top:8px"><canvas id="fireChart"></canvas></div>
+        <div class="small muted" style="margin-top:8px">After you reach FI, contributions stop and annual withdrawals begin using your chosen withdrawal rate.</div>
+      </div>
+      <div class="card" id="fireTableCard" style="margin-bottom:24px;">
+        <div class="section-title"><h2>Yearly Portfolio Value Table</h2></div>
+        <div id="firePortfolioTable" style="overflow-x:auto;"></div>
+      </div>
+    </section>
+
+    <!-- REPORTS / UTILITIES -->
+    <section id="reports" class="tab-panel" hidden role="tabpanel" aria-labelledby="Reports" style="margin-top:14px;">
+      <div class="grid">
+        <div class="card">
+          <h2>Summary</h2>
+          <div class="row-4">
+            <div class="kpi"><div class="label">Annual Income</div><div class="value" id="repAnnualIncome">$0</div></div>
+            <div class="kpi"><div class="label">Annual Expenses (Planned)</div><div class="value" id="repAnnualExp">$0</div></div>
+            <div class="kpi"><div class="label">Annual Savings</div><div class="value" id="repAnnualSav">$0</div></div>
+            <div class="kpi"><div class="label">Savings Rate</div><div class="value" id="repSavRate">0%</div></div>
+          </div>
+          <div class="sep"></div>
+          <div class="row">
+            <div>
+              <h3 style="margin:0 0 6px">Download Your Data</h3>
+              <div class="hint">Export a backup JSON you can import later, plus your FIRE chart image.</div>
+              <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn" id="exportBtn2">Export JSON</button>
+                <button class="btn ghost" id="dlWheelPng">Download Budget Wheel</button>
+              </div>
+            </div>
+            <div>
+              <h3 style="margin:0 0 6px">Tips</h3>
+              <ul class="small muted" style="line-height:1.6">
+                <li>Try the <strong>50/30/20</strong> template, then customize categories.</li>
+                <li>Link your budget to FIRE with the <em>Use my Budget's expenses</em> toggle.</li>
+                <li>Use Annual view to sanity‑check long‑term affordability.</li>
+                <li>Revisit your return and inflation assumptions yearly.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>About</h2>
+          <p class="muted small">This page stores your inputs locally in your browser. No data is uploaded. Calculations are for educational purposes only.</p>
+          <p class="muted small">Built with vanilla JS + Chart.js.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">Made with ♥ for thoughtful money decisions. Feedback welcome.</div>
+  </div>
+
+<script>
+// ----------------------------- Utilities -----------------------------
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const fmt = (n) => n === null || n === undefined || isNaN(n) ? "$0" : n.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+const fmt2 = (n) => n === null || n === undefined || isNaN(n) ? "$0" : n.toLocaleString(undefined,{style:'currency',currency:'USD'});
+const pct = (n) => isFinite(n) ? (n*100).toFixed(1) + '%' : '—';
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+
+function download(filename, text){
+  const a = document.createElement('a');
+  a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  a.setAttribute('download', filename);
+  a.style.display='none';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function canvasToPngLink(canvas, filename){
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = filename; a.click();
+}
+
+// ----------------------------- Tabs -----------------------------
+$$('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    $$('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.getAttribute('data-target');
+    $$('.tab-panel').forEach(p => p.hidden = true);
+    document.querySelector(target).hidden = false;
+  })
+});
+
+// ----------------------------- Budget Table -----------------------------
+const defaultCats = [
+  ['Housing (rent/mortgage)', 1800, 0, ''],
+  ['Utilities (gas/electric/water)', 220, 0, ''],
+  ['Internet/Phone', 90, 0, ''],
+  ['Groceries', 550, 0, ''],
+  ['Dining Out/Coffee', 200, 0, ''],
+  ['Transportation (fuel/transit)', 220, 0, ''],
+  ['Insurance (auto/health/life)', 300, 0, ''],
+  ['Medical/Health', 80, 0, ''],
+  ['Debt Payments', 350, 0, ''],
+  ['Subscriptions', 45, 0, ''],
+  ['Entertainment/Fun', 150, 0, ''],
+  ['Travel', 150, 0, ''],
+  ['Giving/Charity', 50, 0, ''],
+  ['Savings & Investing', 800, 0, 'Brokerage/401k/IRA']
+];
+
+function makeBudgetRowsDraggable() {
+  const rows = $$('#budgetBody tr');
+  rows.forEach((row, idx) => {
+    row.setAttribute('draggable', 'true');
+    row.ondragstart = (e) => {
+      row.classList.add('budget-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', idx);
+    };
+    row.ondragend = () => {
+      row.classList.remove('budget-dragging');
+      rows.forEach(r => r.classList.remove('budget-drop-target'));
+    };
+    row.ondragover = (e) => {
+      e.preventDefault();
+      rows.forEach(r => r.classList.remove('budget-drop-target'));
+      row.classList.add('budget-drop-target');
+    };
+    row.ondrop = (e) => {
+      e.preventDefault();
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = idx;
+      if (fromIdx === toIdx) return;
+      const tbody = document.getElementById('budgetBody');
+      const moving = rows[fromIdx];
+      if (fromIdx < toIdx) {
+        tbody.insertBefore(moving, rows[toIdx].nextSibling);
+      } else {
+        tbody.insertBefore(moving, rows[toIdx]);
+      }
+      updateBudget();
+    };
+  });
+}
+
+function addRow(cat='', planned=0, actual=0, notes=''){
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="text" class="cat" value="${cat}"></td>
+    <td><input type="number" class="planned" min="0" step="0.01" value="${planned}"></td>
+    <td><input type="number" class="actual" min="0" step="0.01" value="${actual}"></td>
+    <td><input type="text" class="notes" value="${notes}" placeholder="optional"></td>
+    <td style="text-align:right"><button class="del" title="Delete">×</button></td>`;
+  $('#budgetBody').appendChild(tr);
+  tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', updateBudget));
+  tr.querySelector('.del').addEventListener('click', () => { tr.remove(); updateBudget(); });
+  makeBudgetRowsDraggable();
+}
+
+function loadDefault(){
+  $('#budgetBody').innerHTML = '';
+  defaultCats.forEach(r => addRow(...r));
+  makeBudgetRowsDraggable();
+}
+
+$('#addCategory').addEventListener('click', () => { addRow('New Category', 0, 0, ''); makeBudgetRowsDraggable(); });
+window.addEventListener('DOMContentLoaded', makeBudgetRowsDraggable);
+
+// ----------------------------- Budget Calculations & Wheel -----------------------------
+let wheelChart;
+let cashflowChart;
+
+function getIncomeMonthly(){
+  const ni = parseFloat($('#netIncome').value) || 0;
+  const oi = parseFloat($('#otherIncome').value) || 0;
+  return ni + oi;
+}
+
+function getBudgetData(){
+  const rows = $$('#budgetBody tr');
+  const data = rows.map(r => ({
+    cat: r.querySelector('.cat').value.trim() || 'Category',
+    planned: parseFloat(r.querySelector('.planned').value) || 0,
+    actual: parseFloat(r.querySelector('.actual').value) || 0,
+  }));
+  return data;
+}
+
+function updateBudget(){
+  const periodAnnual = $('#periodToggle').checked; // checked = annual view
+  const incomeMonthly = getIncomeMonthly();
+  const income = periodAnnual ? incomeMonthly * 12 : incomeMonthly;
+
+  const data = getBudgetData();
+  const totalPlannedMonthly = data.reduce((a, b) => a + b.planned, 0);
+  const totalPlanned = periodAnnual ? totalPlannedMonthly * 12 : totalPlannedMonthly;
+
+  const savingsMonthly = incomeMonthly - totalPlannedMonthly;
+  const savings = periodAnnual ? savingsMonthly * 12 : savingsMonthly;
+  const rate = incomeMonthly > 0 ? savingsMonthly / incomeMonthly : 0;
+
+  // KPIs
+  // Usage count for Budget (on calculation)
+  let uses = parseInt(localStorage.getItem('milfi_uses_budget')||'0',10);
+  localStorage.setItem('milfi_uses_budget', String(uses+1));
+  let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+  localStorage.setItem('milfi_uses', String(total+1));
+  localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+  $('#kpiIncome').textContent = fmt(income);
+  // Separate investing from expenses
+  let investing = 0;
+  data.forEach(d => {
+    if(/invest/i.test(d.cat) || /savings/i.test(d.cat)) investing += d.planned;
+  });
+  const expenses = data.reduce((a, b) => a + b.planned, 0) - investing;
+  $('#kpiExpenses').textContent = fmt(expenses);
+  $('#kpiInvesting').textContent = fmt(investing);
+  $('#kpiSavings').textContent = (savings < 0 ? '-' : '') + fmt(Math.abs(savings));
+  $('#kpiRate').textContent = pct(rate);
+
+  // Reports mirror
+  $('#repAnnualIncome').textContent = fmt(incomeMonthly * 12);
+  $('#repAnnualExp').textContent = fmt(totalPlannedMonthly * 12);
+  $('#repAnnualSav').textContent = fmt((incomeMonthly - totalPlannedMonthly) * 12);
+  $('#repSavRate').textContent = pct(rate);
+
+  // FI Spend link + FI number
+  const spendAnnual = $('#useBudgetSpend').checked ? totalPlannedMonthly * 12 : (parseFloat($('#fiSpend').value) || 0);
+  const wr = (parseFloat($('#fiWR').value) || 0) / 100;
+  const fiNumber = wr > 0 ? spendAnnual / wr : 0;
+  $('#fiNumber').textContent = fmt2(fiNumber);
+  $('#kpiFINum').textContent = fiNumber ? fmt(fiNumber) : '—';
+
+  drawWheel(data, periodAnnual);
+  drawCashflowBar(data, incomeMonthly, periodAnnual);
+}
+
+function drawWheel(data, annual){
+  const labels = data.map(d => d.cat);
+  const planned = data.map(d => (annual ? d.planned * 12 : d.planned));
+  const actual = data.map(d => (annual ? d.actual * 12 : d.actual));
+  const ctx = document.getElementById('wheel').getContext('2d');
+  const colors = planned.map((_, i) => `hsl(${(i*37)%360}deg 68% 60%)`);
+
+  const ds = [{
+    label: 'Planned', data: planned, backgroundColor: colors, borderColor: 'rgba(0,0,0,.2)', borderWidth: 1,
+  }];
+  if($('#showActual').checked){
+    const actualColors = planned.map((_, i) => `hsl(${(i*37+12)%360}deg 68% 42%)`);
+    ds.push({ label: 'Actual', data: actual, backgroundColor: actualColors, borderWidth: 0 });
+  }
+
+  if(wheelChart){ wheelChart.data.labels = labels; wheelChart.data.datasets = ds; wheelChart.update(); return; }
+  wheelChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: ds },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#d9e3ff' } },
+        tooltip: { callbacks: { label: (c) => `${c.label}: ${fmt2(c.parsed)}` } }
+      },
+      cutout: '55%'
+    }
+  });
+}
+
+function drawCashflowBar(data, incomeMonthly, annual){
+  // Find investing category (case-insensitive)
+  let investing = 0;
+  data.forEach(d => {
+    if(/invest/i.test(d.cat) || /savings/i.test(d.cat)) investing += d.planned;
+  });
+  const expenses = data.reduce((a, b) => a + b.planned, 0) - investing;
+  const labels = ['Income', 'Expenses', 'Investing', 'Savings'];
+  const values = [incomeMonthly, expenses, investing, incomeMonthly - expenses - investing];
+  const colors = ['#6ea8ff', '#ff6b6b', '#42d392', '#9ef6d0'];
+  const ctx = document.getElementById('cashflowBar').getContext('2d');
+  if(cashflowChart){
+    cashflowChart.data.datasets[0].data = values;
+    cashflowChart.update();
+    return;
+  }
+  cashflowChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Monthly Cash Flow',
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 8,
+        maxBarThickness: 48
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => `${c.label}: ${fmt2(c.parsed.y)}` } }
+      },
+      scales: {
+        x: { ticks: { color: '#d9e3ff' }, grid: { display: false } },
+        y: { ticks: { color: '#d9e3ff' }, grid: { color: 'rgba(255,255,255,.08)' } }
+      }
+    }
+  });
+}
+
+$('#showActual').addEventListener('change', updateBudget);
+$('#periodToggle').addEventListener('change', updateBudget);
+['netIncome','otherIncome','fiWR','fiSpend'].forEach(id => $('#'+id).addEventListener('input', updateBudget));
+
+// ----------------------------- Templates -----------------------------
+$('#applyTemplate').addEventListener('click', () => {
+  const val = $('#templateSelect').value;
+  const income = getIncomeMonthly();
+  if(!income){ alert('Enter your monthly income first.'); return; }
+  const planned = {
+    fiftyThirtyTwenty(){
+      return [
+        ['Needs (50%)', income*0.50],
+        ['Wants (30%)', income*0.30],
+        ['Savings & Debt Paydown (20%)', income*0.20]
+      ];
+    },
+    zeroBased(){
+      return [
+        ['Fixed Expenses', income*0.45],
+        ['Variable Expenses', income*0.25],
+        ['Sinking Funds', income*0.10],
+        ['Investing', income*0.20]
+      ];
+    },
+    balancedFamily(){
+      return [
+        ['Housing', income*0.28],
+        ['Transportation', income*0.12],
+        ['Food', income*0.12],
+        ['Childcare/Education', income*0.10],
+        ['Insurance/Health', income*0.10],
+        ['Lifestyle', income*0.13],
+        ['Savings & Investing', income*0.15]
+      ];
+    }
+  };
+  if(val === 'custom') return;
+  $('#budgetBody').innerHTML = '';
+  planned[val]().forEach(([name, amt]) => addRow(name, Math.round(amt)));
+  updateBudget();
+});
+
+// ----------------------------- FIRE Math -----------------------------
+let fireChart;
+function realRate(nominalPct, inflPct){
+  const r = (nominalPct/100); const i = (inflPct/100);
+  return ((1+r)/(1+i)-1);
+}
+
+function yearsToFIFormula(PV, PMTmo, rAnnual, targetFV){
+  const i = rAnnual/12; if(i <= 0){
+    if(PMTmo<=0) return Infinity; // never
+    return Math.max(0, (targetFV - PV) / PMTmo) / 12; // linear approx if 0% return
+  }
+  const A = (targetFV + PMTmo/i) / (PV + PMTmo/i);
+  if(A <= 0) return Infinity;
+  return Math.log(A) / Math.log(1+i) / 12;
+}
+
+function runProjection(){
+  const PV = parseFloat($('#fiCurrent').value) || 0;
+  const PMTmo = parseFloat($('#fiMonthly').value) || 0;
+  const rNom = parseFloat($('#fiReturn').value) || 0;
+  const infl = parseFloat($('#fiInflation').value) || 0;
+  const wrPct = parseFloat($('#fiWR').value) || 0;
+  const horizon = clamp(parseInt($('#fiHorizon').value) || 40, 5, 60);
+  const periodAnnual = $('#periodToggle').checked; // not used, but kept for reference
+
+  const budgetData = getBudgetData();
+  const totalPlannedMonthly = budgetData.reduce((a, b) => a + (parseFloat(b.planned)||0), 0);
+  const spendAnnual = $('#useBudgetSpend').checked ? totalPlannedMonthly * 12 : (parseFloat($('#fiSpend').value)||0);
+  const wr = wrPct/100;
+  const r = realRate(rNom, infl);
+  const i = r/12;
+
+  const fiNumber = wr>0 ? spendAnnual / wr : 0;
+  $('#fiNumber').textContent = fmt2(fiNumber);
+  $('#kpiFINum').textContent = fiNumber ? fmt(fiNumber) : '—';
+
+  // Estimated years to FI (formula)
+  const yToFI = (fiNumber>0) ? yearsToFIFormula(PV, PMTmo, r, fiNumber) : Infinity;
+  $('#kpiYearsFI').textContent = isFinite(yToFI) ? yToFI.toFixed(1) : '—';
+
+  // Simulate month by month to build yearly chart
+  let bal = PV; let months = horizon*12; let fiMonth = null; let yearPoints = []; let withdrawalSeries = [];
+  let year = 0; let annualWithdraw = 0; let sinceFI = false; let monthInYear = 0;
+
+  for(let m=1; m<=months; m++){
+    const newYear = (m%12===1);
+    if(newYear){ year++; monthInYear = 0; if(sinceFI){ annualWithdraw = bal * wr; } else { annualWithdraw = 0; } }
+    monthInYear++;
+
+    // Apply monthly step
+    if(!sinceFI){
+      bal = bal*(1+i) + PMTmo;
+      if(!fiMonth && bal >= fiNumber && fiNumber>0){ fiMonth = m; sinceFI = true; }
+    } else {
+      const wMo = (annualWithdraw/12);
+      bal = bal*(1+i) - wMo;
+      if(bal < 0) { bal = 0; }
+    }
+
+    // End of each year: record
+    if(m%12===0){
+      yearPoints.push({year, value: bal});
+      withdrawalSeries.push({year, value: sinceFI ? annualWithdraw : 0});
+    }
+  }
+
+  const endVal = yearPoints.length ? yearPoints[yearPoints.length-1].value : PV;
+  $('#kpiFEnd').textContent = fmt(endVal);
+  $('#kpiFIWithdraw').textContent = fiNumber && wr ? fmt(fiNumber * wr) : '—';
+
+  // Usage count for FIRE (on calculation)
+  let uses = parseInt(localStorage.getItem('milfi_uses_fire')||'0',10);
+  localStorage.setItem('milfi_uses_fire', String(uses+1));
+  let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+  localStorage.setItem('milfi_uses', String(total+1));
+  localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+  drawFireChart(yearPoints, withdrawalSeries);
+}
+
+function drawFireChart(yearPoints, withdrawals){
+  const ctx = document.getElementById('fireChart').getContext('2d');
+  const labels = yearPoints.map(p => `Year ${p.year}`);
+  const pvData = yearPoints.map(p => Math.max(0,p.value));
+  const wdData = withdrawals.map(p => p.value);
+
+  // Table: Portfolio Value Each Year
+  const tableDiv = document.getElementById('firePortfolioTable');
+  if(tableDiv) {
+    let rows = yearPoints.map((p,i) => `<tr>
+      <td style="text-align:center;">${p.year}</td>
+      <td style="text-align:right; font-weight:600; color:#60a5fa;">${fmt2(p.value)}</td>
+      <td style="text-align:right; color:#34d399;">${fmt2(withdrawals[i]?.value||0)}</td>
+    </tr>`).join('');
+    tableDiv.innerHTML = `
+      <table style="width:100%;border-collapse:collapse;margin-top:8px; background:rgba(14,20,41,0.92); border-radius:14px;">
+        <thead>
+          <tr style="background:rgba(96,165,250,.08);">
+            <th style="text-align:center; padding:8px 0; color:#60a5fa;">Year</th>
+            <th style="text-align:right; padding:8px 0; color:#60a5fa;">Portfolio Value</th>
+            <th style="text-align:right; padding:8px 0; color:#34d399;">Annual Withdrawal</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  const datasets = [
+    { label:'Portfolio Value', data: pvData, yAxisID: 'y', borderColor:'#4f8cff', backgroundColor:'rgba(79,140,255,.18)', tension:.38, fill:true, pointRadius:2, pointHoverRadius:5 },
+    { label:'Annual Withdrawal', data: wdData, yAxisID: 'y', borderColor:'#3ddc97', backgroundColor:'rgba(61,220,151,.10)', tension:.38, fill:false, borderDash:[6,6], pointRadius:2, pointHoverRadius:5 }
+  ];
+
+  if(fireChart){
+    fireChart.data.labels = labels; fireChart.data.datasets = datasets; fireChart.update(); return;
+  }
+
+  fireChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#d9e3ff', font:{size:13} } }, tooltip:{ callbacks:{ label: (c)=> `${c.dataset.label}: ${fmt2(c.parsed.y)}` } } },
+      scales:{
+        y: { ticks:{ color:'#cfe1ff', callback:(v)=> '$' + (v/1000>=1? (v/1000).toFixed(0)+'k': v) }, grid:{ color:'rgba(255,255,255,.08)' } },
+        x: { ticks:{ color:'#cfe1ff', font:{size:12} }, grid:{ color:'rgba(255,255,255,.04)' } }
+      },
+      elements: { line: { borderWidth: 3 }, point: { radius: 2, hoverRadius: 5 } },
+      animation: { duration: 900, easing: 'easeOutQuart' }
+    }
+  });
+}
+
+$('#runFIRE').addEventListener('click', runProjection);
+$('#useBudgetSpend').addEventListener('change', () => {
+  if($('#useBudgetSpend').checked){ $('#fiSpend').setAttribute('disabled', 'disabled'); } else { $('#fiSpend').removeAttribute('disabled'); }
+  updateBudget();
+});
+['fiCurrent','fiMonthly','fiReturn','fiInflation','fiWR','fiSpend','fiHorizon'].forEach(id=> $('#'+id).addEventListener('input', ()=> { /* soft updates to FI Number & KPIs */ updateBudget(); }));
+
+// ----------------------------- Storage (local) -----------------------------
+function serialize(){
+  return {
+    version: 1,
+    netIncome: parseFloat($('#netIncome').value)||0,
+    otherIncome: parseFloat($('#otherIncome').value)||0,
+    rows: getBudgetData().map(d => ({cat:d.cat, planned:d.planned, actual:d.actual})),
+    periodAnnual: $('#periodToggle').checked,
+    showActual: $('#showActual').checked,
+    fi: {
+      current: parseFloat($('#fiCurrent').value)||0,
+      monthly: parseFloat($('#fiMonthly').value)||0,
+      ret: parseFloat($('#fiReturn').value)||0,
+      infl: parseFloat($('#fiInflation').value)||0,
+      wr: parseFloat($('#fiWR').value)||4,
+      spend: parseFloat($('#fiSpend').value)||0,
+      useBudget: $('#useBudgetSpend').checked,
+      horizon: parseInt($('#fiHorizon').value)||40
+    }
+  };
+}
+function hydrate(obj){
+  if(!obj) return;
+  $('#netIncome').value = obj.netIncome ?? 0;
+  $('#otherIncome').value = obj.otherIncome ?? 0;
+  $('#budgetBody').innerHTML = '';
+  (obj.rows?.length ? obj.rows : defaultCats.map(([cat,plan,act])=>({cat,planned:plan,actual:act}))).forEach(r => addRow(r.cat, r.planned, r.actual||0, ''));
+  $('#periodToggle').checked = !!obj.periodAnnual;
+  $('#showActual').checked = !!obj.showActual;
+  $('#fiCurrent').value = obj.fi?.current ?? 0;
+  $('#fiMonthly').value = obj.fi?.monthly ?? 0;
+  $('#fiReturn').value = obj.fi?.ret ?? 7;
+  $('#fiInflation').value = obj.fi?.infl ?? 2.5;
+  $('#fiWR').value = obj.fi?.wr ?? 4;
+  $('#fiSpend').value = obj.fi?.spend ?? 0;
+  $('#fiHorizon').value = obj.fi?.horizon ?? 40;
+  $('#useBudgetSpend').checked = !!obj.fi?.useBudget;
+  if($('#useBudgetSpend').checked){ $('#fiSpend').setAttribute('disabled','disabled'); }
+  updateBudget();
+}
+
+// --- Save/Load Model Buttons ---
+$('#saveBtn').addEventListener('click', ()=>{
+  localStorage.setItem('budget_fire_payload', JSON.stringify(serialize()));
+  // Usage count for Budget (dashboard/profile integration)
+  let uses = parseInt(localStorage.getItem('milfi_uses_budget')||'0',10);
+  localStorage.setItem('milfi_uses_budget', String(uses+1));
+  let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+  localStorage.setItem('milfi_uses', String(total+1));
+  localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+  window.dispatchEvent(new Event('dashboardUpdate'));
+  alert('Budget model saved locally.');
+});
+$('#loadBtn').addEventListener('click', ()=>{
+  const raw = localStorage.getItem('budget_fire_payload');
+  if(!raw){ alert('No saved Budget model found.'); return; }
+  try{ hydrate(JSON.parse(raw)); }catch(e){ alert('Could not load Budget model.'); }
+});
+
+$('#saveFireBtn').addEventListener('click', ()=>{
+  // Save only FIRE section
+  const fireData = {
+    fi: serialize().fi,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('fire_projection_payload', JSON.stringify(fireData));
+  // Usage count for FIRE (dashboard/profile integration)
+  let uses = parseInt(localStorage.getItem('milfi_uses_fire')||'0',10);
+  localStorage.setItem('milfi_uses_fire', String(uses+1));
+  let total = parseInt(localStorage.getItem('milfi_uses')||'0',10);
+  localStorage.setItem('milfi_uses', String(total+1));
+  localStorage.setItem('milfi_dashboard_refresh', String(Date.now()));
+  window.dispatchEvent(new Event('dashboardUpdate'));
+  alert('FIRE model saved locally.');
+});
+$('#loadFireBtn').addEventListener('click', ()=>{
+  const raw = localStorage.getItem('fire_projection_payload');
+  if(!raw){ alert('No saved FIRE model found.'); return; }
+  try{
+    const obj = JSON.parse(raw);
+    // Only hydrate FIRE section
+    $('#fiCurrent').value = obj.fi?.current ?? 0;
+    $('#fiMonthly').value = obj.fi?.monthly ?? 0;
+    $('#fiReturn').value = obj.fi?.ret ?? 7;
+    $('#fiInflation').value = obj.fi?.infl ?? 2.5;
+    $('#fiWR').value = obj.fi?.wr ?? 4;
+    $('#fiSpend').value = obj.fi?.spend ?? 0;
+    $('#fiHorizon').value = obj.fi?.horizon ?? 40;
+    $('#useBudgetSpend').checked = !!obj.fi?.useBudget;
+    if($('#useBudgetSpend').checked){ $('#fiSpend').setAttribute('disabled','disabled'); }
+    updateBudget();
+  }catch(e){ alert('Could not load FIRE model.'); }
+});
+$('#exportBtn,#exportBtn2').forEach?.call ? $('#exportBtn,#exportBtn2') : null; // safe guard for older engines
+$('#exportBtn').addEventListener('click', ()=> download('budget_fire_backup.json', JSON.stringify(serialize(), null, 2)));
+$('#exportBtn2').addEventListener('click', ()=> download('budget_fire_backup.json', JSON.stringify(serialize(), null, 2)));
+$('#importFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{ try{ hydrate(JSON.parse(ev.target.result)); }catch(err){ alert('Invalid JSON file.'); } };
+  reader.readAsText(file);
+});
+$('#resetBtn').addEventListener('click', ()=>{ if(confirm('Reset all values?')){ localStorage.removeItem('budget_fire_payload'); loadDefault(); [$('#netIncome').value, $('#otherIncome').value, $('#fiSpend').value, $('#fiCurrent').value, $('#fiMonthly').value] = [0,0,'',0,0]; updateBudget(); if(fireChart) fireChart.destroy(); } });
+
+// ----------------------------- Downloads (charts) -----------------------------
+$('#dlWheelPng').addEventListener('click', ()=> canvasToPngLink($('#wheel'), 'budget-wheel.png'));
+$('#dlFirePng').addEventListener('click', ()=> canvasToPngLink($('#fireChart'), 'fire-projection.png'));
+
+// ----------------------------- Init -----------------------------
+(function init(){
+  loadDefault();
+  updateBudget();
+  renderRecentBudgetSaves();
+  renderRecentFireSaves();
+})();
+</script>
+<script>
+function renderRecentBudgetSaves() {
+  const container = document.getElementById('recentBudgetSaves');
+  if (!container) return;
+  let saves = [];
+  try { saves = JSON.parse(localStorage.getItem('budget_fire_history') || '[]'); } catch { saves = []; }
+  if (!saves.length) { container.innerHTML = '<div class="muted small">No recent budget saves.</div>'; return; }
+  container.innerHTML = saves.map((save, i) => {
+    const date = new Date(save.timestamp).toLocaleString();
+    return `<div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;">
+      <span class="small">${date}</span>
+      <button class="btn secondary small" onclick="loadRecentBudget(${i})">Load</button>
+    </div>`;
+  }).join('');
+}
+function loadRecentBudget(idx) {
+  let saves = [];
+  try { saves = JSON.parse(localStorage.getItem('budget_fire_history') || '[]'); } catch { saves = []; }
+  if (saves[idx]) hydrate(saves[idx].data);
+}
+function renderRecentFireSaves() {
+  const container = document.getElementById('recentFireSaves');
+  if (!container) return;
+  let saves = [];
+  try { saves = JSON.parse(localStorage.getItem('fire_projection_history') || '[]'); } catch { saves = []; }
+  if (!saves.length) { container.innerHTML = '<div class="muted small">No recent FIRE saves.</div>'; return; }
+  container.innerHTML = saves.map((save, i) => {
+    const date = new Date(save.timestamp).toLocaleString();
+    return `<div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;">
+      <span class="small">${date}</span>
+      <button class="btn secondary small" onclick="loadRecentFire(${i})">Load</button>
+    </div>`;
+  }).join('');
+}
+function loadRecentFire(idx) {
+  let saves = [];
+  try { saves = JSON.parse(localStorage.getItem('fire_projection_history') || '[]'); } catch { saves = []; }
+  if (saves[idx] && saves[idx].data) {
+    const obj = saves[idx].data;
+    // Only hydrate FIRE section
+    $('#fiCurrent').value = obj.fi?.current ?? 0;
+    $('#fiMonthly').value = obj.fi?.monthly ?? 0;
+    $('#fiReturn').value = obj.fi?.ret ?? 7;
+    $('#fiInflation').value = obj.fi?.infl ?? 2.5;
+    $('#fiWR').value = obj.fi?.wr ?? 4;
+    $('#fiSpend').value = obj.fi?.spend ?? 0;
+    $('#fiHorizon').value = obj.fi?.horizon ?? 40;
+    $('#useBudgetSpend').checked = !!obj.fi?.useBudget;
+    if($('#useBudgetSpend').checked){ $('#fiSpend').setAttribute('disabled','disabled'); }
+    updateBudget();
+  }
+}
+// Patch save logic to keep history
+$('#saveBtn').addEventListener('click', ()=>{
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('budget_fire_history') || '[]'); } catch { history = []; }
+  history.unshift({ timestamp: Date.now(), data: serialize() });
+  if (history.length > 5) history = history.slice(0, 5);
+  localStorage.setItem('budget_fire_history', JSON.stringify(history));
+  renderRecentBudgetSaves();
+});
+$('#saveFireBtn').addEventListener('click', ()=>{
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('fire_projection_history') || '[]'); } catch { history = []; }
+  history.unshift({ timestamp: Date.now(), data: { fi: serialize().fi } });
+  if (history.length > 5) history = history.slice(0, 5);
+  localStorage.setItem('fire_projection_history', JSON.stringify(history));
+  renderRecentFireSaves();
+});
+</script>
+
+<!-- Recent Budget Saves Section -->
+<div class="card" style="margin:24px auto;max-width:600px;">
+  <div class="section-title"><h2>Recent Budget Models</h2></div>
+  <div id="recentBudgetSaves"></div>
+</div>
+
+<!-- Recent FIRE Saves Section -->
+<div class="card" style="margin:24px auto;max-width:600px;">
+  <div class="section-title"><h2>Recent FIRE Models</h2></div>
+  <div id="recentFireSaves"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About & Shop — TKN Financial</title>
+  <meta name="description" content="TKN Financial — professional, trustworthy tools and guides for service members. About our mission and a curated shop of digital products." />
+  <meta name="theme-color" content="#0b1226" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    :root{
+      --bg:#070a17; --ink:#eaf0ff; --muted:#a3b2d9; --brand:#7aa2ff; --accent:#3ddc97; --panel:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12); --radius:18px; --danger:#ef476f; --ok:#3ddc97; --warn:#ffd166;
+      --accent-gradient:linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);
+
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 1200px at 10% -10%, #12204a 0%, transparent 60%),
+                  radial-gradient(900px 900px at 110% 10%, #172c6b 0%, transparent 55%),
+                  linear-gradient(180deg,#0b1226 0%, #070a17 60%);
+      position:relative; overflow-x:hidden;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    /* Decorative orbs */
+    .orb{position:absolute; filter:blur(40px); opacity:.28; mix-blend-mode:screen; pointer-events:none}
+    .orb.one{width:420px;height:420px;background:conic-gradient(from 10deg,#5ea8ff,#b9f2ff,#6df7c6,#5ea8ff); left:-120px; top:-120px; animation:float 16s ease-in-out infinite}
+    .orb.two{width:360px;height:360px;background:conic-gradient(from 220deg,#2acbff,#7aa2ff,#a1b8ff); right:-160px; top:20vh; animation:float 18s ease-in-out infinite reverse}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px); background:rgba(7,10,23,.55); border-bottom:1px solid var(--stroke)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.2px;font-size:1.05rem}
+    .brand .logo{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#3ddc97 0%,#7aa2ff 100%); box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    nav{display:flex;align-items:center;gap:18px}
+    nav a{color:var(--ink);text-decoration:none;font-weight:700;opacity:.86}
+    nav a:hover{opacity:1}
+    .btn.primary{background:linear-gradient(90deg,#242ca3 0%,#7aa2ff 100%);color:#0b1020}
+    .btn.primary:hover{background:linear-gradient(90deg,#7aa2ff 0%,#3ddc97 100%);color:#fff;box-shadow:0 10px 32px rgba(96,165,250,.18);}
+    .btn.ghost{border-color:#2b3a7a;background:#0f1836;color:var(--ink)}
+    .btn.ghost:hover{background:var(--brand);color:#0b1020;border-color:var(--brand);}
+
+
+    .btn{
+        display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.1rem;border-radius:999px;
+        background:var(--accent-gradient);
+        color:#0a0a0a;font-weight:800;border:0;cursor:pointer;
+        box-shadow:0 6px 20px rgba(96,165,250,.26);
+        font-size:1.01em;
+        transition:background .18s, box-shadow .18s, color .18s;
+      }
+      .btn:hover{
+        background:linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+        color:#fff;
+        box-shadow:0 10px 32px rgba(96,165,250,.18);
+      }
+      .btn.secondary{
+        background:rgba(27, 47, 74, 0.92);
+        color:var(--text);
+        border:1px solid #2f3b4e;
+        box-shadow:none;
+      }
+      .btn.secondary:hover{
+        background:var(--brand);
+        color:#0a0a0a;
+        border-color:var(--brand);
+      }
+
+
+
+    /* Hero */
+    .hero{padding:64px 0 24px}
+    .hero-grid{display:grid;gap:28px;grid-template-columns:1fr;align-items:center}
+    @media(min-width:992px){.hero-grid{grid-template-columns:1.1fr .9fr}}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--stroke);border-radius:999px;padding:6px 12px;font-weight:800;color:var(--brand);margin-bottom:8px}
+    .title{font-size:clamp(2rem,4.2vw,3.2rem);line-height:1.07;margin:0 0 8px 0;font-weight:900}
+    .subtitle{color:var(--muted);font-size:1.12rem;margin:0}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:12px 20px;border-radius:999px;border:1px solid transparent;font-weight:900;text-decoration:none}
+    .btn.primary{background:linear-gradient(90deg,#3ddc97 0%,#7aa2ff 100%);color:#0b1020}
+    .btn.ghost{border-color:#2b3a7a;background:#0f1836;color:var(--ink)}
+
+    .hero-card{background:var(--panel);border:1px solid var(--stroke);border-radius:var(--radius);padding:18px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+    .metric{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:14px;padding:14px;text-align:center}
+    .metric b{font-size:1.45rem;display:block}
+
+    /* Shop */
+    section h2{font-size:1.9rem;font-weight:900;color:var(--brand);margin:0 0 12px}
+    .section-lead{color:var(--muted);max-width:70ch;margin:0 0 14px}
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--stroke);font-weight:700;cursor:pointer}
+    .grid{display:grid;gap:18px}
+    .shop-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);transition:transform .25s ease, box-shadow .25s ease}
+    .card:hover{transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,.4)}
+    .thumb{width:100%;aspect-ratio:16/10;border-radius:12px;object-fit:cover;background:#0f1836;border:1px solid var(--stroke)}
+    .card h3{margin:.2rem 0 0 0;font-size:1.06rem;color:var(--ink)}
+    .card p{margin:0;color:var(--muted);font-size:.98rem}
+    .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+    .price{font-weight:900;font-size:1.05rem}
+    .badge{font-size:.8rem;font-weight:800;color:#0b1020;background:var(--accent);padding:4px 8px;border-radius:999px}
+
+    /* About */
+    .about{display:grid;gap:24px;grid-template-columns:1fr}
+    @media(min-width:992px){.about{grid-template-columns:1fr 1fr}}
+    .tile{position:relative;background:var(--panel);border:1px solid var(--stroke);border-radius:var(--radius);padding:18px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+    .tile h4{margin:0 0 6px 0}
+    .pill-row{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:14px;padding:10px 12px;font-weight:700}
+
+    /* Testimonials */
+    .testimonials{display:grid;gap:18px;grid-template-columns:1fr}
+    @media(min-width:800px){.testimonials{grid-template-columns:1fr 1fr}}
+    .quote{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(96,165,250,.13)}
+    .quote p{margin:0 0 6px 0}
+
+    /* FAQ */
+    details{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:12px}
+    summary{cursor:pointer;font-weight:800}
+
+    /* CTA band */
+    .band{margin:30px 0;padding:22px;border-radius:22px;backdrop-filter:blur(8px);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.15);box-shadow:0 16px 44px rgba(0,0,0,.45);display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between}
+
+    footer{padding:36px 0 22px;border-top:1px solid var(--stroke);margin-top:34px;color:var(--muted);text-align:center}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <div class="orb one" aria-hidden="true"></div>
+  <div class="orb two" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container topbar">
+      <a class="btn" href="/index.html" aria-label="TKN Financial Home">
+        <span class="logo" aria-hidden>💠</span>
+        <span>TKN Financial</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#shop">Shop</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Discipline, Strategy, Freedom</span>
+          <h1 class="title">Personal Finance for Servicemembers Made Simple.</h1>
+          <p class="subtitle">Clarity for your budget, TSP, benefits, and investing. Our products are designed be simple and easy to use. Our mission is serving those whos serve our nation to help them acheive their financial dreams.</p>
+          <div class="hero-cta">
+            <a href="#shop" class="btn">Shop products</a>
+            <a href="#about" class="btn ghost">Learn about us</a>
+          </div>
+          <div id="pro-status-tile" class="hero-card" style="margin-top:16px"></div>
+        </div>
+        <aside class="hero-card" aria-label="Quick metrics and trust">
+          <h3 style="margin:0 0 6px 0">By the numbers</h3>
+          <div class="metrics" role="group" aria-label="KPIs">
+            <div class="metric"><span class="muted">Tools</span><b id="k1">0</b></div>
+            <div class="metric"><span class="muted">Guides</span><b id="k2">0</b></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <span class="pill">Secure</span>
+            <span class="pill">No log-ins</span>
+            <span class="pill">Offline-friendly</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Shop -->
+    <section id="shop" class="container" aria-label="Shop TKN Financial">
+      <h2>Shop & Digital Products</h2>
+      <p class="section-lead">Professional-grade spreadsheets and tools to run your money like a mission. Clear docs, clean UI, and practical outputs. Instant download via Etsy.</p>
+      <div class="filters" aria-label="Product filters">
+        <span class="chip" data-filter="all">All</span>
+        <span class="chip" data-filter="budget">Budget</span>
+        <span class="chip" data-filter="invest">Investing</span>
+        <span class="chip" data-filter="rei">Real Estate</span>
+      </div>
+      <div class="grid shop-grid" id="product-grid">
+        <!-- Product 1 -->
+        <article class="card" data-tags="rei">
+          <img class="thumb" src="/images/TKNFI_REInvest_Product_Thumbnail.png" alt="Real Estate Investment Model thumbnail" />
+          <h3>Real Estate Investment Model</h3>
+          <p>Analyze deals with IRR/NPV, cap rates, rent and expense growth, and exit scenarios. Includes sensitivity tables and clean charts.</p>
+          <div class="price-row">
+            <span class="price">$8.99</span>
+            <span class="badge">Top seller</span>
+          </div>
+          <a href="https://tknfinance.etsy.com/listing/1834815283" target="_blank" rel="noopener" class="btn primary" style="margin-top:8px">Shop on Etsy</a>
+        </article>
+        <!-- Product 2 -->
+        <article class="card" data-tags="budget">
+          <img class="thumb" src="/images/TKNFI_4_Pic.png" alt="Monthly Budget Tool thumbnail" />
+          <h3>Monthly Budget Tool</h3>
+          <p>Zero-based budgeting with visuals, cash flow bars, and goal tracking. Optimized for speed and clarity.</p>
+          <div class="price-row">
+            <span class="price">$2.99</span>
+            <span class="badge" style="background:var(--brand);color:#0b1020">Updated</span>
+          </div>
+          <a href="https://tknfinance.etsy.com/listing/1853186647" target="_blank" rel="noopener" class="btn primary" style="margin-top:8px">Shop on Etsy</a>
+        </article>
+        <!-- Product 3 -->
+        <article class="card" data-tags="invest">
+          <img class="thumb" src="/images/TKNFI_Pic3.png" alt="Portfolio Tracker thumbnail" />
+          <h3>Portfolio Tracker</h3>
+          <p>Track allocations, performance, and rebalance deltas. Works for stocks, ETFs, and TSP with clean exportable tables.</p>
+          <div class="price-row">
+            <span class="price">$2.99</span>
+            <span class="badge" style="background:var(--ok)">New</span>
+          </div>
+          <a href="https://tknfinance.etsy.com/listing/1762514612" target="_blank" rel="noopener" class="btn primary" style="margin-top:8px">Shop on Etsy</a>
+        </article>
+      </div>
+      <div style="display:flex;justify-content:center;gap:22px;margin-top:20px">
+        <a href="https://www.etsy.com/shop/TKNfinance?ref=shop-header-name" target="_blank" rel="noopener" class="btn ghost">Visit Etsy Store</a>
+        <a href="https://www.instagram.com/thomas_nolan_re/" target="_blank" rel="noopener" class="btn ghost">Instagram</a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="container" style="margin-top:40px">
+      <h2>About TKN Financial</h2>
+      <p class="section-lead">Equip servicemembers and families with clear, effective finance tools and education to make better decisions, faster</p>
+      <div class="about">
+        <article class="tile">
+          <h4 class="title-sm" style="margin:0 0 6px 0">Mission</h4>
+          <p class="subtitle">Our mission is serving those whos serve our nation to help them acheive their financial dreams.</p>
+          <div class="pill-row" style="margin-top:10px">
+            <span class="pill">Discipline</span>
+            <span class="pill">Strategy</span>
+            <span class="pill">Freedom</span>
+          </div>
+        </article>
+        <article class="tile">
+          <h4 class="title-sm" style="margin:0 0 6px 0">Who We Serve</h4>
+          <p>Active Duty • Guard/Reserve • Veterans • ROTC. From first paycheck to PCS and through retirement planning.</p>
+          <small style="color:var(--muted);display:block;margin-top:6px">Built by a Marine officer focused on logistics, readiness, and financial clarity.</small>
+        </article>
+      </div>
+
+      <div class="tile" style="margin-top:18px">
+        <h4 style="margin:0 0 6px 0">What users say</h4>
+        <div class="testimonials">
+          <div class="quote">
+            <p>“”</p>
+            <small style="color:var(--muted)">—</small>
+          </div>
+          <div class="quote">
+            <p>"”</p>
+            <small style="color:var(--muted)">—</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile" style="margin-top:18px">
+        <h4 style="margin:0 0 6px 0">FAQs</h4>
+        <div class="grid" style="grid-template-columns:1fr">
+          <details>
+            <summary>How do I get Pro access?</summary>
+            <div style="margin-top:8px;color:var(--muted)">Purchase via the store page. Your browser stores a simple key locally to unlock Pro features. No log‑ins required.</div>
+          </details>
+          <details>
+            <summary>Do the spreadsheets work offline?</summary>
+            <div style="margin-top:8px;color:var(--muted)">Yes. They’re built to function without internet, ideal for field or travel use.</div>
+          </details>
+          <details>
+            <summary>Can I request a custom feature?</summary>
+            <div style="margin-top:8px;color:var(--muted)">Yes—contact us. Pro members get priority on the roadmap.</div>
+          </details>
+        </div>
+      </div>
+
+      <div class="band">
+        <div>
+          <h3 style="margin:0">Ready to level up your money?</h3>
+          <p style="margin:.2rem 0 0 0;color:var(--muted)">Start with the Budget Tool or jump into the Real Estate Model.</p>
+        </div>
+        <div>
+          <a href="#shop" class="btn primary">Browse products</a>
+        </div>
+      </div>
+      <!-- Newsletter section (integrated, using Google Sheets connector) -->
+      <div class="tile" style="margin-top:28px">
+        <h4 style="margin:0 0 8px 0;font-size:1.08rem;color:var(--brand);font-weight:800;">Subscribe to Newsletter</h4>
+        <p style="color:var(--muted);font-size:.98rem;margin-bottom:10px;">Get our brief, no-spam, weekly newsletter with tips and advice for military finance. Stay informed, save more, and build your future.</p>
+        <form id="newsletterForm" novalidate>
+          <input id="newsletterEmail" type="email" placeholder="you@example.com" required />
+          <button id="newsletterBtn" type="submit">Subscribe</button>
+          <small id="newsletterMsg"></small>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> TKN Financial — Built for service members.</div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple KPI count-up
+    function countUp(el, target, duration=1000){
+      const start = 0; const t0 = performance.now();
+      function frame(t){
+        const p = Math.min(1,(t-t0)/duration);
+        const val = Math.floor(start + (target-start)*p);
+        el.textContent = val.toLocaleString();
+        if(p<1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    countUp(document.getElementById('k1'), 6, 1100);
+    countUp(document.getElementById('k2'), 12, 1200);
+    countUp(document.getElementById('k3'), 2400, 1400);
+
+    // Pro status logic (local-only mock). Replace with real backend when ready.
+    function getProStatus(){ return localStorage.getItem('proPaid') === 'true'; }
+    function setProStatusTile(){
+      const tile = document.getElementById('pro-status-tile');
+      if(!tile) return;
+      if(getProStatus()){
+        tile.innerHTML = `
+          <h3 style="margin:0 0 6px 0;color:var(--accent)">Welcome, Pro Member</h3>
+          <p style="margin:0;color:var(--muted)">Unlimited access to premium features, exclusive guides, and priority support.</p>
+        `;
+      } else {
+        tile.innerHTML = `
+          <h3 style="margin:0 0 6px 0;color:var(--brand)">Upgrade to <span style="color:var(--accent)">Pro</span></h3>
+          <p style="margin:0 0 8px 0;color:var(--muted)">Unlock all premium calculators, downloadable resources, and priority help.</p>
+          <a href="/pages/profile.html" class="btn primary" style="margin-top:6px">Switch to Pro</a>
+        `;
+      }
+    }
+
+
+
+    setProStatusTile();
+
+    // Simple product filtering (client-side)
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('#product-grid .card');
+    chips.forEach(ch => ch.addEventListener('click', () => {
+      const tag = ch.dataset.filter;
+      chips.forEach(x => x.style.outline = 'none');
+      ch.style.outline = '2px solid var(--brand)';
+      cards.forEach(card => {
+        if(tag==='all' || card.dataset.tags.includes(tag)){
+          card.style.display = '';
+        } else { card.style.display = 'none'; }
+      });
+    }));
+
+    // Newsletter form script (Google Sheets connector)
+    (function(){
+      const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeoliHXs6vFjIEm_cxuNkYuCNUaaT0XNkWBkjq6CQjRGy9wcQguP2HRZFP0KyZw-al/exec';
+      const $ = (id)=>document.getElementById(id);
+      const form = $('newsletterForm');
+      const emailInput = $('newsletterEmail');
+      const btn = $('newsletterBtn');
+      const msg = $('newsletterMsg');
+
+      function validEmail(v){
+        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v).trim());
+      }
+
+      if(form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = emailInput.value.trim();
+
+          if (!validEmail(email)) {
+            msg.textContent = 'Enter a valid email.';
+            msg.style.color = '#ef476f';
+            return;
+          }
+
+          btn.disabled = true;
+          msg.textContent = 'Submitting...';
+          msg.style.color = '#9fb0d9';
+
+          try {
+            await fetch(ENDPOINT + '?email=' + encodeURIComponent(email), {
+              method: 'GET',
+              mode: 'no-cors'
+            });
+            msg.textContent = 'Thanks — you’re subscribed.';
+            msg.style.color = '#3ddc97';
+            form.reset();
+          } catch (err) {
+            msg.textContent = 'Could not submit. Try again later.';
+            msg.style.color = '#ef476f';
+          } finally {
+            btn.disabled = false;
+          }
+        });
+      }
+    })();
+  </script>
+
+  <!-- Add this newsletter form anywhere you want in your HTML, e.g. near the bottom of the page -->
+<form id="newsletterForm" novalidate>
+  <input id="newsletterEmail" type="email" placeholder="you@example.com" required />
+  <button id="newsletterBtn" type="submit">Subscribe</button>
+  <small id="newsletterMsg"></small>
+</form>
+
+<script>
+  (function(){
+    // Paste your Apps Script Web App URL here:
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyeoliHXs6vFjIEm_cxuNkYuCNUaaT0XNkWBkjq6CQjRGy9wcQguP2HRZFP0KyZw-al/exec';
+
+    const $ = (id)=>document.getElementById(id);
+    const form = $('newsletterForm');
+    const emailInput = $('newsletterEmail');
+    const btn = $('newsletterBtn');
+    const msg = $('newsletterMsg');
+
+    function validEmail(v){
+      return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v).trim());
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+
+      if (!validEmail(email)) {
+        msg.textContent = 'Enter a valid email.';
+        msg.style.color = '#ef476f';
+        return;
+      }
+
+      btn.disabled = true;
+      msg.textContent = 'Submitting...';
+      msg.style.color = '#9fb0d9';
+
+      try {
+        // Use no-cors to avoid CORS preflight complexity; we don’t need to read the response.
+        await fetch(ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            page: location.pathname,
+            ua: navigator.userAgent
+          })
+        });
+
+        // Assume success (Apps Script received the POST). Show confirmation locally.
+        msg.textContent = 'Thanks — you’re subscribed.';
+        msg.style.color = '#3ddc97';
+        form.reset();
+      } catch (err) {
+        msg.textContent = 'Could not submit. Try again later.';
+        msg.style.color = '#ef476f';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  })();
+</script>
+</body>
+</html>
+
+
+

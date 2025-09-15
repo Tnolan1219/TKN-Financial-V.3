@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MilFi — Military Finance Toolkit</title>
+  <a class="btn" href="/index.html">Home</a>
+  <link rel="stylesheet" href="../style.css" />
+
+  
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111831; --muted:#1a2244; --text:#e8ecff; --sub:#b7c2ff; --accent:#7aa2ff; --good:#3ddc97; --warn:#ffd166; --bad:#ef476f; --card:#121a36;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#0a0f1e 0%,#0b1020 100%);color:var(--text)}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 0deg,#6ea8ff,#7aa2ff,#c6f5d4);box-shadow:0 8px 24px rgba(122,162,255,.25)}
+    h1{font-size:clamp(20px,2.2vw,28px);margin:0;font-weight:700;letter-spacing:.2px}
+    .subtitle{color:var(--sub);font-size:14px}
+
+    /* Top nav */
+    nav{display:flex;flex-wrap:wrap;gap:8px;background:rgba(255,255,255,.03);padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    .tab{padding:10px 14px;border-radius:12px;font-weight:600;background:transparent;border:1px solid transparent;color:var(--sub);cursor:pointer}
+    .tab[aria-selected="true"]{background:var(--panel);border-color:#24306b;color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 8px 18px rgba(0,0,0,.25)}
+
+    /* Layout */
+    .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    .muted{color:var(--sub);font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{background:var(--muted);border:1px solid rgba(255,255,255,.08);padding:6px 10px;border-radius:999px;font-size:12px}
+
+    .field{display:grid;gap:6px;margin:10px 0}
+    .field label{font-size:13px;color:var(--sub)}
+    .field input,.field select{width:100%;padding:10px 12px;background:#0d1330;border:1px solid #26306a;border-radius:12px;color:var(--text);outline:none}
+    .field input:focus,.field select:focus{border-color:var(--accent)}
+
+    .btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: .7rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent-gradient, linear-gradient(90deg,#60a5fa 0%,#818cf8 100%));
+  color: #0a0a0a;
+  font-weight: 800;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.01em;
+  box-shadow: 0 6px 20px rgba(96,165,250,.26);
+  transition: background .18s, box-shadow .18s, color .18s;
+  border: none;
+}
+.btn:hover {
+  background: linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+  color: #fff;
+  box-shadow: 0 10px 32px rgba(96,165,250,.18);
+}
+.btn.primary {
+  background: var(--accent-gradient, linear-gradient(90deg,#60a5fa 0%,#818cf8 100%));
+  color: #0a0a0a;
+}
+.btn.primary:hover {
+  background: linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+  color: #fff;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid #2b3a7a;
+}
+.btn.ghost:hover {
+  background: var(--accent);
+  color: #0a0a0a;
+  border-color: var(--accent);
+}
+.btn.secondary {
+  background: rgba(31,41,55,0.92);
+  color: var(--text);
+  border: 1px solid #2f3b4e;
+  box-shadow: none;
+}
+.btn.secondary:hover {
+  background: var(--accent);
+  color: #0a0a0a;
+  border-color: var(--accent);
+}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+    .kpi .label{font-size:12px;color:var(--sub)}
+    .kpi .value{font-size:22px;font-weight:800}
+
+    .divider{height:1px;background:linear-gradient(90deg,transparent,#27306a,transparent);margin:10px 0}
+
+    .sections{margin-top:12px}
+    .section{display:none}
+    .section.active{display:block}
+
+    .inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .right{margin-left:auto}
+
+    .savebox{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+    /* mini chart */
+    svg.spark{width:100%;height:60px}
+
+    /* table */
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th{font-size:12px;color:var(--sub);text-align:left}
+    td,th{padding:8px 10px}
+    tr{background:#0f1633;border:1px solid #26306a}
+    tr td:first-child,tr th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+    tr td:last-child,tr th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+    footer{margin:28px 0 10px;color:var(--sub);font-size:12px}
+        .card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 16px 48px rgba(60,100,200,.18), var(--shadow);
+      border-color: var(--accent);
+      background: linear-gradient(120deg, rgba(96,165,250,.08) 0%, var(--card) 100%);
+    }
+  </style>
+
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>MilFi — Military Finance Toolkit</h1>
+          <div class="subtitle" id="milfiModeStatus">Budgeting • TSP • VA Loan • Career Starter • Resources</div>
+        </div>
+      </div>
+      <div class="inline">
+        <button class="btn ghost" id="btnExport">Export Data</button>
+        <button class="btn primary" id="btnImport">Import</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+      </div>
+    </header>
+
+    <div class="sections">
+
+      <!-- VA LOAN ESTIMATOR (Expanded) -->
+
+        <div class="grid">
+          <div class="card">
+            <h2>VA Loan Calculator</h2>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Property Price ($) <span class="muted">(Home purchase price)</span></label>
+                <input type="number" id="vaPrice" value="400000" min="0" step="1000">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Down Payment <span class="muted">(% or $)</span></label>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <input type="number" id="vaDownPct" value="0" min="0" max="100" step="0.1" style="width:60px" placeholder="%"> <span class="muted">%</span>
+                  <input type="number" id="vaDown" value="0" min="0" step="1000" style="flex:1" placeholder="$">
+                </div>
+                <div class="muted" style="font-size:12px">Enter either a percentage or cash amount. Both will sync automatically.</div>
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Funding Fee (%) <span class="muted">(VA fee, varies by service/use)</span></label>
+                <input type="number" id="vaFF" value="2.15" min="0" step="0.01">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Interest Rate (APR %) <span class="muted">(Annual rate, e.g. 6.5)</span></label>
+                <input type="number" id="vaRate" value="6.5" min="0" step="0.01">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Loan Term (years) <span class="muted">(Usually 30)</span></label>
+                <input type="number" id="vaYears" value="30" min="5" max="40">
+              </div>
+            </div>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Annual Taxes (%) <span class="muted">(of price, e.g. 1.0)</span></label>
+                <input type="number" id="vaTax" value="1.0" min="0" step="0.01">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Home Insurance ($/yr)</label>
+                <input type="number" id="vaIns" value="1200" min="0" step="50">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>HOA Fees ($/mo)</label>
+                <input type="number" id="vaHOA" value="0" min="0" step="10">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Gross Monthly Income ($)
+                  <span class="info" data-tooltip="Your total monthly income before taxes and deductions, including BAH (Basic Allowance for Housing) if you receive it. Used to determine how much you can afford to pay for a mortgage.">ℹ️</span>
+                </label>
+                <input type="number" id="vaIncome" value="5500" min="0" step="100">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Monthly Debts ($)
+                  <span class="info" data-tooltip="The total of your recurring monthly debt payments (car loans, credit cards, student loans, etc.). This is subtracted from your income to calculate how much you can spend on a mortgage.">ℹ️</span>
+                  <span class="muted">(Car, credit cards, etc.)</span>
+                </label>
+                <input type="number" id="vaDebts" value="300" min="0" step="25">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Target DTI (%)
+                  <span class="info" data-tooltip="Debt-to-Income ratio. The percentage of your gross monthly income that can go toward all debts, including your new mortgage. Lenders typically use 41% as a standard for VA loans.">ℹ️</span>
+                  <span class="muted">(Debt-to-Income, usually 41%)</span>
+                </label>
+                <input type="number" id="vaDTI" value="41" min="20" max="60" step="1">
+              </div>
+            </div>
+            <div class="savebox">
+              <button class="btn primary" id="vaCalc">Calculate</button>
+              <button class="btn" id="vaSaveAnalysis">Save Analysis</button>
+              <button class="btn ghost" id="vaReset">Reset</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Loan Details & Amortization</h2>
+            <div class="row">
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Loan Amount (incl. Funding Fee)</div>
+                <div class="value" id="vaOutLoan">$0</div>
+                <div class="muted">Principal + VA Funding Fee</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Monthly Payment (P&I)</div>
+                <div class="value" id="vaOutPmt">$0</div>
+                <div class="muted">Principal & Interest only</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Total Payment (est. PITI+HOA)</div>
+                <div class="value" id="vaOutPITI">$0</div>
+                <div class="muted">Incl. taxes, insurance, HOA</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div style="position:relative;">
+              <svg class="spark" id="vaSpark" viewBox="0 0 400 200" preserveAspectRatio="none" style="width:100%;height:180px;transition:height 0.2s; background: #10193a; border-radius: 10px; display:block;"></svg>
+              <button id="vaSparkExpand" title="Expand chart" style="position:absolute;bottom:10px;right:10px;width:28px;height:28px;border-radius:6px;border:none;background:rgba(30,40,70,0.85);color:#7aa2ff;cursor:pointer;font-size:20px;z-index:2;">⤢</button>
+            </div>
+            <div class="muted" style="font-size:13px;margin-bottom:8px">Chart shows loan balance (blue) and equity (green) over time.</div>
+            <div style="overflow-x:auto;max-width:100%">
+              <table aria-label="Amortization" id="vaAmortTable"><thead>
+                <tr><th>Mo</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>
+              </thead><tbody></tbody></table>
+              <button id="vaAmortExpand" class="btn ghost" style="margin:10px 0 0 0;display:block;">Show Full Amortization</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Max Affordable Home Price</h2>
+            <div class="kpi">
+              <div class="label">Estimated Max Price</div>
+              <div class="value" id="vaMaxPrice">$0</div>
+              <div class="muted">Based on your income, debts, and DTI</div>
+            </div>
+            <div class="muted" style="margin-top:8px;font-size:13px">
+              <b>How is this calculated?</b><br>
+              The calculator estimates the maximum home price you can afford by working backwards from your gross monthly income, subtracting your monthly debts and HOA, and applying your target DTI (Debt-to-Income) ratio. It then finds the highest home price where the total monthly payment (principal, interest, taxes, insurance, HOA) does not exceed your allowed DTI limit.
+            </div>
+          </div>
+          <div class="card" id="vaSavedAnalysesCard">
+            <h2>Saved Analyses</h2>
+            <div id="vaSavedAnalysesList" class="muted" style="font-size:14px"></div>
+          </div>
+        </div>
+      </section>
+      <!-- RESOURCES -->
+      <section id="resources" class="section" role="tabpanel">
+        <div class="card">
+          <h2>Resources & Notes</h2>
+          <ul>
+            <li>SCRA interest cap: Certain pre-service debts may be capped at 6% while on active duty. Check lender process.</li>
+            <li>BAH/BAS planning: Factor local BAH into housing budget. Consider roommate/geo-bachelor trade-offs.</li>
+            <li>VA Loan: No PMI, flexible credit; funding fee varies by use/waiver (service-connected disability may waive).</li>
+            <li>TSP under BRS: Contribute at least 5% to capture full match once eligible on active duty orders.</li>
+          </ul>
+          <div class="muted">Note: Calculators provide estimates only—confirm specifics with your lender/finance office.</div>
+        </div>
+      </section>
+    </div>
+    <footer>
+      Click on VA Loan Estimator To Begin
+    </footer>
+  </div>
+
+  <script>
+// --- Consolidated Profile Storage ---
+function milfiProfile(getKey, setValue) {
+  let profile = {};
+  try { profile = JSON.parse(localStorage.getItem('milfi_profile') || '{}'); } catch(e) {}
+  if (typeof getKey === 'string') {
+    if (setValue !== undefined) {
+      profile[getKey] = setValue;
+      localStorage.setItem('milfi_profile', JSON.stringify(profile));
+      return setValue;
+    }
+    return profile[getKey];
+  }
+  return profile;
+}
+
+// --- Mode logic ---
+function milfiIsPro() {
+  return milfiProfile('mode') === 'pro';
+}
+function updateMilfiModeStatus() {
+  const mode = milfiProfile('mode') || 'free';
+  const status = document.getElementById('milfiModeStatus');
+  if (status) status.textContent = (mode === 'pro' ? 'Pro Mode (Unlimited) • ' : 'Free Mode • ') + 'Budgeting • TSP • VA Loan • Career Starter • Resources';
+}
+
+// --- Usage tracking ---
+function milfiGetUsage() {
+  if (milfiIsPro()) return {month: new Date().toISOString().slice(0,7), total: 0};
+  let usage = milfiProfile('usage') || {};
+  const m = new Date().toISOString().slice(0,7);
+  if (usage.month !== m) usage = {month: m, total: 0};
+  return usage;
+}
+function milfiIncUsage(limit=50) {
+  if (milfiIsPro()) return true;
+  let usage = milfiGetUsage();
+  if (usage.total >= limit) return false;
+  usage.total++;
+  milfiProfile('usage', usage);
+  return true;
+}
+function milfiCheckLimit(limit=50) {
+  if (milfiIsPro()) return true;
+  let usage = milfiGetUsage();
+  return usage.total < limit;
+}
+
+// --- Sync mode status on load ---
+updateMilfiModeStatus();
+
+    const $ = (id)=>document.getElementById(id);
+    const fmt = new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+
+    // Tab logic
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected','false'));
+        btn.setAttribute('aria-selected','true');
+        const t = btn.dataset.target;
+        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+        document.getElementById(t).classList.add('active');
+        if(t==='dash') renderDashboard();
+      })
+    })
+
+    // Simple local storage wrapper
+    const store = {
+      get(){ try{return JSON.parse(localStorage.getItem('milfi')||'{}')}catch(e){return{}} },
+      set(data){ localStorage.setItem('milfi',JSON.stringify({...store.get(),...data})) }
+    }
+
+    // ----- TSP -----
+
+
+    // ----- VA Loan Estimator -----
+    function mortgagePmt(loan, apr, years){
+      const r=(apr/100)/12; const n=years*12; if(r===0) return loan/n; return loan*r/(1-Math.pow(1+r,-n));
+    }
+
+    // --- Down payment %/$ sync logic ---
+    function syncVaDownPayment() {
+      const price = Number($('vaPrice').value||0);
+      const downPctInput = $('vaDownPct');
+      const downInput = $('vaDown');
+      let updating = false;
+      downPctInput.addEventListener('input',()=>{
+        if(updating) return; updating = true;
+        const pct = Number(downPctInput.value||0);
+        downInput.value = Math.round(price * pct / 100);
+        updating = false;
+      });
+      downInput.addEventListener('input',()=>{
+        if(updating) return; updating = true;
+        const amt = Number(downInput.value||0);
+        downPctInput.value = price ? ((amt/price)*100).toFixed(2) : 0;
+        updating = false;
+      });
+      // Also update when price changes
+      $('vaPrice').addEventListener('input',()=>{
+        const pct = Number(downPctInput.value||0);
+        downInput.value = Math.round(Number($('vaPrice').value||0) * pct / 100);
+      });
+    }
+    syncVaDownPayment();
+
+    // --- VA Loan Calculation ---
+    $('vaCalc').addEventListener('click', function() {
+      if(!milfiCheckLimit(50)) {
+        alert('Monthly usage reached, upgrade to pro?');
+        return;
+      }
+      milfiIncUsage(50);
+
+      // Get all user inputs
+      const price = Number($('vaPrice').value||0);
+      const down = Number($('vaDown').value||0);
+      const ffPct = Number($('vaFF').value||0)/100;
+      const rate = Number($('vaRate').value||0);
+      const yrs = Number($('vaYears').value||0);
+      const taxPct = Number($('vaTax').value||0)/100;
+      const ins = Number($('vaIns').value||0);
+      const hoa = Number($('vaHOA').value||0);
+      const inc = Number($('vaIncome').value||0);
+      const debts = Number($('vaDebts').value||0);
+      const dti = Number($('vaDTI').value||0)/100;
+
+      // Calculate base loan and funding fee
+      const baseLoan = Math.max(0, price - down);
+      const fundingFee = baseLoan * ffPct;
+      const loan = baseLoan + fundingFee;
+      // Monthly P&I
+      const pmt = mortgagePmt(loan, rate, yrs);
+      // Monthly taxes, insurance, HOA
+      const taxes = (price * taxPct) / 12;
+      const insMo = ins / 12;
+      const totalPITI = pmt + taxes + insMo + hoa;
+
+      // DTI check: max allowed payment
+      const maxPmt = Math.max(0, inc * dti - debts - hoa);
+
+      // Calculate max affordable home price
+      let maxPrice = 0;
+      for(let trial=50000; trial<=2000000; trial+=1000){
+        const trialTaxes = (trial * taxPct) / 12;
+        const trialInsMo = ins / 12;
+        const trialBaseLoan = Math.max(0, trial - down);
+        const trialFundingFee = trialBaseLoan * ffPct;
+        const trialLoan = trialBaseLoan + trialFundingFee;
+        const trialPmt = mortgagePmt(trialLoan, rate, yrs);
+        const trialTotal = trialPmt + trialTaxes + trialInsMo + hoa;
+        if(trialTotal <= maxPmt){ maxPrice = trial; } else break;
+      }
+      $('vaMaxPrice').textContent = maxPrice ? fmt.format(maxPrice) : '$0';
+
+      // Amortization schedule
+      let bal = loan;
+      let schedule = [], totalInt = 0;
+      for(let i=1; i<=yrs*12; i++){
+        const interest = bal * (rate/100/12);
+        let principal = Math.min(pmt - interest, bal);
+        if(rate===0) principal = Math.min(pmt, bal);
+        const payment = principal + interest;
+        bal = bal - principal;
+        totalInt += interest;
+        schedule.push({month:i, payment, interest, principal, balance:bal});
+        if(bal<=0) break;
+      }
+
+      // Output
+      $('vaOutLoan').textContent = fmt.format(loan);
+      $('vaOutPmt').textContent = fmt.format(pmt);
+      $('vaOutPITI').textContent = `${fmt.format(totalPITI)} / mo`;
+
+      // Amortization chart (principal balance and equity over time)
+      const series = schedule.map(r=>r.balance);
+      const equitySeries = schedule.map((r,i)=> price - r.balance);
+      drawVaAmortChart('vaSpark', [loan, ...series], [0, ...equitySeries], schedule.length+1);
+      // Set global schedule for table expand/collapse
+      window.vaSchedule = schedule;
+      // Render amortization table (respect expanded/collapsed state)
+      if (typeof window.renderVaAmortTable === 'function') {
+        window.renderVaAmortTable(window.vaAmortExpanded || false);
+      }
+    })
+
+
+    // --- Save Analysis ---
+    $('vaSaveAnalysis').addEventListener('click',()=>{
+      const s=store.get().va;
+      if(!s){alert('Run a calculation first.');return;}
+      let analyses = [];
+      try{ analyses = JSON.parse(localStorage.getItem('milfi_va_analyses')||'[]'); }catch(e){}
+      analyses.push({...s, savedAt: new Date().toISOString()});
+      localStorage.setItem('milfi_va_analyses', JSON.stringify(analyses));
+      alert('Analysis saved!');
+      renderVaSavedAnalyses();
+    });
+
+    // --- Render Saved Analyses ---
+    function renderVaSavedAnalyses() {
+      const listDiv = $('vaSavedAnalysesList');
+      let analyses = [];
+      try{ analyses = JSON.parse(localStorage.getItem('milfi_va_analyses')||'[]'); }catch(e){}
+      if(!analyses.length) {
+        listDiv.innerHTML = '<em>No saved analyses yet.</em>';
+        return;
+      }
+      listDiv.innerHTML = '';
+      analyses.slice().reverse().forEach((a, idx) => {
+        const d = document.createElement('div');
+        d.style.marginBottom = '10px';
+        d.style.padding = '8px';
+        d.style.background = 'rgba(255,255,255,0.02)';
+        d.style.borderRadius = '8px';
+        d.innerHTML =
+          `<b>Saved:</b> ${new Date(a.savedAt).toLocaleString()}<br>
+           <b>Price:</b> ${fmt.format(a.price)} | <b>Down:</b> ${fmt.format(a.down)} | <b>Rate:</b> ${a.rate}% | <b>Term:</b> ${a.yrs} yrs<br>
+           <b>Payment:</b> ${fmt.format(a.pmt)} | <b>PITI+HOA:</b> ${fmt.format(a.totalPITI)}<br>
+           <button class="btn primary" style="margin-top:6px" data-loadidx="${analyses.length-1-idx}">Load</button>`;
+        listDiv.appendChild(d);
+      });
+      // Add event listeners for load buttons
+      listDiv.querySelectorAll('button[data-loadidx]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const idx = Number(this.getAttribute('data-loadidx'));
+          loadVaAnalysis(idx);
+        });
+      });
+    }
+
+    // --- Load Analysis ---
+    function loadVaAnalysis(idx) {
+      let analyses = [];
+      try{ analyses = JSON.parse(localStorage.getItem('milfi_va_analyses')||'[]'); }catch(e){}
+      const a = analyses[idx];
+      if(!a) return;
+      $('vaPrice').value = a.price;
+      $('vaDown').value = a.down;
+      $('vaDownPct').value = a.price ? ((a.down/a.price)*100).toFixed(2) : 0;
+      $('vaFF').value = a.ffPct*100;
+      $('vaRate').value = a.rate;
+      $('vaYears').value = a.yrs;
+      $('vaTax').value = a.taxPct*100;
+      $('vaIns').value = a.ins;
+      $('vaHOA').value = a.hoa;
+      $('vaIncome').value = a.inc;
+      $('vaDebts').value = a.debts;
+      $('vaDTI').value = a.dti*100;
+      // Trigger calculation
+      $('vaCalc').click();
+    }
+
+    // Render on load
+    renderVaSavedAnalyses();
+
+    // --- Reset VA Loan Section ---
+    $('vaReset').addEventListener('click',()=>{
+      // Reset all VA loan fields to default values
+      $('vaPrice').value = 400000;
+      $('vaDownPct').value = 0;
+      $('vaDown').value = 0;
+      $('vaFF').value = 2.15;
+      $('vaRate').value = 6.5;
+      $('vaYears').value = 30;
+      $('vaTax').value = 1.0;
+      $('vaIns').value = 1200;
+      $('vaHOA').value = 0;
+      $('vaIncome').value = 5500;
+      $('vaDebts').value = 300;
+      $('vaDTI').value = 41;
+      // Clear outputs
+      $('vaOutLoan').textContent = '$0';
+      $('vaOutPmt').textContent = '$0';
+      $('vaOutPITI').textContent = '$0';
+      $('vaAmortTable').querySelector('tbody').innerHTML = '';
+      drawSpark('vaSpark', [0,0]);
+    });
+
+    $('vaSave').addEventListener('click',()=>{
+      const s=store.get().va; if(!s){alert('Run estimate first.');return}
+      $('kpiBudget').textContent = s.price? fmt.format((s.inc*s.dti - s.debts - s.piti) || 0): '$0';
+      alert('VA snapshot saved to Dashboard.');
+    })
+
+    // Export / Import
+    $('btnExport').addEventListener('click',()=>{
+      const blob = new Blob([JSON.stringify(milfiProfile(),null,2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='milfi-profile.json'; a.click(); URL.revokeObjectURL(url);
+    })
+    $('btnImport').addEventListener('click',()=> $('importFile').click())
+    $('importFile').addEventListener('change',(e)=>{
+      const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{
+        try{
+          const data=JSON.parse(r.result);
+          localStorage.setItem('milfi_profile',JSON.stringify(data));
+          alert('Data imported.');
+          updateMilfiModeStatus();
+          // Optionally reload page or re-render dashboard
+        }catch(err){ alert('Invalid file.') }
+      }; r.readAsText(f)
+    })
+
+    // Init
+    renderDashboard(); renderBudget();
+
+    // --- Custom Info Tooltips ---
+    // Show custom tooltip on hover for .info[data-tooltip]
+    document.querySelectorAll('.info[data-tooltip]').forEach(el => {
+      let tip;
+      el.addEventListener('mouseenter', function(e) {
+        tip = document.createElement('div');
+        tip.textContent = el.getAttribute('data-tooltip');
+        tip.style.position = 'fixed';
+        tip.style.background = 'rgba(20,30,60,0.98)';
+        tip.style.color = '#e8ecff';
+        tip.style.padding = '8px 12px';
+        tip.style.borderRadius = '8px';
+        tip.style.fontSize = '13px';
+        tip.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+        tip.style.zIndex = 10000;
+        document.body.appendChild(tip);
+        const rect = el.getBoundingClientRect();
+        tip.style.left = (rect.left + rect.width/2 - tip.offsetWidth/2) + 'px';
+        tip.style.top = (rect.bottom + 8) + 'px';
+        // Position after render
+        setTimeout(()=>{
+          tip.style.left = (rect.left + rect.width/2 - tip.offsetWidth/2) + 'px';
+        }, 1);
+      });
+      el.addEventListener('mouseleave', function() {
+        if(tip) tip.remove();
+      });
+    });
+
+    // Improved professional amortization chart with axes, labels, and expand/contract
+    function drawVaAmortChart(svgId, balances, equities, months) {
+      const svg = $(svgId); if(!svg||balances.length<2) return;
+      // Chart size
+  // Make chart larger by default
+  const w=800, h=340, padL=60, padB=40, padT=32, padR=32;
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  svg.innerHTML = '';
+  svg.style.width = '100%';
+  svg.style.height = '340px';
+  svg.style.maxHeight = '340px';
+      // Find min/max for y axis
+      const allY = balances.concat(equities);
+      const minY = 0, maxY = Math.max(...allY,1);
+      // Axes
+      const axisColor = '#b7c2ff55';
+      // Y axis
+      svg.innerHTML += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${h-padB}" stroke="${axisColor}" stroke-width="1.2" />`;
+      // X axis
+      svg.innerHTML += `<line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="${axisColor}" stroke-width="1.2" />`;
+      // Y axis labels (min, 25%, 50%, 75%, max)
+      const yLabels = [minY, maxY*0.25, maxY*0.5, maxY*0.75, maxY];
+      yLabels.forEach((v,i)=>{
+        const y = padT + (h-padB-padT)*(1-(v-minY)/(maxY-minY||1));
+        svg.innerHTML += `<text x="${padL-8}" y="${y+4}" font-size="13" fill="#b7c2ff" text-anchor="end">${fmt.format(v)}</text>`;
+        if(i>0&&i<yLabels.length-1) svg.innerHTML += `<line x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}" stroke="#b7c2ff22" stroke-width="0.7" />`;
+      });
+      // X axis labels (start, 25%, 50%, 75%, end)
+      const xLabels = [0, Math.floor(months*0.25), Math.floor(months*0.5), Math.floor(months*0.75), months-1];
+      xLabels.forEach((v,i)=>{
+        const x = padL + (w-padL-padR)*(v/(months-1||1));
+        svg.innerHTML += `<text x="${x}" y="${h-padB+20}" font-size="13" fill="#b7c2ff" text-anchor="middle">${v+1}</text>`;
+        if(i>0&&i<xLabels.length-1) svg.innerHTML += `<line x1="${x}" y1="${padT}" x2="${x}" y2="${h-padB}" stroke="#b7c2ff22" stroke-width="0.7" />`;
+      });
+      // Loan balance line
+      let d='';
+      balances.forEach((v,i)=>{
+        const x = padL + (w-padL-padR)*(i/(balances.length-1));
+        const y = padT + (h-padB-padT)*(1-(v-minY)/(maxY-minY||1));
+        d += (i? 'L':'M')+x.toFixed(2)+","+y.toFixed(2)+' ';
+      });
+      svg.innerHTML += `<path id="vaLineBalance" d="${d}" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--accent')}" stroke-width="3" style="cursor:pointer" />`;
+      // Equity line
+      let d2='';
+      equities.forEach((v,i)=>{
+        const x = padL + (w-padL-padR)*(i/(equities.length-1));
+        const y = padT + (h-padB-padT)*(1-(v-minY)/(maxY-minY||1));
+        d2 += (i? 'L':'M')+x.toFixed(2)+","+y.toFixed(2)+' ';
+      });
+      svg.innerHTML += `<path id="vaLineEquity" d="${d2}" fill="none" stroke="#3ddc97" stroke-width="3" style="cursor:pointer" />`;
+
+      // Tooltip for balance line
+      const tooltip = document.createElement('div');
+      tooltip.style.position = 'absolute';
+      tooltip.style.background = 'rgba(20,30,60,0.98)';
+      tooltip.style.color = '#e8ecff';
+      tooltip.style.padding = '8px 12px';
+      tooltip.style.borderRadius = '8px';
+      tooltip.style.fontSize = '13px';
+      tooltip.style.boxShadow = '0 4px 16px rgba(0,0,0,0.18)';
+      tooltip.style.zIndex = 10001;
+      document.body.appendChild(tooltip);
+      let lastX = 0;
+      svg.onmousemove = function(e){
+        const rect = svg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        lastX = x;
+        // Find closest data point
+        const idx = Math.round((balances.length-1) * (x / (w-padL-padR)));
+        const data = balances[idx];
+        if(data!==undefined) {
+          const valueY = padT + (h-padB-padT)*(1-(data-minY)/(maxY-minY||1));
+          tooltip.style.left = (rect.left + padL + (w-padL-padR)*(idx/(balances.length-1)) - tooltip.offsetWidth/2) + 'px';
+          tooltip.style.top = (rect.top + valueY - tooltip.offsetHeight - 8) + 'px';
+          tooltip.setAttribute('visibility','visible');
+          tooltip.innerHTML = `Month ${idx+1}<br>Balance: ${fmt.format(data)}<br>Equity: ${fmt.format(price - data)}`;
+        } else {
+          tooltip.setAttribute('visibility','hidden');
+        }
+      };
+      svg.onmouseleave = function(){ tooltip.setAttribute('visibility','hidden'); };
+  // Legend
+  svg.innerHTML += `<rect x="${w-padR-140}" y="${padT-12}" width="18" height="6" fill="${getComputedStyle(document.documentElement).getPropertyValue('--accent')}" rx="2" />`;
+  svg.innerHTML += `<text x="${w-padR-116}" y="${padT-7}" font-size="13" fill="#b7c2ff" alignment-baseline="middle">Loan Balance</text>`;
+  svg.innerHTML += `<rect x="${w-padR-140}" y="${padT-2}" width="18" height="6" fill="#3ddc97" rx="2" />`;
+  svg.innerHTML += `<text x="${w-padR-116}" y="${padT+3}" font-size="13" fill="#b7c2ff" alignment-baseline="middle">Equity</text>`;
+      // Axis titles
+      svg.innerHTML += `<text x="${w/2}" y="${h-2}" font-size="14" fill="#b7c2ff" text-anchor="middle">Month</text>`;
+      svg.innerHTML += `<text x="18" y="${h/2}" font-size="14" fill="#b7c2ff" text-anchor="middle" transform="rotate(-90 18,${h/2})">Amount ($)</text>`;
+    }
+
+    // --- Expand/contract amortization chart ---
+    (function(){
+      const btn = document.getElementById('vaSparkExpand');
+      const svg = document.getElementById('vaSpark');
+      let expanded = false;
+      btn.addEventListener('click', function(){
+        expanded = !expanded;
+        svg.style.transition = 'height 0.4s cubic-bezier(.4,2,.3,1), max-height 0.4s cubic-bezier(.4,2,.3,1)';
+        svg.style.height = expanded ? '520px' : '340px';
+        svg.style.maxHeight = expanded ? '520px' : '340px';
+        btn.textContent = expanded ? '⤡' : '⤢';
+        btn.title = expanded ? 'Contract chart' : 'Expand chart';
+      });
+    })();
+
+    // ----- VA Amortization Table Expand/Collapse -----
+    (function(){
+      const btn = document.getElementById('vaAmortExpand');
+      const tb = document.getElementById('vaAmortTable').querySelector('tbody');
+      window.vaAmortExpanded = false;
+      function renderAmortTable(showAll) {
+        window.vaAmortExpanded = showAll;
+        tb.innerHTML = '';
+        const sched = window.vaSchedule || [];
+        (showAll ? sched : sched.slice(0,24)).forEach(r=>{
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${r.month}</td><td>${fmt.format(r.payment)}</td><td>${fmt.format(r.interest)}</td><td>${fmt.format(r.principal)}</td><td>${fmt.format(Math.max(0,r.balance))}</td>`;
+          tb.appendChild(tr);
+        });
+      }
+      window.renderVaAmortTable = renderAmortTable; // Expose to global
+      renderAmortTable(false);
+      btn.addEventListener('click',()=>{
+        window.vaAmortExpanded = !window.vaAmortExpanded;
+        renderAmortTable(window.vaAmortExpanded);
+        btn.textContent = window.vaAmortExpanded ? 'Show First 24 Months' : 'Show Full Amortization';
+      });
+    })();
+  </script>
+  <!-- Entitlements integration: usage tracking for VA Loan calculator. -->
+  <script type="module">
+    import { initState, guardedRun } from "../../js/entitlements.js";
+    document.addEventListener("DOMContentLoaded", () => {
+      initState();
+      // VA Loan Calculate
+      const vaCalcBtn = document.getElementById('vaCalc');
+      if (vaCalcBtn) {
+        vaCalcBtn.onclick = (e) => {
+          guardedRun("va-loan", () => {
+            // ...existing VA calculation logic...
+            if (typeof window.vaCalcHandler === "function") window.vaCalcHandler(e);
+            else vaCalcBtn.dispatchEvent(new Event("click", { bubbles: true }));
+          }, { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+    });
+  </script>
+</body>
+</html>
+</script>
+</body>
+</html>

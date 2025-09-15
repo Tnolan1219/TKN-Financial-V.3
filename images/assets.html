@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Image Assets</title>
+  <style>
+    body { background: #0b1220; color: #e5e7eb; font-family: system-ui, Inter, Arial, sans-serif; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 32px; }
+    h1 { font-size: 2rem; margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+    .card { background: #111827; border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,.18); padding: 18px; text-align: center; }
+    img { max-width: 100%; border-radius: 10px; box-shadow: 0 2px 12px rgba(96,165,250,.13); margin-bottom: 10px; }
+    .filename { color: #94a3b8; font-size: 0.95rem; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Product Image Assets</h1>
+    <div class="grid">
+      <!-- Example: Replace src with your actual image paths -->
+      <div class="card">
+        <img src="TKN_Fi_3.png" alt="Product 1">
+        <div class="filename">TKN_Fi_3.png</div>
+      </div>
+        <div class="card">
+          <img src="investment_property_calculator.png" alt="Investment Property Calculator">
+          <div class="filename">investment_property_calculator.png</div>
+        </div>
+      <div class="card">
+        <img src="../assets/product2.png" alt="Product 2">
+        <div class="filename">product2.png</div>
+      </div>
+      <div class="card">
+        <img src="../assets/product3.png" alt="Product 3">
+        <div class="filename">product3.png</div>
+      </div>
+      <!-- Add more cards for each product image -->
+    </div>
+    <p style="margin-top:24px;color:#94a3b8;font-size:1rem;">Upload your product images to the <b>assets</b> folder and update the src paths above. You can copy these image tags into your Store page as needed.</p>
+  </div>
+</body>
+</html>
+

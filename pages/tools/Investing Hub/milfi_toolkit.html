@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MilFi — Military Finance Toolkit</title>
+
+
+
+  
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111831; --muted:#1a2244; --text:#e8ecff; --sub:#b7c2ff; --accent:#7aa2ff; --good:#3ddc97; --warn:#ffd166; --bad:#ef476f; --card:#121a36;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#0a0f1e 0%,#0b1020 100%);color:var(--text)}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 0deg,#6ea8ff,#7aa2ff,#c6f5d4);box-shadow:0 8px 24px rgba(122,162,255,.25)}
+    h1{font-size:clamp(20px,2.2vw,28px);margin:0;font-weight:700;letter-spacing:.2px}
+    .subtitle{color:var(--sub);font-size:14px}
+
+    /* Top nav */
+    nav{display:flex;flex-wrap:wrap;gap:8px;background:rgba(255,255,255,.03);padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    .tab{padding:10px 14px;border-radius:12px;font-weight:600;background:transparent;border:1px solid transparent;color:var(--sub);cursor:pointer}
+    .tab[aria-selected="true"]{background:var(--panel);border-color:#24306b;color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 8px 18px rgba(0,0,0,.25)}
+
+    /* Layout */
+    .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    .muted{color:var(--sub);font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{background:var(--muted);border:1px solid rgba(255,255,255,.08);padding:6px 10px;border-radius:999px;font-size:12px}
+
+    .field{display:grid;gap:6px;margin:10px 0}
+    .field label{font-size:13px;color:var(--sub)}
+    .field input,.field select{width:100%;padding:10px 12px;background:#0d1330;border:1px solid #26306a;border-radius:12px;color:var(--text);outline:none}
+    .field input:focus,.field select:focus{border-color:var(--accent)}
+
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid #27408b;background:#16214a;color:var(--text);font-weight:600;cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg,#2d50b9,#1b2a6f);border-color:#3551c9}
+    .btn.ghost{background:transparent;border-color:#2b3a7a}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+    .kpi .label{font-size:12px;color:var(--sub)}
+    .kpi .value{font-size:22px;font-weight:800}
+
+    .divider{height:1px;background:linear-gradient(90deg,transparent,#27306a,transparent);margin:10px 0}
+
+    .sections{margin-top:12px}
+    .section{display:none}
+    .section.active{display:block}
+
+    .inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .right{margin-left:auto}
+
+    .savebox{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+        .back-btn {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  text-decoration: none;
+  filter: drop-shadow(0 1px 4px #5c9ae5);
+        }
+
+
+    /* mini chart */
+    svg.spark{width:100%;height:60px}
+
+    /* table */
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th{font-size:12px;color:var(--sub);text-align:left}
+    td,th{padding:8px 10px}
+    tr{background:#0f1633;border:1px solid #26306a}
+    tr td:first-child,tr th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+    tr td:last-child,tr th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+    footer{margin:28px 0 10px;color:var(--sub);font-size:12px}
+      .card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 16px 48px rgba(60,100,200,.18), var(--shadow);
+      border-color: var(--accent);
+      background: linear-gradient(120deg, rgba(96,165,250,.08) 0%, var(--card) 100%);
+    }
+  </style>
+  <script type="module">
+    import { initState, guardedRun } from "../../../js/entitlements.js";
+    document.addEventListener("DOMContentLoaded", () => {
+      initState();
+      // TSP
+      const tspBtn = document.getElementById('tspCalc');
+      if (tspBtn) {
+        tspBtn.onclick = (e) => {
+          guardedRun("tsp", () => {
+            if (typeof window.tspCalcHandler === "function") window.tspCalcHandler(e);
+            else tspBtn.dispatchEvent(new Event("click", { bubbles: true }));
+          }, { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+      // Career Starter Loan
+      const loanBtn = document.getElementById('loanCalc');
+      if (loanBtn) {
+        loanBtn.onclick = (e) => {
+          guardedRun("career-starter", () => {
+            if (typeof window.loanCalcHandler === "function") window.loanCalcHandler(e);
+            else loanBtn.dispatchEvent(new Event("click", { bubbles: true }));
+          }, { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+      // VA Loan
+      const vaBtn = document.getElementById('vaCalc');
+      if (vaBtn) {
+        vaBtn.onclick = (e) => {
+          guardedRun("va-loan", () => {
+            if (typeof window.vaCalcHandler === "function") window.vaCalcHandler(e);
+            else vaBtn.dispatchEvent(new Event("click", { bubbles: true }));
+          }, { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+      // Budget
+      const bBtn = document.getElementById('bCalc');
+      if (bBtn) {
+        bBtn.onclick = (e) => {
+          guardedRun("budget", () => {
+            if (typeof window.bCalcHandler === "function") window.bCalcHandler(e);
+            else bBtn.dispatchEvent(new Event("click", { bubbles: true }));
+          }, { limit: 50, onBlocked: () => alert("Free limit reached, upgrade to Pro?") });
+        };
+      }
+    });
+  </script>
+</head>
+<body>
+  <a href="Investing_Home.html" style="position:fixed;top:18px;left:18px;z-index:1000;text-decoration:none;"><button style="padding:8px 18px;border-radius:999px;background:#60a5fa;color:#0a0a0a;font-weight:700;border:none;box-shadow:0 2px 10px rgba(96,165,250,.13);cursor:pointer;">← Back</button></a>
+  <div class="wrap">
+    <header>
+
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>MilFi — Military Finance Toolkit</h1>
+          <div class="subtitle">Budgeting • TSP • VA Loan • Career Starter • Resources</div>
+        </div>
+      </div>
+      <div class="inline">
+        <button class="btn ghost" id="btnExport">Export Data</button>
+        <button class="btn primary" id="btnImport">Import</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+      </div>
+    </header>
+
+    <nav role="tablist" aria-label="Primary">
+      <button class="tab" role="tab" aria-selected="true" data-target="dash">Dashboard</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="tsp">TSP Planner</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="loan">Career Starter Loan</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="va">VA Loan Estimator</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="budget">Budget</button>
+      <button class="tab" role="tab" aria-selected="false" data-target="resources">Resources</button>
+    </nav>
+
+    <div class="sections">
+      <!-- DASHBOARD -->
+      <section id="dash" class="section active" role="tabpanel">
+        <div class="grid">
+          <div class="card">
+            <h2>Quick Overview</h2>
+            <div class="kpis" id="dashKpis">
+              <div class="kpi">
+                <div class="label">TSP Balance (proj)</div>
+                <div class="value" id="kpiTsp">$0</div>
+                <div class="muted" id="kpiTspDelta">—</div>
+              </div>
+              <div class="kpi">
+                <div class="label">Starter Loan Balance</div>
+                <div class="value" id="kpiLoan">$0</div>
+                <div class="muted" id="kpiLoanDelta">—</div>
+              </div>
+              <div class="kpi">
+                <div class="label">Monthly Budget Surplus</div>
+                <div class="value" id="kpiBudget">$0</div>
+                <div class="muted">after savings & debt</div>
+              </div>
+              <div class="kpi">
+                <div class="label">Runway (months)</div>
+                <div class="value" id="kpiRunway">0</div>
+                <div class="muted">emergency fund coverage</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+              <span class="chip">Save progress locally</span>
+              <span class="chip">No sign-in required</span>
+              <span class="chip">Offline calculators</span>
+            </div>
+          </div>
+          <div class="card">
+            <h2>TSP Projection (next 12 mo)</h2>
+            <svg class="spark" id="sparkTsp" viewBox="0 0 100 30" preserveAspectRatio="none" aria-label="TSP trend"></svg>
+            <div class="muted">Assumes current inputs in TSP Planner.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TSP PLANNER -->
+      <section id="tsp" class="section" role="tabpanel">
+        <div class="grid">
+          <div class="card">
+            <h2>Inputs</h2>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:220px">
+                <label>Current Balance ($)</label>
+                <input type="number" id="tspBalance" value="0" min="0" step="100">
+              </div>
+              <div class="field" style="flex:1;min-width:220px">
+                <label>Monthly Contribution ($)</label>
+                <input type="number" id="tspMonthly" value="400" min="0" step="50">
+              </div>
+              <div class="field" style="flex:1;min-width:220px">
+                <label>Employer Match (%)</label>
+                <input type="number" id="tspMatch" value="5" min="0" max="5" step="0.5">
+              </div>
+              <div class="field" style="flex:1;min-width:220px">
+                <label>Expected Annual Return (%)</label>
+                <input type="number" id="tspReturn" value="7" min="-20" max="30" step="0.5">
+              </div>
+              <div class="field" style="flex:1;min-width:220px">
+                <label>Years</label>
+                <input type="number" id="tspYears" value="5" min="0" max="40" step="1">
+              </div>
+            </div>
+            <div class="savebox">
+              <button class="btn primary" id="tspCalc" data-calc="tsp">Calculate</button>
+              <button class="btn" id="tspSave">Save to Dashboard</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Results</h2>
+            <div class="row">
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Projected Balance</div>
+                <div class="value" id="tspOutBalance">$0</div>
+                <div class="muted" id="tspOutContrib">—</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Total Contributions</div>
+                <div class="value" id="tspOutTotalContrib">$0</div>
+                <div class="muted">incl. match</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Estimated Growth</div>
+                <div class="value" id="tspOutGrowth">$0</div>
+                <div class="muted">balance − contributions</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <svg class="spark" id="tspChart" viewBox="0 0 100 30" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAREER STARTER LOAN -->
+      <section id="loan" class="section" role="tabpanel">
+        <div class="grid">
+          <div class="card">
+            <h2>USAA/NavyFed Career Starter — Inputs</h2>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Loan Amount ($)</label>
+                <input type="number" id="loanAmount" value="25000" min="0" step="500">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>APR (%)</label>
+                <input type="number" id="loanAPR" value="3" step="0.1">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Term (months)</label>
+                <input type="number" id="loanTerm" value="60" min="12" step="12">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Payment Deferral (months)</label>
+                <input type="number" id="loanDeferral" value="6" min="0" max="24">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Monthly Extra Payment ($)</label>
+                <input type="number" id="loanExtra" value="0" min="0" step="25">
+              </div>
+            </div>
+            <div class="savebox">
+              <button class="btn primary" id="loanCalc" data-calc="csl">Amortize</button>
+              <button class="btn" id="loanSave">Save to Dashboard</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Summary</h2>
+            <div class="row">
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Monthly Payment</div>
+                <div class="value" id="loanOutPmt">$0</div>
+                <div class="muted" id="loanOutFirst">first due after deferral</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Total Interest</div>
+                <div class="value" id="loanOutInt">$0</div>
+                <div class="muted" id="loanOutTerm">over term</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Payoff Time</div>
+                <div class="value" id="loanOutMonths">0 mo</div>
+                <div class="muted">with extra payments</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <table aria-label="Amortization" id="loanTable"><thead>
+              <tr><th>Mo</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>
+            </thead><tbody></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VA LOAN ESTIMATOR -->
+      <section id="va" class="section" role="tabpanel">
+        <div class="grid">
+          <div class="card">
+            <h2>VA Loan Affordability (Estimate)</h2>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Gross Monthly Income ($)</label>
+                <input type="number" id="vaIncome" value="5500" min="0" step="100">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Monthly Debts ($)</label>
+                <input type="number" id="vaDebts" value="300" min="0" step="25">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Target DTI (%)</label>
+                <input type="number" id="vaDTI" value="41" min="20" max="60" step="1">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Rate (APR %)</label>
+                <input type="number" id="vaRate" value="6.5" step="0.1">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Term (years)</label>
+                <input type="number" id="vaYears" value="30" min="10" max="40">
+              </div>
+            </div>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Taxes (% of price / yr)</label>
+                <input type="number" id="vaTax" value="1.0" step="0.1">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Insurance ($/yr)</label>
+                <input type="number" id="vaIns" value="1200" step="50">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>HOA ($/mo)</label>
+                <input type="number" id="vaHOA" value="0" step="10">
+              </div>
+              <div class="field" style="flex:1;min-width:210px">
+                <label>Funding Fee (%)</label>
+                <input type="number" id="vaFF" value="2.15" step="0.01">
+              </div>
+            </div>
+            <div class="savebox">
+              <button class="btn primary" id="vaCalc">Estimate</button>
+              <button class="btn" id="vaSave">Save Snapshot</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Estimate</h2>
+            <div class="row">
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Max Home Price</div>
+                <div class="value" id="vaOutPrice">$0</div>
+                <div class="muted" id="vaOutPITI">est. PITI + HOA</div>
+              </div>
+              <div class="kpi" style="flex:1;min-width:160px">
+                <div class="label">Loan Amount (incl. FF)</div>
+                <div class="value" id="vaOutLoan">$0</div>
+                <div class="muted">funding fee financed</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <svg class="spark" id="vaSpark" viewBox="0 0 100 30" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUDGET -->
+      <section id="budget" class="section" role="tabpanel">
+        <div class="grid">
+          <div class="card">
+            <h2>Monthly Budget</h2>
+            <div class="row">
+              <div class="field" style="flex:1;min-width:220px"><label>Take-Home Pay ($/mo)</label><input type="number" id="bTake" value="3800"></div>
+              <div class="field" style="flex:1;min-width:220px"><label>Housing ($/mo)</label><input type="number" id="bHsg" value="1400"></div>
+              <div class="field" style="flex:1;min-width:220px"><label>Food ($/mo)</label><input type="number" id="bFood" value="450"></div>
+              <div class="field" style="flex:1;min-width:220px"><label>Transport ($/mo)</label><input type="number" id="bTrans" value="300"></div>
+              <div class="field" style="flex:1;min-width:220px"><label>Other ($/mo)</label><input type="number" id="bOther" value="350"></div>
+              <div class="field" style="flex:1;min-width:220px"><label>Savings ($/mo)</label><input type="number" id="bSave" value="500"></div>
+            </div>
+            <div class="savebox">
+              <button class="btn primary" id="bCalc">Update</button>
+              <button class="btn" id="bSaveBtn">Save Budget</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Overview</h2>
+            <div class="row">
+              <div class="kpi" style="flex:1;min-width:160px"><div class="label">Surplus</div><div class="value" id="bOutSurplus">$0</div><div class="muted">monthly</div></div>
+              <div class="kpi" style="flex:1;min-width:160px"><div class="label">Savings Rate</div><div class="value" id="bOutRate">0%</div><div class="muted">of take-home</div></div>
+              <div class="kpi" style="flex:1;min-width:160px"><div class="label">Runway</div><div class="value" id="bOutRunway">0 mo</div><div class="muted">if savings = emergency fund</div></div>
+            </div>
+            <div class="divider"></div>
+            <svg class="spark" id="bPie" viewBox="0 0 32 32" aria-label="Budget pie"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESOURCES -->
+      <section id="resources" class="section" role="tabpanel">
+        <div class="card">
+          <h2>Resources & Notes</h2>
+          <ul>
+            <li>SCRA interest cap: Certain pre-service debts may be capped at 6% while on active duty. Check lender process.</li>
+            <li>BAH/BAS planning: Factor local BAH into housing budget. Consider roommate/geo-bachelor trade-offs.</li>
+            <li>VA Loan: No PMI, flexible credit; funding fee varies by use/waiver (service-connected disability may waive).</li>
+            <li>TSP under BRS: Contribute at least 5% to capture full match once eligible on active duty orders.</li>
+          </ul>
+          <div class="muted">Note: Calculators provide estimates only—confirm specifics with your lender/finance office.</div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      Built for service members and ROTC cadets/mids. Local data is stored in your browser. © MilFi
+    </footer>
+  </div>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+    const fmt = new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+
+    // Tab logic
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected','false'));
+        btn.setAttribute('aria-selected','true');
+        const t = btn.dataset.target;
+        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+        document.getElementById(t).classList.add('active');
+        if(t==='dash') renderDashboard();
+      })
+    })
+
+    // Simple local storage wrapper
+    const store = {
+      get(){ try{return JSON.parse(localStorage.getItem('milfi')||'{}')}catch(e){return{}} },
+      set(data){ localStorage.setItem('milfi',JSON.stringify({...store.get(),...data})) }
+    }
+
+    // ----- TSP -----
+    function tspProject(balance, monthly, matchPct, annualReturn, years){
+      const r = (annualReturn/100)/12;
+      const n = Math.round(years*12);
+      const monthlyMatch = monthly * Math.min(matchPct,5)/100; // cap at 5%
+      const c = monthly + monthlyMatch;
+      let b = Number(balance); const series=[b];
+      for(let i=0;i<n;i++){
+        b = b*(1+r) + c;
+        series.push(b);
+      }
+      const totalContrib = c*n + Number(balance);
+      return {balance:b, contrib:c*n, growth: b-totalContrib, series}
+    }
+
+    function drawSpark(svgId, series){
+      const svg = $(svgId); if(!svg||series.length<2) return;
+      const max = Math.max(...series), min = Math.min(...series);
+      const w=100,h=30; let d='';
+      series.forEach((v,i)=>{
+        const x = i/(series.length-1)*w;
+        const y = h - ((v-min)/(max-min||1))*h;
+        d += (i? 'L':'M')+x.toFixed(2)+","+y.toFixed(2)+' ';
+      })
+      svg.innerHTML = `<path d="${d}" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--accent')}" stroke-width="1.5" />`;
+    }
+
+    $('tspCalc').addEventListener('click',()=>{
+      const balance=Number($('tspBalance').value||0), monthly=Number($('tspMonthly').value||0), match=Number($('tspMatch').value||0), ret=Number($('tspReturn').value||0), yrs=Number($('tspYears').value||0);
+      const res=tspProject(balance,monthly,match,ret,yrs);
+      $('tspOutBalance').textContent=fmt.format(res.balance);
+      $('tspOutTotalContrib').textContent=fmt.format(res.contrib+balance);
+      $('tspOutGrowth').textContent=fmt.format(res.growth);
+      $('tspOutContrib').textContent=`${yrs} yrs • ${(match).toFixed(1)}% match`;
+      drawSpark('tspChart',res.series);
+      // Update 12-month spark for dashboard
+      drawSpark('sparkTsp', res.series.slice(0,13));
+      store.set({tsp:{balance,monthly,match,ret,yrs,proj:res.balance,series:res.series}});
+    })
+
+    $('tspSave').addEventListener('click',()=>{
+      const s=store.get().tsp; if(!s){alert('Run a calculation first.');return}
+      $('kpiTsp').textContent=fmt.format(s.proj);
+      $('kpiTspDelta').textContent = `+${fmt.format(Math.max(0,(s.series?.[12]||0)-(s.series?.[0]||0)))} / 12 mo`;
+      alert('TSP snapshot saved to Dashboard.');
+    })
+
+    // ----- Career Starter Loan -----
+    function amortize(P, apr, termMonths, extra, deferral){
+      const r = (apr/100)/12;
+      // During deferral, interest accrues
+      let bal = P;
+      for(let i=0;i<deferral;i++){ bal = bal*(1+r) }
+      const n = termMonths;
+      const pmt = r===0? (bal/n) : (bal*r)/(1-Math.pow(1+r,-n));
+      let schedule=[], totalInt=0, month=1, b=bal;
+      while(b>0 && month<=n+2){
+        const interest = b*r;
+        let principal = Math.min(pmt+extra - interest, b);
+        if (r===0) principal = Math.min((pmt+extra), b);
+        const payment = principal+interest;
+        b = b - principal;
+        totalInt += interest;
+        schedule.push({month, payment, interest, principal, balance:b});
+        month++
+      }
+      return {pmt, totalInt, months:schedule.length, schedule, startBal:bal}
+    }
+
+    $('loanCalc').addEventListener('click',()=>{
+      const A=Number($('loanAmount').value||0), apr=Number($('loanAPR').value||0), term=Number($('loanTerm').value||0), extra=Number($('loanExtra').value||0), def=Number($('loanDeferral').value||0);
+      const res=amortize(A,apr,term,extra,def);
+      $('loanOutPmt').textContent=fmt.format(res.pmt);
+      $('loanOutInt').textContent=fmt.format(res.totalInt);
+      $('loanOutMonths').textContent=`${res.months} mo`;
+      $('loanOutFirst').textContent=`first payment after ${def} mo deferral`;
+      const tb = $('loanTable').querySelector('tbody'); tb.innerHTML='';
+      res.schedule.slice(0,24).forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${r.month}</td><td>${fmt.format(r.payment)}</td><td>${fmt.format(r.interest)}</td><td>${fmt.format(r.principal)}</td><td>${fmt.format(r.balance)}</td>`;
+        tb.appendChild(tr);
+      })
+      store.set({starter:{A,apr,term,extra,def,pmt:res.pmt,bal:res.schedule.at(-1)?.balance||0}});
+    })
+
+    $('loanSave').addEventListener('click',()=>{
+      const s=store.get().starter; if(!s){alert('Run amortization first.');return}
+      $('kpiLoan').textContent=fmt.format(s.bal||0);
+      $('kpiLoanDelta').textContent = `Payment ≈ ${fmt.format(s.pmt||0)}`;
+      alert('Loan snapshot saved to Dashboard.');
+    })
+
+    // ----- VA Loan Estimator -----
+    function mortgagePmt(loan, apr, years){
+      const r=(apr/100)/12; const n=years*12; if(r===0) return loan/n; return loan*r/(1-Math.pow(1+r,-n));
+    }
+
+    $('vaCalc').addEventListener('click',()=>{
+      const inc=Number($('vaIncome').value||0), debts=Number($('vaDebts').value||0), dti=Number($('vaDTI').value||0)/100, rate=Number($('vaRate').value||0), yrs=Number($('vaYears').value||0), taxPct=Number($('vaTax').value||0)/100, ins=Number($('vaIns').value||0), hoa=Number($('vaHOA').value||0), ffPct=Number($('vaFF').value||0)/100;
+      const maxPmt = Math.max(0, inc*dti - debts - hoa); // monthly for PITI
+      // Iterate to include taxes/ins and funding fee on top of price
+      let price=0, loan=0, piti=0;
+      for(let trial=50000; trial<=2000000; trial+=1000){
+        const taxes = (trial*taxPct)/12; const insMo = ins/12; const baseLoan = trial; // assume 0% down
+        const ff = baseLoan*ffPct; loan = baseLoan + ff;
+        const pmt = mortgagePmt(loan,rate,yrs);
+        const total = pmt + taxes + insMo + hoa;
+        if(total<=maxPmt){ price=trial; piti=total } else break;
+      }
+      $('vaOutPrice').textContent = price? fmt.format(price):'$0';
+      $('vaOutLoan').textContent = price? fmt.format(price*(1+ffPct)):'$0';
+      $('vaOutPITI').textContent = price? `${fmt.format(piti)} / mo @ ${rate}%`:'—';
+      // tiny spark showing components
+      const comp = [hoa, ins/12, price*taxPct/12, mortgagePmt(price*(1+ffPct),rate,yrs)];
+      const cum = comp.reduce((a,c)=>{a.push((a.at(-1)||0)+c);return a},[]);
+      drawSpark('vaSpark', [0,...cum]);
+      store.set({va:{inc,debts,dti,rate,yrs,taxPct,ins,hoa,ffPct,price,loan,piti}});
+    })
+
+    $('vaSave').addEventListener('click',()=>{
+      const s=store.get().va; if(!s){alert('Run estimate first.');return}
+      $('kpiBudget').textContent = s.price? fmt.format((s.inc*s.dti - s.debts - s.piti) || 0): '$0';
+      alert('VA snapshot saved to Dashboard.');
+    })
+
+    // ----- Budget -----
+    function renderBudget(){
+      const take=Number($('bTake').value||0), h=Number($('bHsg').value||0), f=Number($('bFood').value||0), t=Number($('bTrans').value||0), o=Number($('bOther').value||0), s=Number($('bSave').value||0);
+      const out = take - (h+f+t+o+s);
+      const rate = take? (s/take*100):0;
+      $('bOutSurplus').textContent = fmt.format(out);
+      $('bOutRate').textContent = rate.toFixed(0)+'%';
+      const runway = s? Math.round((take*3)/s):0; $('bOutRunway').textContent = `${runway} mo`;
+      $('kpiRunway').textContent = runway;
+      // pie as donut using strokes
+      const svg = $('bPie'); const nums=[h,f,t,o,s]; const total = Math.max(1, nums.reduce((a,c)=>a+c,0));
+      let acc=0; const colors=['#7aa2ff','#3ddc97','#ffd166','#ef476f','#c7b8ff'];
+      svg.innerHTML='';
+      nums.forEach((v,i)=>{
+        const frac = v/total; const dash = (frac*100).toFixed(2)+' '+(100-frac*100).toFixed(2);
+        const ring = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        ring.setAttribute('r','14'); ring.setAttribute('cx','16'); ring.setAttribute('cy','16');
+        ring.setAttribute('fill','none'); ring.setAttribute('stroke-width','6'); ring.setAttribute('stroke',colors[i]);
+        ring.setAttribute('stroke-dasharray',dash); ring.setAttribute('transform',`rotate(${(acc*360/100)-90} 16 16)`);
+        svg.appendChild(ring); acc += frac*100;
+      })
+    }
+    $('bCalc').addEventListener('click',()=>{ renderBudget(); store.set({budget:{take:$('bTake').value,h:$('bHsg').value,f:$('bFood').value,t:$('bTrans').value,o:$('bOther').value,s:$('bSave').value}}) })
+    $('bSaveBtn').addEventListener('click',()=>{ alert('Budget saved to Dashboard & local storage.'); renderDashboard(); })
+
+    // ----- Dashboard -----
+    function renderDashboard(){
+      const data = store.get();
+      if(data.tsp){ $('kpiTsp').textContent = fmt.format(data.tsp.proj||0); $('kpiTspDelta').textContent = data.tsp.series? `+${fmt.format(Math.max(0,(data.tsp.series[12]-data.tsp.series[0])))} / 12 mo`:'—'; drawSpark('sparkTsp', (data.tsp.series||[]).slice(0,13)); }
+      if(data.starter){ $('kpiLoan').textContent = fmt.format(data.starter.bal||0); $('kpiLoanDelta').textContent = data.starter.pmt? `Payment ≈ ${fmt.format(data.starter.pmt)}`:'—' }
+      if(data.budget){ $('bTake').value=data.budget.take||$('bTake').value; $('bHsg').value=data.budget.h||$('bHsg').value; $('bFood').value=data.budget.f||$('bFood').value; $('bTrans').value=data.budget.t||$('bTrans').value; $('bOther').value=data.budget.o||$('bOther').value; $('bSave').value=data.budget.s||$('bSave').value; renderBudget(); $('kpiBudget').textContent=$('bOutSurplus').textContent }
+    }
+
+    // Export / Import
+    $('btnExport').addEventListener('click',()=>{
+      const blob = new Blob([JSON.stringify(store.get(),null,2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='milfi-data.json'; a.click(); URL.revokeObjectURL(url);
+    })
+    $('btnImport').addEventListener('click',()=> $('importFile').click())
+    $('importFile').addEventListener('change',(e)=>{
+      const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); localStorage.setItem('milfi',JSON.stringify(data)); alert('Data imported.'); renderDashboard(); }catch(err){ alert('Invalid file.') } }; r.readAsText(f)
+    })
+
+    // Init
+    renderDashboard(); renderBudget();
+  </script>
+</body>
+</html>
+    renderDashboard(); renderBudget();
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* =============================================================
+   TKN Finance UI — style.css (site-wide)
+   Clean finance aesthetic with subtle, professional motion.
+   How to use:
+   1) Link once: <link rel="stylesheet" href="/css/style.css">
+   2) Optional depth overlay: <div class="overlay" aria-hidden="true"></div> as first child of <body>
+   3) Buttons: use .btn and a variant (e.g., .primary, .ghost). Add .float for elevation and .interactive for tilt.
+   4) JS (optional) for ripple: inject a <span class="ripple"> on click.
+   ============================================================= */
+
+:root {
+  /* Colors */
+  --ink:#eaf0ff; --bg:#070a17; --brand:#7aa2ff; --accent:#3ddc97; --stroke:rgba(255,255,255,.15);
+  --ring:0 0 0 3px rgba(122,162,255,.35); --muted:#9fb0d9;
+  /* Typography */
+  --font: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Base */
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--font);
+  min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2rem; position:relative; overflow:hidden;
+}
+
+/* Background: professional vertical animated gradient */
+body::before{
+  content:""; position:absolute; inset:0; z-index:-2;
+  background: repeating-linear-gradient(0deg, #0b1226 0%, #12204a 20%, #0b1226 40%);
+  background-size:100% 400%; animation:verticalFlow 40s linear infinite;
+}
+@keyframes verticalFlow{ 0%{background-position-y:0%} 100%{background-position-y:100%} }
+
+/* Depth overlay (optional element) */
+.overlay{ position:absolute; inset:0; z-index:-1;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(122,162,255,.15), transparent 60%),
+    radial-gradient(circle at 50% 80%, rgba(61,220,151,.12), transparent 60%);
+}
+
+/* Buttons */
+.btn{
+  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  padding:12px 22px; border-radius:999px; font-weight:900; cursor:pointer; text-decoration:none;
+  color:var(--ink); border:1px solid transparent; backdrop-filter:blur(2px);
+  transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s cubic-bezier(.2,.7,.2,1), background .2s ease, color .2s ease;
+  transform-style:preserve-3d; will-change:transform,box-shadow;
+}
+.btn:focus-visible{outline:none; box-shadow:var(--ring)}
+.btn:active{transform:translateY(1px)}
+
+/* Primary */
+.btn.primary{ background:var(--brand); color:#fff; border:none; box-shadow:0 6px 20px rgba(122,162,255,.35); overflow:hidden }
+.btn.primary::before{ content:""; position:absolute; inset:0; left:-100%; background:linear-gradient(120deg, transparent, rgba(255,255,255,.25), transparent); transition:left .5s ease }
+.btn.primary:hover::before{ left:100% }
+.btn.primary:hover{ background:#658dff }
+
+/* Secondary */
+.btn.secondary{ background:#111b3c; border:1px solid var(--brand); color:var(--brand) }
+.btn.secondary:hover{ background:#16224d }
+
+/* Ghost */
+.btn.ghost{ background:transparent; border:1px solid var(--stroke); color:var(--ink) }
+.btn.ghost:hover{ background:rgba(255,255,255,.06) }
+
+/* Outline */
+.btn.outline{ background:transparent; border:2px solid var(--brand); color:var(--brand) }
+.btn.outline:hover{ background:rgba(122,162,255,.08) }
+
+/* Status buttons */
+.btn.danger{ background:#ef476f; color:#fff; border:none }
+.btn.danger:hover{ background:#d7385f }
+.btn.warning{ background:#ffd166; color:#0b1020; border:none }
+.btn.warning:hover{ background:#ffbe55 }
+.btn.success{ background:#3ddc97; color:#0b1020; border:none }
+.btn.success:hover{ background:#2ebd80 }
+
+/* Disabled */
+.btn.disabled{ background:rgba(255,255,255,.08); color:var(--muted); cursor:not-allowed; opacity:.6 }
+
+/* Elevation & interactions */
+.btn.float{ box-shadow:0 8px 20px rgba(0,0,0,.25) }
+.btn.float:hover{ transform:translateY(-4px); box-shadow:0 16px 36px rgba(0,0,0,.35) }
+
+/* Magnetic tilt (requires JS to set --rx/--ry) */
+.btn.interactive{ --rx:0deg; --ry:0deg; transform:rotateX(var(--rx)) rotateY(var(--ry)) }
+
+/* Ripple helper (inject <span class="ripple"> at click) */
+.btn .ripple{ position:absolute; width:12px; height:12px; border-radius:50%; background:rgba(255,255,255,.35);
+  transform:translate(-50%,-50%) scale(0); pointer-events:none; animation:ripple .6s ease-out forwards }
+@keyframes ripple{ to{ transform:translate(-50%,-50%) scale(18); opacity:0 } }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important }
+}

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TKN Financial: Personal finance for servicemembers made easy</title>
+  <meta name="description" content="TKN Financial: Military personal finance, VA loan homebuying, and real estate investing resources for Active Duty, Guard/Reserve, Veterans, and families." />
+
+  <!-- Paste-ready, self-contained. Move to style.css later if you want. -->
+  <style>
+    :root{
+      --bg:#0b1220; --surface:#10182c; --panel:rgba(14,20,41,0.92); --card:rgba(17,24,39,0.92);
+      --muted:#94a3b8; --text:#e5e7eb; --brand:#60a5fa; --ring:#1d4ed8;
+      --ok:#34d399; --warn:#fbbf24; --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px; --radius-sm:14px; --grid-max:1200px;
+      --glass:rgba(20,30,60,0.72);
+      --glass-blur:blur(14px);
+      --accent-gradient:linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);
+      --pattern:url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="%230b1220"/><circle cx="20" cy="20" r="1.5" fill="%2360a5fa" opacity="0.12"/><circle cx="10" cy="10" r="1.5" fill="%2360a5fa" opacity="0.12"/><circle cx="30" cy="30" r="1.5" fill="%2360a5fa" opacity="0.12"/></svg>');
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,Helvetica,Arial;
+      color:var(--text);
+          background:
+            radial-gradient(1200px 1200px at 10% -10%, #194deb 0%, transparent 60%),
+            radial-gradient(900px 900px at 110% 10%, #031e6e 0%, transparent 55%),
+            linear-gradient(180deg,#040c24 0%, #03081e 60%);
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+
+    /* layout */
+    .container{max-width:var(--grid-max);margin:0 auto;padding:0 24px}
+    section{padding:72px 0}
+    .grid{display:grid;gap:18px}
+    .grid.two{grid-template-columns:1.1fr .9fr}
+    .grid.three{grid-template-columns:repeat(3,1fr)}
+    .grid.four{grid-template-columns:repeat(4,1fr)}
+    @media (max-width:1100px){.grid.four{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:820px){.grid.four{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:600px){.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}}
+
+      /* header */
+      .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+      .skip:focus{left:12px;top:8px;width:auto;height:auto;background:#0d1a36;color:#fff;padding:8px 12px;border-radius:8px;z-index:9999}
+      header{position:sticky;top:0;z-index:60;background:rgba(2,6,23,.6);backdrop-filter:blur(10px);border-bottom:1px solid #1f2937}
+      .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
+      .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;letter-spacing:.3px}
+      .badge{padding:.22rem .5rem;border-radius:999px;background:#0b2c50;color:#93c5fd;font-size:.75rem;border:1px solid #1e3a8a}
+      .links{display:none;gap:1rem;font-size:.95rem;color:var(--muted)}
+      .links a{padding:.35rem .6rem;border-radius:8px;transition:background .2s ease}
+      .links a:hover,.links a[aria-current="true"]{background:rgba(255,255,255,.06);color:#e8efff}
+      .btn{
+        display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.1rem;border-radius:999px;
+        background:var(--accent-gradient);
+        color:#0a0a0a;font-weight:800;border:0;cursor:pointer;
+        box-shadow:0 6px 20px rgba(96,165,250,.26);
+        font-size:1.01em;
+        transition:background .18s, box-shadow .18s, color .18s;
+      }
+      .btn{
+        background:var(--accent-gradient, linear-gradient(90deg,#60a5fa 0%,#818cf8 100%));
+        color:#0a0a0a;
+        /* Make primary button bigger */
+        font-size:1.2em;
+        padding:1.3rem 1.1rem;
+        font-weight:900;
+      }
+      .btn.primary:hover{
+        background: linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+        color: #fff;
+      }
+      .btn:hover{
+        background:linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);
+        color:#fff;
+        box-shadow:0 10px 32px rgba(96,165,250,.18);
+      }
+      .btn.secondary{
+        background:rgba(27, 47, 74, 0.92);
+        font-size:0.95em;
+        padding:1.00rem 1.0rem;
+        color:var(--text);
+        border:1px solid #2f3b4e;
+        box-shadow:none;
+      }
+      .btn.secondary:hover{
+        background:var(--brand);
+        color:#0a0a0a;
+        border-color:var(--brand);
+      }
+      .menu{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:10px;border:1px solid #263147;background:#0d162e;color:#9fb6e9}
+      @media (min-width:780px){.links{display:flex}.menu{display:none}}
+
+    /* hero */
+    .hero{position:relative;padding:96px 0 40px}
+    .hero:after{content:"";position:absolute;inset:0;background:
+      radial-gradient(600px 260px at 70% -10%, rgba(99,102,241,.18), transparent 60%)}
+    .hero-grid{position:relative;display:grid;gap:24px;grid-template-columns:1.15fr .85fr}
+    @media (max-width:980px){.hero-grid{grid-template-columns:1fr}}
+    .title{font-size:clamp(2rem,3.6vw + 1rem,3.25rem);line-height:1.07;margin:0 0 .6rem;font-weight:900}
+    .sub{color:var(--muted);font-size:1.08rem;max-width:62ch}
+    .hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap;margin:20px 0 10px}
+    .tagrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:12px}
+    .pill{
+      background:linear-gradient(90deg,#0b2c50 60%,#1e3a8a 100%);
+      border:1px solid #1d3961;
+      color:#cfe3ff;
+      padding:.55rem .95rem;
+      border-radius:14px;
+      font-size:.97rem;
+      font-weight:600;
+      letter-spacing:.1px;
+      box-shadow:0 2px 8px rgba(30,40,70,.10);
+    }
+
+    /* cards & tiles */
+    .card{
+      background:var(--glass);
+      border:1px solid #1f2a41;
+      border-radius:var(--radius);
+      box-shadow:0 8px 32px rgba(30,40,70,.18), var(--shadow);
+      overflow:hidden;
+      backdrop-filter:var(--glass-blur);
+      transition:transform .18s cubic-bezier(.4,2,.3,1), box-shadow .18s;
+    }
+    .card:hover{
+      transform:translateY(-4px) scale(1.025);
+      box-shadow:0 16px 48px rgba(60,100,200,.18),0 12px 40px rgba(0,0,0,.35);
+      border-color:var(--brand);
+    }
+    .card .head{padding:14px 16px;border-bottom:1px solid #1e293b;font-weight:800;background:rgba(255,255,255,.04);letter-spacing:.2px}
+    .card .body{padding:18px}
+    .tile{
+      background:var(--glass);
+      border:1px solid #1f2a41;
+      border-radius:18px;
+      padding:22px;
+      display:grid;gap:12px;
+      box-shadow:0 4px 18px rgba(30,40,70,.13);
+      backdrop-filter:var(--glass-blur);
+      transition:transform .18s, box-shadow .18s;
+    }
+    .tile:hover{
+      transform:translateY(-2px) scale(1.015);
+      box-shadow:0 8px 32px rgba(60,100,200,.13);
+      border-color:var(--brand);
+    }
+    .tile p{margin:0;color:var(--muted)}
+    .tool h3{margin:0 0 6px;font-size:1.05rem}
+    .tool p{margin:0 0 10px;color:var(--muted);font-size:.97rem}
+
+    /* list & accordion */
+    .list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+    .li{background:#0e1628;border:1px solid #1f2a41;padding:12px 14px;border-radius:12px}
+    .accordion{border:1px solid #1f2a41;border-radius:12px;overflow:hidden}
+    .acc-item + .acc-item{border-top:1px solid #1f2a41}
+    .acc-btn{width:100%;text-align:left;background:#0e1628;color:var(--text);padding:14px 16px;border:0;cursor:pointer;font-weight:800}
+    .acc-panel{display:none;padding:0 16px 16px;color:var(--muted);background:#0b1324}
+    .acc-item.open .acc-panel{display:block}
+
+    /* knowledge hub */
+    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:12px 0 22px}
+    .chip{border:1px solid #24304f;background:#0d162e;color:#bed4ff;padding:.45rem .7rem;border-radius:10px;font-size:.9rem;cursor:pointer}
+    .chip[aria-pressed="true"]{background:#123165;border-color:#2855a5}
+    .search{flex:1;min-width:220px;padding:.8rem 1rem;border-radius:999px;border:1px solid #273247;background:#0a1324;color:var(--text)}
+    .taglist{display:flex;gap:.4rem;flex-wrap:wrap;color:#9fb6e9;font-size:.85rem}
+    .save{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid #2a3a6c;background:#0f1b3b;color:#bcd2ff;cursor:pointer}
+    .save[aria-pressed="true"]{background:#173063;color:#ffd166}
+    .small{font-size:.92rem;color:var(--muted)}
+
+    /* footer */
+    footer{border-top:1px solid #1f2937;background:rgba(2,6,23,.6)}
+    .foot{display:grid;gap:24px;grid-template-columns:2fr 1fr 1fr 2fr;padding:26px}
+    @media (max-width:900px){.foot{grid-template-columns:1fr}}
+    .copy{text-align:center;color:var(--muted);font-size:.85rem;padding:10px 24px 26px}
+
+    .notice{
+      background:linear-gradient(90deg,#0f172a 60%,#1e293b 100%);
+      border:1px dashed #334155;
+      padding:14px 18px;
+      border-radius:12px;
+      color:#cbd5e1;
+      box-shadow:0 2px 10px rgba(30,40,70,.10);
+    }
+    .muted{color:var(--muted)}
+
+    /* helpers */
+    .reveal{opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s ease}
+    .reveal.on{opacity:1; transform:none}
+    .sticky-cta{position:fixed;right:18px;bottom:18px;z-index:50}
+    .fab{
+      width:48px;height:48px;border-radius:14px;border:1px solid #2a3a6c;
+      background:linear-gradient(90deg,#0f1b3b 60%,#1e293b 100%);
+      color:#bcd2ff;display:grid;place-items:center;cursor:pointer;
+      font-size:1.35rem;
+      box-shadow:0 2px 10px rgba(30,40,70,.10);
+      transition:background .18s, box-shadow .18s;
+    }
+    .fab:hover{
+      background:var(--brand);
+      color:#0a0a0a;
+      box-shadow:0 8px 24px rgba(96,165,250,.18);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .reveal{transition:none}
+    }
+  </style>
+  <script type="module">
+  import { initState, getPlan } from "./js/entitlements.js";
+  function updateStatusBadge() {
+    initState();
+    setTimeout(() => {
+      const statusSpan = document.getElementById('site-status');
+      if (statusSpan) {
+        const plan = getPlan();
+        statusSpan.textContent = plan === "pro" ? "Pro" : "Free";
+        statusSpan.style.background = plan === "pro" ? "#123165" : "rgba(255,255,255,.06)";
+        statusSpan.style.color = plan === "pro" ? "#ffd166" : "#7aa2ff";
+        statusSpan.parentElement.style.borderColor = plan === "pro" ? "#ffd166" : "#7aa2ff";
+      }
+    }, 100); // Delay to ensure entitlements.js state is loaded
+  }
+  document.addEventListener("DOMContentLoaded", updateStatusBadge);
+  window.addEventListener("milfi:planChanged", updateStatusBadge);
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- HEADER (links preserved exactly) -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <span id="profile-status" style="margin-right:10px;display:inline-block;vertical-align:middle;">
+        <a href="pages/aboutus.html" id="status-badge" style="font-size:.95rem;padding:6px 16px;border-radius:999px;background:rgba(96,165,250,.13);color:#7aa2ff;font-weight:700;border:1px solid #7aa2ff;box-shadow:0 1px 4px rgba(0,0,0,.08);text-decoration:none;transition:background .2s;vertical-align:middle;">
+          <span id="site-status">Free/Pro</span>
+        </a>
+      </span>
+      <a class="brand" href="#home" aria-label="TKN Financial home">
+        <span aria-hidden>🛡️</span>
+        <span>TKN Financial</span>
+      </a>
+      <!-- Remove legacy localStorage status script -->
+      <nav class="links" id="nav-links">
+        <!--<a href="pages/tools/">Tools</a>---> 
+        <a class="btn" href="pages/tools/Investing Hub/Investing_Home.html">Finance & Investing Tools</a>
+        <a class="btn" href="pages/tools/Real Estate Hub/VA_Loan.html">Real Estate</a>
+        <a class="btn" href="pages/Education/Military_Benefits.html">Education & Benefits<a>
+        <a class="btn" href="pages/aboutus.html" >About</a>
+
+
+
+
+
+      </nav>
+      <div style="display:flex; gap:.5rem; align-items:center">
+        <a href="pages/profile.html" class="profile-tab" title="Profile" aria-label="Profile" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:#1e293b;border:2px solid #60a5fa;color:#60a5fa;font-size:1.45rem;margin-left:.5rem;box-shadow:0 2px 10px rgba(96,165,250,.13);transition:background .2s;">
+          <span aria-hidden="true">👤</span>
+        </a>
+        <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <!-- QUICK LINKS PANEL -->
+    <section class="quick-links" style="padding:32px 0 0 0; position:relative;">
+      <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center;">
+        <a class="btn secondary" href="#start">Calculators & Tools</a>
+        <a class="btn secondary" href="#va">VA Loan Guide</a>
+        <a class="btn secondary" href="#re">Real Estate</a>
+        <a class="btn secondary" href="#learn">Learning Paths</a>
+        <a class="btn secondary" href="#knowledge">Knowledge Hub</a>
+
+        <a class="btn secondary" href="#newsletter">Newsletter</a>
+        <a class="btn secondary" href="#faq">FAQ</a>
+      </div>
+      <!-- WHAT'S NEW SIDEBAR (right side, does not push down main content) -->
+      
+      <!--<div id="whatsNewSidebar" style="position:fixed;top:250px;right:0;width:320px;max-width:25vw;background:var(--panel);border-radius:16px;box-shadow:0 8px 32px rgba(30,40,70,.18);padding:5px 18px 18px 18px;z-index:100;">
+        <h2 style="margin-top:0;margin-bottom:14px;font-size:1.25rem;color:var(--brand);font-weight:900;">What's New</h2>
+        <ul style="list-style:none;padding:0;margin:0 0 12px 0;">
+          <li style="margin-bottom:10px;"><b>Profile Dashboard</b><br><a href="pages/profile.html">Track usage, save progress, and personalize your experience</a></li>
+          <li style="margin-bottom:10px;"><b>FIRE Calculator</b><br><a href="pages/tools/Investing Hub/FIRE_Calc.html">Estimate your financial independence timeline</a></li>
+          <li style="margin-bottom:10px;"><b>Monthly Usage Limits</b><br>Free members can use calculators up to 50 times/month</li>
+          <li style="margin-bottom:10px;"><b>Toolkit & Quick Links</b><br><a href="pages/tools/milfi_toolkit.html">All-in-one finance toolkit</a></li>
+          <li style="margin-bottom:10px;"><b>Investing Hub</b><br><a href="pages/tools/Investing Hub/Investing_Home.html">Investment calculators & TSP Planner</a></li>
+        </ul>
+        <div style="font-size:.97rem;color:var(--muted);margin-top:10px;">Check back for updates and new features!</div>
+      </div> -->
+
+    </section>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-intro" style="text-align:center;max-width:700px;margin:0 auto;">
+        <h1 class="title" style="margin-bottom:12px;">TKN Financial: Personal Finance for Servicemembers</h1>
+        <p class="sub" style="max-width:600px;margin:0 auto 18px;">Smart money moves for Active Duty, Guard/Reserve, Veterans and families. Learn benefits, avoid pitfalls, and use the VA loan confidently to build wealth.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+          <span class="pill">★ Trusted by Military Families</span>
+          <span class="pill">🏛️ Simple Solutions</span>
+          <span class="pill">📍Actionable Strategies</span>
+        </div>
+      </div>
+      <!-- MISSION & WHAT YOU'LL FIND HERE (full-width below hero) -->
+      <section class="mission reveal" style="max-width:800px;margin:36px auto 0 auto;padding:32px 24px 24px 24px;background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);">
+        <h2 style="margin-top:0;margin-bottom:12px;font-size:1.5rem;">Our Mission</h2>
+        <p style="margin-bottom:18px;font-size:1.08rem;">Mil-FI empowers service members, veterans, and families to make smart financial decisions with confidence. We provide clear, actionable resources for military pay, benefits, homebuying, investing, and more—tailored for the unique needs of the military community.</p>
+        <h3 style="margin:0 0 10px;font-size:1.15rem;">What you'll find here:</h3>
+        <ul class="list" style="margin-bottom:10px">
+          <li class="li"><a href="#start">Finance Toolkit</a> — calculators for TSP, VA loan, budgeting, and starter loans</li>
+          <li class="li"><a href="#va">VA Loan Guide</a> — eligibility, costs, strategies, and FAQs</li>
+          <li class="li"><a href="#re">Real Estate</a> — buy box, risk controls, property management tips</li>
+          <li class="li"><a href="#learn">Learning Paths</a> — step-by-step guides for new, advanced, and investor users</li>
+          <li class="li"><a href="#knowledge">Knowledge Center</a> — deep dives on military finance topics</li>
+          <li class="li"><a href="#newsletter">Newsletter</a> — stay updated with tips and news</li>
+          <li class="li"><a href="#faq">FAQ</a> — answers to common questions</li>
+        </ul>
+        <div class="notice" style="margin-top:12px">All tools and guides are free, private, and designed for military life.</div>
+      </section>
+      <!-- QUICK TIPS CARD (optional, can be moved elsewhere if desired) -->
+      <section class="quick-tips reveal" style="max-width:700px;margin:24px auto 0 auto;padding:18px 20px;background:var(--card);border-radius:var(--radius-sm);box-shadow:var(--shadow);">
+        <h3 style="margin-top:0;margin-bottom:10px;font-size:1.08rem;">Quick Tips for Military Money</h3>
+        <ul style="margin:0 0 0 10px; padding:0; font-size:.98em;">
+          <li>Set up automatic TSP contributions for max match</li>
+          <li>Check BAH/BAS rates for your duty station</li>
+          <li>Build a PCS budget before you move</li>
+          <li>Review SCRA protections for loans & credit</li>
+          <li>Use the VA loan for house-hacking up to 4 units</li>
+          <li>Start an emergency fund with your first paycheck</li>
+        </ul>
+      </section>
+      </div>
+    </section>
+
+    <!-- VALUE / HIGHLIGHTS -->
+    <section aria-label="Highlights" class="reveal">
+      <div class="grid two">
+        <div class="tile">
+          <h3>Built for Service</h3>
+          <p>BAH/BAS-aware budgets, SCRA notes, and PCS-savvy calculators.</p>
+          <ul>
+            <li>TSP + BRS match modeling</li>
+            <li>Rent-vs-Buy horizon analysis</li>
+            <li>House-hack scenarios up to 4-plex</li>
+          </ul>
+        </div>
+        <div class="tile">
+          <h3>Fast, Offline-friendly</h3>
+          <p>No sign-in required. Your data stays in your browser.</p>
+          <ul>
+            <li>Local snapshots & export</li>
+            <li>Works great on mobile</li>
+            <li>Accessible & keyboard-friendly</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOL GALLERY -->
+    <section aria-label="Tool Gallery" class="reveal" id="start">
+      <h2>Calculators & tools</h2>
+      <div class="grid four">
+        <!-- Decrease font size for .card.tool -->
+        <article class="card tool" style="font-size:0.8m;"><div class="body"><h3>All-in-One Toolkit</h3><p>Everything in one page for fast planning.</p><a class="btn" href="pages/tools/Investing Hub/milfi_toolkit.html">Open Toolkit</a></div></article>
+        <article class="card tool" style="font-size:0.8em;"><div class="body"><h3>Investing Tools</h3><p>Investment calculators and financial planning.</p><a class="btn" href="pages/tools/Investing Hub/Investing_Home.html">Open Toolkit</a></div></article>
+        <article class="card tool" style="font-size:0.8em;"><div class="body"><h3>Career Starter Loan/TSP</h3><p>USAA/NavyFed style amortization & payoff.</p><a class="btn" href="pages/tools/Investing Hub/TSP_CSL_Calc.html">Open Starter Loan</a></div></article>
+        <article class="card tool" style="font-size:0.8em;"><div class="body"><h3>VA Loan Estimator</h3><p>Down payment, funding fee, PITI + HOA, amortization.</p><a class="btn" href="pages/tools/Real Estate Hub/VA_Loan.html">Open VA Tool</a></div></article>
+        <article class="card tool" style="font-size:0.8em;"><div class="body"><h3>Budget & Retierment Calculator</h3><p>Plan out your monthly and annual budget and project retierment</p><a class="btn" href="pages/tools/Investing Hub/BudgetFire_2.html">Open Budget Calculator</a></div></article>
+      </div>
+      <p class="muted" style="font-size:.9rem;margin-top:10px">Estimates for planning only. Confirm with lenders and official sources.</p>
+    </section>
+
+    <!-- VA ESSENTIALS -->
+    <section id="va" class="reveal">
+      <h2>VA Loan essentials</h2>
+      <div class="grid three">
+        <div class="card"><div class="head">Eligibility & Entitlement</div><div class="body muted"><ul><li>Get COE (Certificate of Eligibility)</li><li>Full vs remaining entitlement</li><li>Primary residence; timely occupancy</li></ul></div></div>
+        <div class="card"><div class="head">Costs & Funding Fee</div><div class="body muted"><ul><li>0% down possible; no PMI</li><li>Funding fee varies; disability may waive</li><li>Seller/lender credits can offset costs</li></ul></div></div>
+        <div class="card"><div class="head">Strategies</div><div class="body muted"><ul><li>House-hack up to 4 units</li><li>Use assumptions creatively</li><li>Refi when it pencils</li></ul></div></div>
+      </div>
+    </section>
+
+    <!-- REAL ESTATE -->
+    <section id="re" class="reveal">
+      <h2>Real estate for service members</h2>
+      <div class="grid three">
+        <div class="card"><div class="head">Buy Box</div><div class="body muted"><ul><li>Markets near duty stations</li><li>Conservative cashflow</li><li>Exit options at PCS</li></ul></div></div>
+        <div class="card"><div class="head">Risk Controls</div><div class="body muted"><ul><li>VA appraisal & MPR awareness</li><li>Reserves for vacancy/repairs</li><li>Fixed-rate preference</li></ul></div></div>
+        <div class="card"><div class="head">Property Mgmt</div><div class="body muted"><ul><li>Self-manage vs PM</li><li>Military clauses in leases</li><li>Assumable marketing</li></ul></div></div>
+      </div>
+    </section>
+
+    <!-- LEARNING PATHS -->
+    <section id="learn" class="reveal">
+      <h2>Learning paths</h2>
+      <div class="grid three">
+        <div class="card"><div class="head">New to Money</div><div class="body muted">Build a baseline budget (50/30/20 tuned for BAH/BAS), start $1k emergency fund then 3–6 months, set up TSP (match + L-fund).</div></div>
+        <div class="card"><div class="head">VA Loan Path</div><div class="body muted">Eligibility & COE, funding fee & waivers, house-hacking up to 4 units (owner-occupy).</div></div>
+        <div class="card"><div class="head">Investor Path</div><div class="body muted">PCS-proof buy box, risk controls, exit strategies at ETS/retire (sell, rent, assume).</div></div>
+      </div>
+    </section>
+
+    <!-- KNOWLEDGE HUB (expanded) -->
+    <section id="knowledge" class="reveal">
+      <h2>Knowledge Hub</h2>
+      <p class="muted">Filter by topic or search. Save items to your reading list.</p>
+      <div class="toolbar">
+        <input id="kSearch" class="search" type="search" placeholder="Search: e.g., SCRA, BAH, entitlement math..." aria-label="Search knowledge" />
+        <button class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="benefits">Comp & Benefits</button>
+        <button class="chip" data-filter="housing">Housing & VA</button>
+        <button class="chip" data-filter="tax">Taxes & Residency</button>
+        <button class="chip" data-filter="pcs">PCS & Travel</button>
+        <button class="chip" data-filter="invest">Investing & Banking</button>
+        <button class="chip" data-filter="risk">Insurance & Risk</button>
+        <button class="chip" data-filter="edu">Education & Career</button>
+        <button class="chip" data-filter="legal">Legal Protections</button>
+      </div>
+
+      <!-- Reading list summary -->
+      <div class="notice" id="readingListSummary" style="display:none"></div>
+
+      <div id="kGrid" class="grid three">
+        <!-- COMP & BENEFITS -->
+        <article class="card k" data-tags="benefits">
+          <div class="head">BAH/BAS Essentials</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">BAH impacts affordability; don’t over-extend on rent or PITI.</li>
+              <li class="li">Use locality-specific BAH; dual-military nuances.</li>
+              <li class="li">BAS is for meals; don’t budget it for fixed debt.</li>
+            </ul>
+            <div class="taglist"><span>#benefits</span><span>#budget</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <a class="btn secondary" href="#start">Use Budget Tool</a>
+              <button class="save" aria-pressed="false" data-id="bahbas" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card k" data-tags="benefits invest">
+          <div class="head">BRS & TSP Match</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Automatic 1% + up to 4% match after 2 YOS; don’t leave match on the table.</li>
+              <li class="li">Traditional vs Roth depends on current vs expected future tax rate.</li>
+              <li class="li">Lifecycle funds default; consider custom mix as literacy improves.</li>
+            </ul>
+            <div class="taglist"><span>#TSP</span><span>#retirement</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <a class="btn" href="pages/tools/Investing Hub/TSP_CSL_Calc.html">TSP Planner</a>
+              <button class="save" aria-pressed="false" data-id="brs" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- HOUSING & VA -->
+        <article class="card k" data-tags="housing">
+          <div class="head">VA Entitlement & Funding Fee</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Full vs remaining entitlement drives $0 down outcomes.</li>
+              <li class="li">Funding fee varies by use/down; disability rating may waive.</li>
+              <li class="li">Assumable loans: potential exit or entry strategy.</li>
+            </ul>
+            <div class="taglist"><span>#VA</span><span>#entitlement</span><span>#fundingFee</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <a class="btn" style="font: size 0.5em" href="pages/tools/Real Estate Hub/VA_Loan.html">Run VA Estimator</a>
+              <button class="save" aria-pressed="false" data-id="entitlement" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card k" data-tags="housing pcs">
+          <div class="head">House-Hack with VA (up to 4-plex)</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Owner-occupy one unit; rent the others; screen for MPR issues.</li>
+              <li class="li">Underwrite with realistic vacancy/maint. reserves.</li>
+              <li class="li">Plan exit at PCS: lease clauses, assume, or sell.</li>
+            </ul>
+            <div class="taglist"><span>#multifamily</span><span>#strategy</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <a class="btn secondary" href="#re">Real Estate Tips</a>
+              <button class="save" aria-pressed="false" data-id="househack" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- TAXES & RESIDENCY -->
+        <article class="card k" data-tags="tax legal">
+          <div class="head">State Residency & Taxes (MIL/Spouse)</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Home of Record vs State of Legal Residence — not the same.</li>
+              <li class="li">MSRRA rules for spouses; keep documentation tight.</li>
+              <li class="li">Track state withholding; avoid surprises at filing.</li>
+            </ul>
+            <div class="taglist"><span>#tax</span><span>#residency</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <button class="save" aria-pressed="false" data-id="residency" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- PCS & TRAVEL -->
+        <article class="card k" data-tags="pcs benefits">
+          <div class="head">PCS Money: DLA, TLE/TLA, Per Diem</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Budget advance vs reimbursement; document everything.</li>
+              <li class="li">Know which expenses are covered and caps by location.</li>
+              <li class="li">Keep a PCS sinking fund to absorb timing gaps.</li>
+            </ul>
+            <div class="taglist"><span>#PCS</span><span>#travel</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <button class="save" aria-pressed="false" data-id="pcs" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- INVESTING & BANKING -->
+        <article class="card k" data-tags="invest">
+          <div class="head">Brokerage Basics & Asset Allocation</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Keep costs low; automate contributions.</li>
+              <li class="li">Diversify across US/Intl; align risk with horizon.</li>
+              <li class="li">Separate emergency fund from investments.</li>
+            </ul>
+            <div class="taglist"><span>#investing</span><span>#allocations</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <a class="btn secondary" href="#start">See Tools</a>
+              <button class="save" aria-pressed="false" data-id="brokerage" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- RISK & INSURANCE -->
+        <article class="card k" data-tags="risk">
+          <div class="head">Insurance Stack: SGLI/FSGLI, Renters, Auto</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Right-size SGLI/FSGLI; coordinate with spouse coverage.</li>
+              <li class="li">Renter’s liability + loss-of-use; add riders for valuables.</li>
+              <li class="li">Bundle & check military discounts; compare annually.</li>
+            </ul>
+            <div class="taglist"><span>#insurance</span><span>#risk</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <button class="save" aria-pressed="false" data-id="insurance" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- EDUCATION & CAREER -->
+        <article class="card k" data-tags="edu benefits">
+          <div class="head">GI Bill, Yellow Ribbon, TA</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Understand transfer rules & service obligations.</li>
+              <li class="li">Stack tuition assistance smartly; avoid overlap waste.</li>
+              <li class="li">Consider BAH equivalency for budgeting during school.</li>
+            </ul>
+            <div class="taglist"><span>#education</span><span>#GIbill</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <button class="save" aria-pressed="false" data-id="gi" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- LEGAL PROTECTIONS -->
+        <article class="card k" data-tags="legal">
+          <div class="head">SCRA & MLA Protections</div>
+          <div class="body">
+            <ul class="list">
+              <li class="li">Interest rate caps; lease termination rights.</li>
+              <li class="li">Active-duty start date matters; keep orders handy.</li>
+              <li class="li">Escalate politely; document and cite statute.</li>
+            </ul>
+            <div class="taglist"><span>#SCRA</span><span>#MLA</span></div>
+            <div style="display:flex;gap:.6rem;margin-top:10px">
+              <button class="save" aria-pressed="false" data-id="scra" title="Save to reading list">★</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- LIFE EVENTS PLAYBOOKS -->
+      <h3 style="margin-top:28px">Life Events Playbooks</h3>
+      <div class="grid three">
+        <article class="card"><div class="head">First Duty Station</div><div class="body small">
+          <ul class="list">
+            <li class="li">Set up direct deposit & allotments; build emergency fund.</li>
+            <li class="li">Elect TSP match; pick Roth/Traditional.</li>
+            <li class="li">Decide rent vs buy; evaluate on 3+ year horizon.</li>
+          </ul>
+          <a class="btn secondary" href="#start">Tools</a>
+        </div></article>
+        <article class="card"><div class="head">Deploying / Long TDY</div><div class="body small">
+          <ul class="list">
+            <li class="li">Update SGLI/POA; automate bills; freeze credit if desired.</li>
+            <li class="li">Understand tax exclusions & savings opportunities.</li>
+            <li class="li">Review renters/auto coverage for storage/usage changes.</li>
+          </ul>
+          <a class="btn secondary" href="#learn">Checklist</a>
+        </div></article>
+        <article class="card"><div class="head">Buying with VA</div><div class="body small">
+          <ul class="list">
+            <li class="li">COE in hand; confirm entitlement & fee status.</li>
+            <li class="li">Pre-approval; underwrite with realistic reserves.</li>
+            <li class="li">Plan exit at PCS: lease clause, assume, sell.</li>
+          </ul>
+          <a class="btn" href="pages/tools/Real Estate Hub/VA_Loan.html">Run Numbers</a>
+        </div></article>
+      </div>
+
+      <!-- GLOSSARY (expanded accordion) -->
+      <h3 style="margin-top:28px">Glossary</h3>
+      <div class="accordion" role="tablist">
+        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Entitlement</button><div class="acc-panel">Amount of VA guaranty you have available. Drives down payment requirements and reuse rules.</div></div>
+        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Funding Fee</button><div class="acc-panel">Fee charged by VA (unless waived) based on service, usage count, and down payment; can be financed.</div></div>
+        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">MPR (Minimum Property Requirements)</button><div class="acc-panel">VA standards the property must meet for safety, soundness, and sanitation; can affect fixer-uppers.</div></div>
+        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">MSRRA</button><div class="acc-panel">Military Spouses Residency Relief Act — governs state tax/residency treatment for spouses.</div></div>
+      </div>
+
+      <!-- GET STARTED CHECKLIST -->
+      <h3 style="margin-top:28px">Get Started Checklist</h3>
+      <div class="card">
+        <div class="body">
+          <ul class="list" id="checklist">
+            <li class="li"><label><input type="checkbox" data-step="budget"> Build BAH/BAS-aware budget</label></li>
+            <li class="li"><label><input type="checkbox" data-step="tsp"> Turn on TSP match & pick fund mix</label></li>
+            <li class="li"><label><input type="checkbox" data-step="efund"> Save starter emergency fund ($1k → 3–6 mo)</label></li>
+            <li class="li"><label><input type="checkbox" data-step="va"> Pull COE & understand entitlement</label></li>
+          </ul>
+          <div class="muted" id="progressNote">Progress: 0/4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section id="newsletter" class="reveal">
+      <h2>Stay mission-ready with Pax Weekly</h2>
+      <form id="newsletterForm" style="display:grid;gap:.75rem;grid-template-columns:2fr 1fr;max-width:560px">
+        <input aria-label="Email" type="email" id="email" required placeholder="you@service.mil" autocomplete="email"
+               style="padding:.9rem 1rem;border-radius:999px;border:1px solid #273247;background:#0a1324;color:var(--text)" />
+        <button class="btn" style="font-size:0.50m;" type="submit">Subscribe</button>
+      </form>
+      <p class="muted" id="msg" style="margin-top:.6rem">No spam. Tips on BAH/BAS, TSP, VA updates, and PCS housing.</p>
+    </section>
+
+    <!-- FAQ (expanded) -->
+    <section id="faq" class="reveal">
+      <h2>Frequently asked questions</h2>
+      <div class="accordion" role="tablist">
+        <div class="acc-item">
+          <button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Can I use the VA loan for a 4-plex?</button>
+          <div class="acc-panel">Yes, up to 4 units if you occupy one unit as your primary residence and meet lending/VA requirements.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Do I need a down payment?</button>
+          <div class="acc-panel">Often no, with sufficient entitlement. Closing costs and a funding fee may apply unless exempt.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Can I have two VA loans at once?</button>
+          <div class="acc-panel">Possibly, with remaining entitlement and qualifying ratios; confirm with lender and COE.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">What are MPRs and why do they matter?</button>
+          <div class="acc-panel">Minimum Property Requirements ensure the home is safe/sound/sanitary. They can limit fixer-uppers or require repairs before closing.</div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Roth or Traditional TSP?</button>
+          <div class="acc-panel">Rule of thumb: choose Roth when current tax rate is likely lower than future; Traditional when current is higher. Many use a mix.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Back to top -->
+  <div class="sticky-cta">
+    <button class="fab" id="toTop" title="Back to top" aria-label="Back to top">↑</button>
+  </div>
+
+  <footer>
+    <div class="container foot">
+      <div>
+  <div class="brand" style="margin-bottom:.5rem"><span aria-hidden>🛡️</span><span>TKN Financial</span></div>
+        <p class="muted">Military-first personal finance and VA loan real estate education.</p>
+      </div>
+
+      <div>
+        <h3>Contact</h3>
+        <div class="muted">hello@milfi.app<br/>(000) 000-0000</div>
+      </div>
+      <div>
+        <h3>Disclaimer</h3>
+        <p class="muted">The information provided on this website is for educational and informational purposes only and should not be construed as financial, legal, or professional advice. We are not affiliated with the U.S. Department of Defense, any military branch, or any government agency. Visitors should consult with a qualified financial advisor or legal professional before making financial decisions. Use of this site is at your own risk, and we do not guarantee the accuracy or completeness of the information presented.</p>
+      </div>
+    </div>
+    <div class="copy">© <span id="year"></span> Pax. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for Knowledge Hub and Open Calculators buttons in HERO section
+    document.querySelectorAll('.hero-ctas a[href="#knowledge"], .hero-ctas a[href="#start"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Mobile menu (preserves exact header links)
+    const menuBtn = document.getElementById('menu');
+    const links = document.getElementById('nav-links');
+    menuBtn?.addEventListener('click',()=>{
+      const open = links.style.display === 'flex';
+      links.style.display = open ? 'none' : 'flex';
+      links.style.flexDirection = open ? '' : 'column';
+      links.style.position = open ? '' : 'absolute';
+      links.style.top = open ? '' : '64px';
+      links.style.right = open ? '' : '24px';
+      links.style.padding = open ? '' : '12px';
+      links.style.background = open ? '' : 'rgba(6,10,25,.96)';
+      links.style.border = open ? '' : '1px solid #24304f';
+      links.style.borderRadius = open ? '' : '12px';
+      menuBtn.setAttribute('aria-expanded', String(!open));
+    });
+
+    // Accordion
+    function toggleAcc(btn){
+      const item = btn.parentElement; const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    }
+    window.toggleAcc = toggleAcc;
+
+    // Newsletter with simple persistence (demo)
+    const form = document.getElementById('newsletterForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const msg = document.getElementById('msg');
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if(!valid){ msg.textContent = 'Please enter a valid email.'; msg.style.color = '#fca5a5'; return; }
+      localStorage.setItem('milfi_email', email);
+      msg.textContent = 'Thanks! Check your inbox to confirm.'; msg.style.color = 'var(--ok)';
+      form.reset();
+    });
+    (function(){ const saved = localStorage.getItem('milfi_email'); if(saved) document.getElementById('email').value = saved; })();
+
+    // Scroll spy: highlight current section in header (desktop)
+    const sections = ['home','start','va','re','learn','knowledge','newsletter','faq']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+
+    const desktopLinks = Array.from(document.querySelectorAll('#nav-links a'));
+    const setActive = (hash)=>{
+      desktopLinks.forEach(a=>a.removeAttribute('aria-current'));
+      const internal = document.querySelector(`a[href="${hash}"]`);
+      internal?.setAttribute('aria-current','true');
+    };
+    const spy = new IntersectionObserver((entries)=>{
+      const visible = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+      if(visible) setActive('#'+visible.target.id);
+    },{rootMargin:'-40% 0px -50% 0px', threshold:[0, .25, .5, .75, 1]});
+    sections.forEach(s=>spy.observe(s));
+
+    // Reveal on scroll
+    const rev = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); rev.unobserve(e.target); }});
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>rev.observe(el));
+
+    // Back to top
+    const toTop = document.getElementById('toTop');
+    toTop.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e)=>{
+      if(!menuBtn) return;
+      const clickInside = e.target === menuBtn || links.contains(e.target);
+      if(!clickInside && getComputedStyle(menuBtn).display !== 'none' && links.style.display === 'flex'){
+        menuBtn.click();
+      }
+    });
+
+    // Knowledge Hub filtering + reading list
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    const search = document.getElementById('kSearch');
+    const cards = Array.from(document.querySelectorAll('#kGrid .k'));
+    const summary = document.getElementById('readingListSummary');
+
+    let activeFilter = 'all';
+    chips.forEach(ch => ch.addEventListener('click', () => {
+      chips.forEach(c=>c.setAttribute('aria-pressed','false'));
+      ch.setAttribute('aria-pressed','true');
+      activeFilter = ch.dataset.filter;
+      applyFilter();
+    }));
+    search.addEventListener('input', applyFilter);
+
+    function applyFilter(){
+      const q = search.value.toLowerCase().trim();
+      cards.forEach(card => {
+        const tags = (card.dataset.tags||'').toLowerCase();
+        const text = card.innerText.toLowerCase();
+        const matchTag = activeFilter === 'all' || tags.includes(activeFilter);
+        const matchText = !q || text.includes(q);
+        card.style.display = matchTag && matchText ? '' : 'none';
+      });
+    }
+
+    // Reading list (localStorage)
+    const SAVED_KEY = 'milfi_saved_topics';
+    function getSaved(){ try { return JSON.parse(localStorage.getItem(SAVED_KEY)||'[]'); } catch { return []; } }
+    function setSaved(ids){ localStorage.setItem(SAVED_KEY, JSON.stringify(ids)); renderSummary(ids); }
+    function renderSummary(ids){
+      if(!ids.length){ summary.style.display='none'; return; }
+      summary.style.display='block';
+      summary.textContent = `Reading list: ${ids.length} saved • Click stars to remove.`;
+    }
+    function hydrateSaves(){
+      const saved = new Set(getSaved());
+      document.querySelectorAll('.save').forEach(btn=>{
+        const id = btn.dataset.id;
+        const on = saved.has(id);
+        btn.setAttribute('aria-pressed', String(on));
+        btn.addEventListener('click', ()=>{
+          const s = new Set(getSaved());
+          if(s.has(id)) s.delete(id); else s.add(id);
+          setSaved([...s]);
+          btn.setAttribute('aria-pressed', String(!on));
+        }, { once: false });
+      });
+      renderSummary([...saved]);
+    }
+    hydrateSaves();
+
+    // Checklist persistence
+    const CL_KEY = 'milfi_checklist_v1';
+    const cl = document.getElementById('checklist');
+    const progressNote = document.getElementById('progressNote');
+    function loadChecklist(){ try { return JSON.parse(localStorage.getItem(CL_KEY)||'{}'); } catch { return {}; } }
+    function saveChecklist(map){ localStorage.setItem(CL_KEY, JSON.stringify(map)); }
+    function updateProgress(){
+      const inputs = Array.from(cl.querySelectorAll('input[type="checkbox"]'));
+      const done = inputs.filter(i=>i.checked).length;
+      progressNote.textContent = `Progress: ${done}/${inputs.length}`;
+    }
+    (function(){
+      const saved = loadChecklist();
+      cl.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
+        cb.checked = Boolean(saved[cb.dataset.step]);
+        cb.addEventListener('change', ()=>{
+          const map = loadChecklist();
+          map[cb.dataset.step] = cb.checked;
+          saveChecklist(map);
+          updateProgress();
+        });
+      });
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>
+        });
+      });
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>

@@ -156,66 +156,76 @@
         </div>
       </section>
 
-      <!-- RIGHT: Quick profile edits (no link grid) -->
-      <section class="card">
-        <div class="head">Preferences</div>
-        <div class="body">
-          <div class="row">
-            <div>
-              <label for="fullName">Full name</label>
-              <input id="fullName" placeholder="e.g., Thomas Nolan" />
-            </div>
-            <div>
-              <label for="email">Email</label>
-              <input id="email" type="email" placeholder="you@service.mil" />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="branch">Branch</label>
-              <select id="branch">
-                <option value="">Select</option>
-                <option>Army</option><option>Navy</option><option>Marine Corps</option>
-                <option>Air Force</option><option>Space Force</option><option>Coast Guard</option><option>Guard/Reserve</option>
-              </select>
-            </div>
-            <div>
-              <label for="paygrade">Paygrade</label>
-              <select id="paygrade">
-                <option value="">Select</option>
-                <optgroup label="Enlisted"><option>E-1</option><option>E-2</option><option>E-3</option><option>E-4</option><option>E-5</option><option>E-6</option><option>E-7</option><option>E-8</option><option>E-9</option></optgroup>
-                <optgroup label="Officer"><option>O-1</option><option>O-2</option><option>O-3</option><option>O-4</option><option>O-5</option><option>O-6</option></optgroup>
-                <optgroup label="Warrant"><option>W-1</option><option>W-2</option><option>W-3</option><option>W-4</option><option>W-5</option></optgroup>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="station">Duty station</label>
-              <input id="station" placeholder="e.g., Annapolis, MD" />
-            </div>
-            <div>
-              <label for="ets">ETS/Rotation date</label>
-              <input id="ets" type="date" />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="theme">Theme</label>
-              <select id="theme"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
-            </div>
-            <div>
-              <label for="avatarInput">Avatar</label>
-              <input type="file" id="avatarInput" accept="image/*" />
-              <div class="small">Stays on this device.</div>
-            </div>
-          </div>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn" id="saveProfile">Save Profile</button>
-            <span id="saveMsg" class="small" aria-live="polite"></span>
-          </div>
+     <!-- Preferences Section -->
+      <h3>Your Preferences</h3>
+      <div class="row">
+        <div>
+          <label for="fullName">Full name</label>
+          <input id="fullName" placeholder="e.g., Thomas Nolan" />
         </div>
-      </section>
+        <div>
+          <label for="prefEmail">Email</label>
+          <input id="prefEmail" type="email" placeholder="you@service.mil" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="branch">Branch</label>
+          <select id="branch">
+            <option value="">Select</option>
+            <option>Army</option><option>Navy</option><option>Marine Corps</option>
+            <option>Air Force</option><option>Space Force</option><option>Coast Guard</option><option>Guard/Reserve</option>
+          </select>
+        </div>
+        <div>
+          <label for="paygrade">Paygrade</label>
+          <select id="paygrade">
+            <option value="">Select</option>
+            <optgroup label="Enlisted"><option>E-1</option><option>E-2</option><option>E-3</option><option>E-4</option><option>E-5</option><option>E-6</option><option>E-7</option><option>E-8</option><option>E-9</option></optgroup>
+            <optgroup label="Officer"><option>O-1</option><option>O-2</option><option>O-3</option><option>O-4</option><option>O-5</option><option>O-6</option></optgroup>
+            <optgroup label="Warrant"><option>W-1</option><option>W-2</option><option>W-3</option><option>W-4</option><option>W-5</option></optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="station">Duty station</label>
+          <input id="station" placeholder="e.g., Annapolis, MD" />
+        </div>
+        <div>
+          <label for="ets">ETS/Rotation date</label>
+          <input id="ets" type="date" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="theme">Theme</label>
+          <select id="theme"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
+        </div>
+        <div>
+          <label for="avatarInput">Avatar</label>
+          <input type="file" id="avatarInput" accept="image/*" />
+          <div class="small">Stays on this device.</div>
+        </div>
+      </div>
+      <div class="row">
+        <label for="nickname"><strong>Nickname:</strong></label>
+        <input id="nickname" type="text" placeholder="e.g., Thomas" />
+      </div>
+      <div class="row">
+        <label for="favoriteCity"><strong>State:</strong></label>
+        <input id="favoriteCity" type="text" placeholder="e.g., Maryland" />
+      </div>
+      <div class="row">
+        <button class="btn" id="saveProfile">Save Profile</button>
+        <span id="status" style="margin-left:8px; color:#0a0;"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Keep app.js Firebase logic intact -->
+<script type="module" src="./app.js"></script>
 
     </div>
 
@@ -533,6 +543,7 @@ document.addEventListener('DOMContentLoaded', updateDashboardUsage);
   </script>
 </body>
 </html>
+
 
 
 

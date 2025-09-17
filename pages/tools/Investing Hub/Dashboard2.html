@@ -62,13 +62,13 @@
       <div class="brand">
         <span aria-hidden>🛡️</span>
         <div>
-          <div style="font-weight:900">MilFi</div>
+          <div style="font-weight:900">TKN Financial</div>
           <div class="small muted">Finance Dashboard — Integrated</div>
         </div>
         <span class="badge">Local & Private</span>
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <a class="btn" href="https://tnolan1219.github.io/TKN-Financial-V.3/">Home</a>
+        <a class="btn" href="/index.html">Home</a>
         <a class="btn" href="Investing_Home.html">← Back</a>
 
         <button class="btn ghost" id="demoBtn">Load Demo</button>
@@ -110,8 +110,8 @@
                 <div class="small muted" id="globalNote" style="margin-top:6px">—</div>
               </div>
               <div style="display:grid;gap:8px;justify-content:end">
-                <a class="btn primary" id="upgrade" href="pages/profile.html">Upgrade to Pro</a>
-                <a class="btn ghost" id="downgrade" href="pages/profile.html">Switch to Free</a>
+                <a class="btn primary" id="upgrade" href="/pages/profile.html">Upgrade to Pro</a>
+                <a class="btn ghost" id="downgrade" href="/pages/profile.html">Switch to Free</a>
               </div>
             </div>
             <p class="note" style="margin-top:12px">Free plan: 25 runs/month total, soft cap 5 per tool. Pro: Unlimited. (Demo toggle here only affects your browser.)</p>
@@ -141,7 +141,17 @@
       </section>
 
       <!-- Usage by Tool (added back) -->
-
+      <section class="card" aria-labelledby="usageTitle" style="margin-top:10px">
+        <div class="head" id="usageTitle">Usage by Tool</div>
+        <div class="body" style="overflow-x:auto">
+          <table aria-label="Tool usage table">
+            <thead><tr><th>Tool</th><th>Uses</th><th>Limit</th><th style="width:300px">Progress</th><th>Action</th></tr></thead>
+            <tbody id="usageRows"></tbody>
+          </table>
+          <div class="small muted" style="margin-top:6px">Soft cap is 5 per tool on Free. Colors: <span style="color:var(--ok)">OK</span> • <span style="color:var(--warn)">Warn</span> • <span style="color:var(--bad)">Over</span>.</div>
+        </div>
+      </section>
+    </section>
 
     <!-- INVESTING PANEL -->
     <section id="tab-investing" class="panel" role="tabpanel" aria-labelledby="tabbtn-investing">
@@ -425,11 +435,11 @@
     const GLOBAL_LIMIT_FREE = 25; const TOOL_CAP_FREE = 5;
     const TOOL_ROWS = [
       {key:'milfi_uses_toolkit', name:'All‑in‑One Toolkit', href: 'milfi_toolkit.html'},
-      {key:'milfi_uses_budget',  name:'Budget Tool', href:'BudgetFire_2.html'},
-      {key:'milfi_uses_tsp',     name:'TSP Planner', href:'TSP_CSL_Calc.html'},
-      {key:'milfi_uses_va',      name:'VA Loan Tool', href:'Real Estate Hub/VA_Loan.html'},
-      {key:'milfi_uses_starter', name:'Career Starter Loan', href:'TSP_CSL_Calc.html#starter'},
-      {key:'milfi_uses_fire',    name:'FIRE Calculator', href:'BudgetFire_2.html#fire'}
+      {key:'milfi_uses_budget',  name:'Budget Tool', href:'budgetfire_2.html'},
+      {key:'milfi_uses_tsp',     name:'TSP Planner', href:'tsp_csl_calc.html'},
+      {key:'milfi_uses_va',      name:'VA Loan Tool', href:'reaking/VA_Loan_Calc.html'},
+      {key:'milfi_uses_starter', name:'Career Starter Loan', href:'tsp_csl_calc.html#starter'},
+      {key:'milfi_uses_fire',    name:'FIRE Calculator', href:'budgetfire_2.html#fire'}
     ];
 
     // ====== Month rollover ======
@@ -626,8 +636,3 @@
 </html>
 </body>
 </html>
-
-
-
-
-

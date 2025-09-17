@@ -156,7 +156,30 @@
         </div>
       </section>
 
-     <!-- Preferences Section -->
+
+
+
+      <section class="card">
+  <div class="head">Sign in & Preferences</div>
+  <div class="body">
+    <!-- Google Sign-In Controls (from app.js, unchanged) -->
+    <div class="row">
+      <button id="signin">Login/Signup</button>
+      <button id="signout" style="display:none;">Sign out</button>
+    </div>
+
+    <!-- User Info after sign in -->
+    <div id="userBox">
+      <div class="row">
+        <img id="avatar" class="avatar" alt="">
+        <div>
+          <div><strong id="displayName"></strong></div>
+          <div id="email" class="muted"></div>
+          <div id="uid" class="muted" style="font-size:12px; color:#666;"></div>
+        </div>
+      </div>
+
+      <!-- Preferences Section -->
       <h3>Your Preferences</h3>
       <div class="row">
         <div>
@@ -226,7 +249,6 @@
 
 <!-- Keep app.js Firebase logic intact -->
 <script type="module" src="./app.js"></script>
-
     </div>
 
     <!-- Plan & data management (kept for integration; minimal UI) -->
@@ -543,6 +565,7 @@ document.addEventListener('DOMContentLoaded', updateDashboardUsage);
   </script>
 </body>
 </html>
+
 
 
 

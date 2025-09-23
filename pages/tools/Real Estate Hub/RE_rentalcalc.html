@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rental Property Calculator </title>
+  <a class="btn" href="Re_home.html">Back</a>
+  <link rel="stylesheet" href="/style.css" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+ 
+</head>
+<body>
+<header class="header">
+  <div class="header-inner container">
+    <!-- Left: Title + Tags -->
+    <div class="title-block">
+      <h1 class="app-title">📈 Buy & Hold Calculator</h1>
+      <div class="tags">
+        <span class="tag">Growth Projections</span>
+        <span class="tag">Custom Lines</span>
+      </div>
+    </div>
+
+    <!-- Right: Status -->
+    <div class="status-block">
+      <span id="statusBar" class="status-indicator">● Ready</span>
+    </div>
+  </div>
+</header>
+
+
+<main class="container">
+  <div class="flow-vertical">
+    <!-- Inputs: full width, sticky optional -->
+    <section class="card sticky-top" aria-labelledby="inputsTitle">
+      <h2 id="inputsTitle">Inputs</h2>
+
+      <div class="group">
+        <h3>Purchase & Loan</h3>
+        <div class="row">
+          <div>
+            <label for="purchasePrice">Purchase price</label>
+            <input id="purchasePrice" type="number" placeholder="300000" />
+          </div>
+          <div>
+            <label for="downPaymentPct">Down payment %</label>
+            <input id="downPaymentPct" type="number" placeholder="20" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="interestRatePct">Interest rate % (annual)</label>
+            <input id="interestRatePct" type="number" placeholder="6.5" />
+          </div>
+          <div>
+            <label for="loanTermYears">Loan term (years)</label>
+            <input id="loanTermYears" type="number" placeholder="30" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Income (Base)</h3>
+        <div class="row">
+          <div>
+            <label for="monthlyRent">Monthly rent</label>
+            <input id="monthlyRent" type="number" placeholder="2400" />
+          </div>
+          <div>
+            <label for="otherIncomeMo">Other income (monthly)</label>
+            <input id="otherIncomeMo" type="number" placeholder="0" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="vacancyPct">Vacancy %</label>
+            <input id="vacancyPct" type="number" placeholder="5" />
+            <div class="help">Percent of gross lost to vacancy (kept constant over the hold).</div>
+          </div>
+          <div>
+            <label for="managementPct">Management % of rent</label>
+            <input id="managementPct" type="number" placeholder="8" />
+            <div class="help">Applied to rent each year; grows implicitly with rent.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Expenses (Base)</h3>
+        <div class="row">
+          <div>
+            <label for="annualTaxes">Property taxes (annual)</label>
+            <input id="annualTaxes" type="number" placeholder="3600" />
+          </div>
+          <div>
+            <label for="annualInsurance">Insurance (annual)</label>
+            <input id="annualInsurance" type="number" placeholder="1200" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="maintenanceMonthly">Maintenance (monthly)</label>
+            <input id="maintenanceMonthly" type="number" placeholder="150" />
+          </div>
+          <div>
+            <label for="hoaMonthly">HOA (monthly)</label>
+            <input id="hoaMonthly" type="number" placeholder="0" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="utilitiesMonthly">Utilities (monthly)</label>
+            <input id="utilitiesMonthly" type="number" placeholder="0" />
+          </div>
+          <div>
+            <label for="otherExpensesMonthly">Other expenses (monthly)</label>
+            <input id="otherExpensesMonthly" type="number" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>One-time Costs</h3>
+        <div class="row">
+          <div>
+            <label for="closingCosts">Closing costs</label>
+            <input id="closingCosts" type="number" placeholder="6000" />
+          </div>
+          <div>
+            <label for="renovationCosts">Renovation costs</label>
+            <input id="renovationCosts" type="number" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Growth Rates & Hold</h3>
+        <div class="row">
+          <div>
+            <label for="holdYears">Hold period (years)</label>
+            <input id="holdYears" type="number" placeholder="10" />
+          </div>
+          <div>
+            <label for="appreciationPct">Property appreciation % (annual)</label>
+            <input id="appreciationPct" type="number" placeholder="3" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="rentGrowthPct">Rent growth % (annual)</label>
+            <input id="rentGrowthPct" type="number" placeholder="3" />
+          </div>
+          <div>
+            <label for="otherIncomeGrowthPct">Other income growth % (annual)</label>
+            <input id="otherIncomeGrowthPct" type="number" placeholder="0" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="taxesGrowthPct">Taxes growth % (annual)</label>
+            <input id="taxesGrowthPct" type="number" placeholder="2.5" />
+          </div>
+          <div>
+            <label for="insuranceGrowthPct">Insurance growth % (annual)</label>
+            <input id="insuranceGrowthPct" type="number" placeholder="4" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="maintenanceGrowthPct">Maintenance growth % (annual)</label>
+            <input id="maintenanceGrowthPct" type="number" placeholder="2" />
+          </div>
+          <div>
+            <label for="hoaGrowthPct">HOA growth % (annual)</label>
+            <input id="hoaGrowthPct" type="number" placeholder="2" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="utilitiesGrowthPct">Utilities growth % (annual)</label>
+            <input id="utilitiesGrowthPct" type="number" placeholder="2" />
+          </div>
+          <div>
+            <label for="otherExpensesGrowthPct">Other expenses growth % (annual)</label>
+            <input id="otherExpensesGrowthPct" type="number" placeholder="2" />
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Custom Income & Expenses</h3>
+
+        <div class="toolbar"><!-- your add income button lives here if present in your JS --></div>
+        <div id="incomeItems"></div>
+
+        <div class="toolbar" style="margin-top:12px"><!-- your add expense button --></div>
+        <div id="expenseItems"></div>
+      </div>
+
+<div class="actions">
+  <button id="calcBtn" class="btn">Calculate</button>
+  <div class="inline">
+    <button id="saveProjectionBtn" class="btn">Save projection</button>
+    <select id="loadProjectionSelect" aria-label="Load saved projection">
+      <option value="">Load projection…</option>
+    </select>
+    <button id="deleteProjectionBtn" class="btn-danger">Delete</button>
+  </div>
+  <span class="grow"></span>
+  <a href="Re_home.html" class="btn">Back</a>
+</div>
+
+    </section>
+
+    <!-- Results: full width below -->
+    <section class="card" aria-labelledby="resultsTitle">
+      <h2 id="resultsTitle">Results</h2>
+
+      <div class="sr-only" aria-live="polite" id="kpiAriaLive"></div>
+      <div class="kpis" role="group" aria-label="Key performance indicators">
+        <div class="kpi"><div class="label">Monthly Cash Flow</div><div id="resCashFlowMo" class="value">$0.00</div></div>
+        <div class="kpi"><div class="label">Annual Cash Flow</div><div id="resCashFlowYr" class="value">$0.00</div></div>
+        <div class="kpi"><div class="label">Cash-on-Cash</div><div id="resCoC" class="value">—</div></div>
+      </div>
+
+      <div class="group mt-12">
+        <h3>Finance table (current year)</h3>
+        <table id="financeTable" aria-describedby="resultsTitle">
+          <thead><tr><th>Line item</th><th>Amount</th></tr></thead>
+          <tbody id="financeTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="group mt-12">
+        <h3>Multi-Year Projection</h3>
+        <div class="table-scroll">
+          <table id="projectionTable" aria-label="Projection table">
+            <thead id="projectionTableHead"></thead>
+            <tbody id="projectionTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="group mt-12">
+        <h3>Long-term</h3>
+        <div class="row">
+          <div class="kpi"><div class="label">Future value</div><div id="resFutureValue" class="value">$0.00</div></div>
+          <div class="kpi"><div class="label">Simple total return</div><div id="resTotalReturnPct" class="value">—</div></div>
+        </div>
+        <div class="help" style="margin-top:8px">Estimates only. Principal paydown not included in total return.</div>
+      </div>
+
+      <div class="sticky-actions">
+        <button id="calcBtn2" class="btn">Calculate</button>
+        <button id="saveProjectionBtn2" class="btn">Save projection</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id)=>document.getElementById(id);
+    const toNum = (v, fb=0)=>{ if(v===null||v===undefined) return fb; const n=Number(String(v).trim()); return Number.isFinite(n)?n:fb; };
+    const fmtCur = (n)=> new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n||0);
+    const fmtPct = (n)=> Number.isFinite(n) ? `${n.toFixed(1)}%` : '—';
+    const debounce = (fn,ms=600)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; };
+
+    // ---------- Storage Keys ----------
+    const LS_INPUTS_KEY = 'buyhold_sf_v3_inputs';
+    const LS_PROJ_KEY   = 'buyhold_sf_v3_projections';
+    const LS_INCOME_KEY = 'buyhold_sf_v3_incomeItems';
+    const LS_EXPENSE_KEY= 'buyhold_sf_v3_expenseItems';
+
+    // ---------- Defaults ----------
+    const defaults = {
+      purchasePrice:300000, downPaymentPct:20, interestRatePct:6.5, loanTermYears:30,
+      monthlyRent:2400, otherIncomeMo:0, vacancyPct:5, managementPct:8,
+      annualTaxes:3600, annualInsurance:1200, maintenanceMonthly:150,
+      hoaMonthly:0, utilitiesMonthly:0, otherExpensesMonthly:0,
+      closingCosts:6000, renovationCosts:0,
+      holdYears:10, appreciationPct:3,
+      rentGrowthPct:3, otherIncomeGrowthPct:0, taxesGrowthPct:2.5, insuranceGrowthPct:4,
+      maintenanceGrowthPct:2, hoaGrowthPct:2, utilitiesGrowthPct:2, otherExpensesGrowthPct:2
+    };
+
+    const inputIds = [
+      'purchasePrice','downPaymentPct','interestRatePct','loanTermYears',
+      'monthlyRent','otherIncomeMo','vacancyPct','managementPct',
+      'annualTaxes','annualInsurance','maintenanceMonthly','hoaMonthly','utilitiesMonthly','otherExpensesMonthly',
+      'closingCosts','renovationCosts','holdYears','appreciationPct',
+      'rentGrowthPct','otherIncomeGrowthPct','taxesGrowthPct','insuranceGrowthPct','maintenanceGrowthPct','hoaGrowthPct','utilitiesGrowthPct','otherExpensesGrowthPct'
+    ];
+
+    const inputs = Object.fromEntries(inputIds.map(id=>[id,$(id)]));
+
+    // ---------- Dynamic Custom Lines UI ----------
+    function makeLineRow(container, list, idx, onChange){
+      const item = list[idx];
+      const wrap = document.createElement('div');
+      wrap.className = 'list-grid';
+
+      const lab = document.createElement('input'); lab.type='text'; lab.placeholder='Label'; lab.value=item.label||'';
+      const amt = document.createElement('input'); amt.type='number'; amt.placeholder='0'; amt.value=(item.amount??'');
+      const per = document.createElement('select'); per.innerHTML='<option value="monthly">Monthly</option><option value="annual">Annual</option>'; per.value=item.period||'monthly';
+      const grw = document.createElement('input'); grw.type='number'; grw.placeholder='0'; grw.value=(item.growthPct??0);
+      const del = document.createElement('button'); del.className='xbtn'; del.textContent='Remove';
+
+      lab.addEventListener('input',()=>{ item.label = lab.value; onChange(); });
+      amt.addEventListener('input',()=>{ item.amount = toNum(amt.value,0); onChange(); });
+      per.addEventListener('change',()=>{ item.period = per.value; onChange(); });
+      grw.addEventListener('input',()=>{ item.growthPct = toNum(grw.value,0); onChange(); });
+      del.addEventListener('click',()=>{ const i=list.indexOf(item); if(i>-1){ list.splice(i,1); onChange(true); renderLines(); }});
+
+      wrap.append(lab, amt, per, grw, del);
+      container.appendChild(wrap);
+    }
+
+    let incomeItems = [];
+    let expenseItems = [];
+
+    function saveLines(){
+      try{ localStorage.setItem(LS_INCOME_KEY, JSON.stringify(incomeItems)); }catch{}
+      try{ localStorage.setItem(LS_EXPENSE_KEY, JSON.stringify(expenseItems)); }catch{}
+    }
+
+    function loadLines(){
+      try{ incomeItems = JSON.parse(localStorage.getItem(LS_INCOME_KEY)||'[]'); if(!Array.isArray(incomeItems)) incomeItems=[]; }catch{ incomeItems=[]; }
+      try{ expenseItems = JSON.parse(localStorage.getItem(LS_EXPENSE_KEY)||'[]'); if(!Array.isArray(expenseItems)) expenseItems=[]; }catch{ expenseItems=[]; }
+    }
+
+    function renderLines(){
+      const incWrap = $('incomeItems'); incWrap.innerHTML='';
+      const expWrap = $('expenseItems'); expWrap.innerHTML='';
+      incomeItems.forEach((_,i)=>makeLineRow(incWrap, incomeItems, i, (removed)=>{ saveLines(); if(!removed) autosaveInputs(); }));
+      expenseItems.forEach((_,i)=>makeLineRow(expWrap, expenseItems, i, (removed)=>{ saveLines(); if(!removed) autosaveInputs(); }));
+    }
+
+    // ---------- Autosave Base Inputs ----------
+    function getInputsSnapshot(){
+      const obj={};
+      for(const id of inputIds){ const val = inputs[id].value; obj[id] = (val===''||val===null)? null : Number(val); }
+      return obj;
+    }
+
+    function applyInputs(values){
+      for(const id of inputIds){ const v = values?.[id]; if(v===null||v===undefined||Number.isNaN(v)){} else { inputs[id].value=v; } }
+    }
+
+    function loadLastInputs(){
+      try{ const raw=localStorage.getItem(LS_INPUTS_KEY); if(!raw) return false; const data=JSON.parse(raw); applyInputs(data); return true; }catch{ return false; }
+    }
+
+    const autosaveInputs = debounce(()=>{ try{ localStorage.setItem(LS_INPUTS_KEY, JSON.stringify(getInputsSnapshot())); setStatus('Inputs autosaved'); }catch{ setStatus('Autosave failed', true);} }, 600);
+
+    function attachInputAutosave(){ for(const id of inputIds){ inputs[id].addEventListener('input', autosaveInputs); } }
+
+    // ---------- Core Compute ----------
+    function compute(){
+      // collect inputs with defaults
+      const v = Object.fromEntries(inputIds.map(id=>[id, toNum(inputs[id].value || inputs[id].placeholder || defaults[id], defaults[id]) ]));
+
+      // Down / Loan
+      const down = v.purchasePrice * (v.downPaymentPct/100);
+      const loan = Math.max(0, v.purchasePrice - down);
+
+      // Mortgage P&I
+      const n = Math.max(1, Math.round(v.loanTermYears*12));
+      const r = (v.interestRatePct/100)/12;
+      const pmt = r<=0 ? (loan/n) : loan * (r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+
+      // Base income (month 1)
+      const baseRentMo = Math.max(0, v.monthlyRent);
+      const baseOtherIncMo = Math.max(0, v.otherIncomeMo);
+      const vacPct = v.vacancyPct/100;
+      const mgmtPct = v.managementPct/100;
+
+      // Base expenses (month 1)
+      const baseTaxYr = Math.max(0, v.annualTaxes);
+      const baseInsYr = Math.max(0, v.annualInsurance);
+      const baseMaintMo = Math.max(0, v.maintenanceMonthly);
+      const baseHoaMo = Math.max(0, v.hoaMonthly);
+      const baseUtilMo = Math.max(0, v.utilitiesMonthly);
+      const baseOtherExpMo = Math.max(0, v.otherExpensesMonthly);
+
+      // Custom lines arrays snapshot (Year 1 bases)
+      const incLines = incomeItems.map(it=>({label:it.label||'Income', amount:toNum(it.amount,0), period:it.period||'monthly', growthPct:toNum(it.growthPct,0)}));
+      const expLines = expenseItems.map(it=>({label:it.label||'Expense', amount:toNum(it.amount,0), period:it.period||'monthly', growthPct:toNum(it.growthPct,0)}));
+
+      // Year 1 current monthly totals
+      const customIncMo = incLines.reduce((s,it)=> s + (it.period==='annual' ? it.amount/12 : it.amount), 0);
+      const customExpMo = expLines.reduce((s,it)=> s + (it.period==='annual' ? it.amount/12 : it.amount), 0);
+
+      const grossMo = Math.max(0, baseRentMo + baseOtherIncMo + customIncMo);
+      const vacMo   = grossMo * vacPct;
+      const egiMo   = Math.max(0, grossMo - vacMo);
+
+      const mgmtMo  = baseRentMo * mgmtPct; // tied to rent only
+      const taxMo   = baseTaxYr/12;
+      const insMo   = baseInsYr/12;
+
+      const opExMo  = mgmtMo + baseMaintMo + taxMo + insMo + baseHoaMo + baseUtilMo + baseOtherExpMo + customExpMo;
+      const noiMo   = egiMo - opExMo;
+      const cfMo    = noiMo - pmt;
+      const cfYr    = cfMo*12;
+
+      const initialCash = down + v.closingCosts + v.renovationCosts;
+      const coc = initialCash>0 ? (cfYr/initialCash)*100 : null;
+
+      // Long-term (property value only)
+      const fv = v.purchasePrice * Math.pow(1 + (v.appreciationPct/100), Math.max(0, v.holdYears||0));
+      const totalReturnPct = initialCash>0 ? (((fv - v.purchasePrice) + (cfYr * v.holdYears)) / initialCash) * 100 : null;
+
+      return { v, down, loan, pmt,
+        // current-year (Y1) snapshot (monthly)
+        grossMo, vacMo, egiMo, mgmtMo, taxMo, insMo, opExMo, noiMo, cfMo, cfYr,
+        customIncMo, customExpMo,
+        // components
+        baseRentMo, baseOtherIncMo, baseMaintMo, baseHoaMo, baseUtilMo, baseOtherExpMo,
+        initialCash, coc, fv, totalReturnPct,
+        incLines, expLines
+      };
+    }
+
+    // ---------- Projection Builder ----------
+    function buildProjection(res){
+      const v = res.v;
+      const years = Math.max(1, v.holdYears||1);
+      const rg = v.rentGrowthPct/100;
+      const og = v.otherIncomeGrowthPct/100;
+      const tg = v.taxesGrowthPct/100;
+      const ig = v.insuranceGrowthPct/100;
+      const mg = v.maintenanceGrowthPct/100;
+      const hg = v.hoaGrowthPct/100;
+      const ug = v.utilitiesGrowthPct/100;
+      const og2= v.otherExpensesGrowthPct/100;
+      const vacPct = v.vacancyPct/100;
+      const mgmtPct= v.managementPct/100;
+
+      function grow(base, g, yIndex){ return base * Math.pow(1+g, yIndex); } // yIndex: 0-based (Year1 -> 0)
+
+      const rows = [];
+      for(let y=0;y<years;y++){
+        const rentMo = grow(res.baseRentMo, rg, y);
+        const otherMo= grow(res.baseOtherIncMo, og, y);
+        // Custom income (each line own growth)
+        let customIncMo = 0; res.incLines.forEach(it=>{ const base = (it.period==='annual'? it.amount/12 : it.amount); customIncMo += grow(base, (it.growthPct||0)/100, y); });
+        const grossMo = Math.max(0, rentMo + otherMo + customIncMo);
+        const vacMo = grossMo * vacPct;
+        const egiMo = Math.max(0, grossMo - vacMo);
+
+        // Expenses (mgmt tied to rent level each year)
+        const mgmtMo = rentMo * mgmtPct;
+        const taxMo  = grow(res.taxMo*12, tg, y)/12;   // store as annual->monthly growth for clarity
+        const insMo  = grow(res.insMo*12, ig, y)/12;
+        const maintMo= grow(res.baseMaintMo, mg, y);
+        const hoaMo  = grow(res.baseHoaMo, hg, y);
+        const utilMo = grow(res.baseUtilMo, ug, y);
+        const otherExpMo = grow(res.baseOtherExpMo, og2, y);
+        let customExpMo = 0; res.expLines.forEach(it=>{ const base = (it.period==='annual'? it.amount/12 : it.amount); customExpMo += grow(base, (it.growthPct||0)/100, y); });
+
+        const opExMo = mgmtMo + maintMo + taxMo + insMo + hoaMo + utilMo + otherExpMo + customExpMo;
+        const noiMo  = egiMo - opExMo;
+        const cfMo   = noiMo - res.pmt;
+
+        rows.push({
+          year: y+1,
+          grossYr: grossMo*12,
+          vacYr:   vacMo*12,
+          egiYr:   egiMo*12,
+          opExYr:  opExMo*12,
+          noiYr:   noiMo*12,
+          debtYr:  res.pmt*12,
+          cfYr:    cfMo*12,
+          value:   v.purchasePrice * Math.pow(1+(v.appreciationPct/100), y+1)
+        });
+      }
+      return rows;
+    }
+
+    // ---------- Rendering ----------
+    function render(results){
+      if(!results) return;
+      $('resCashFlowMo').textContent = fmtCur(results.cfMo);
+      $('resCashFlowYr').textContent = fmtCur(results.cfYr);
+      $('resCoC').textContent = results.coc==null ? '—' : fmtPct(results.coc);
+      $('kpiAriaLive').textContent = `Monthly Cash Flow ${fmtCur(results.cfMo)}, Annual Cash Flow ${fmtCur(results.cfYr)}, Cash-on-Cash ${results.coc==null?'not available':fmtPct(results.coc)}`;
+
+      const rows=[]; const push=(label,val,opts={})=>{ rows.push(`<tr><td>${opts.section?`<span class=section>${label}</span>`:label}</td><td class="${opts.total?'tot':''}">${val}</td></tr>`); };
+
+      // Income
+      push('Income','',{section:true});
+      push('Gross Scheduled Rent', fmtCur(results.baseRentMo));
+      push('Other Income', fmtCur(results.baseOtherIncMo));
+      if(results.customIncMo>0) push('Custom Income (Monthly total)', fmtCur(results.customIncMo));
+      push('Vacancy Loss', `(${fmtCur(results.vacMo)})`);
+      push('Effective Gross Income (EGI)', fmtCur(results.egiMo), {total:true});
+
+      // OpEx
+      push('Operating Expenses (monthly)','',{section:true});
+      push('Management', fmtCur(results.mgmtMo));
+      push('Maintenance', fmtCur(results.baseMaintMo));
+      push('Taxes', fmtCur(results.taxMo));
+      push('Insurance', fmtCur(results.insMo));
+      push('HOA', fmtCur(results.baseHoaMo));
+      push('Utilities', fmtCur(results.baseUtilMo));
+      push('Other Expenses', fmtCur(results.baseOtherExpMo));
+      if(results.customExpMo>0) push('Custom Expenses (Monthly total)', fmtCur(results.customExpMo));
+      push('Total Operating Expenses (OpEx)', fmtCur(results.opExMo), {total:true});
+
+      // Financing & Performance
+      push('Financing','',{section:true});
+      push('Mortgage (P&I)', fmtCur(results.pmt), {total:true});
+
+      push('Performance','',{section:true});
+      push('Net Operating Income (NOI)', fmtCur(results.noiMo), {total:true});
+      push('Cash Flow (Before Taxes)', fmtCur(results.cfMo), {total:true});
+
+      push('Investment & Returns','',{section:true});
+      push('Initial Cash Invested', fmtCur(results.initialCash), {total:true});
+      push('Cash-on-Cash (%)', results.coc==null?'—':fmtPct(results.coc), {total:true});
+
+      $('financeTableBody').innerHTML = rows.join('');
+
+      $('resFutureValue').textContent = fmtCur(results.fv);
+      $('resTotalReturnPct').textContent = results.totalReturnPct==null ? '—' : fmtPct(results.totalReturnPct);
+
+      renderProjectionTable(results);
+    }
+
+    function renderProjectionTable(results){
+      const rows = buildProjection(results);
+      const head = ['<tr><th>Line Item</th>'];
+      rows.forEach(r=> head.push(`<th>Year ${r.year}</th>`));
+      head.push('</tr>');
+      $('projectionTableHead').innerHTML = head.join('');
+
+      function line(label, vals, neg=false){ return `<tr><td>${label}</td>${vals.map(v=>`<td>${neg? '('+fmtCur(v)+')' : fmtCur(v)}</td>`).join('')}</tr>`; }
+
+      const gross = rows.map(r=>r.grossYr);
+      const vac   = rows.map(r=>r.vacYr);
+      const egi   = rows.map(r=>r.egiYr);
+      const opex  = rows.map(r=>r.opExYr);
+      const noi   = rows.map(r=>r.noiYr);
+      const debt  = rows.map(r=>r.debtYr);
+      const cf    = rows.map(r=>r.cfYr);
+      const val   = rows.map(r=>r.value);
+
+      const body = [];
+      body.push(line('Gross Yearly Income', gross));
+      body.push(line('Vacancy Loss', vac, true));
+      body.push(line('Effective Gross Income', egi));
+      body.push(line('Operating Expenses', opex, true));
+      body.push(line('Net Operating Income (NOI)', noi));
+      body.push(line('Debt Service (P&I)', debt, true));
+      body.push(line('Net Cash Flow (Before Taxes)', cf));
+      body.push(line('Property Value (End of Year)', val));
+
+      $('projectionTableBody').innerHTML = body.join('');
+    }
+
+    // ---------- Projections Save/Load ----------
+    function loadProjections(){ try{ const raw=localStorage.getItem(LS_PROJ_KEY); return raw? JSON.parse(raw):[]; }catch{ return []; } }
+    function saveProjections(list){ try{ localStorage.setItem(LS_PROJ_KEY, JSON.stringify(list)); }catch{} }
+    function refreshProjectionSelect(){ const list=loadProjections(); const sel=$('loadProjectionSelect'); const cur=sel.value; sel.innerHTML='<option value="">Load projection…</option>'+list.map(p=>`<option value="${encodeURIComponent(p.name)}">${p.name}</option>`).join(''); if(cur) sel.value=cur; }
+    function onSaveProjection(){ const name=prompt('Name this projection:'); if(!name) return; const list=loadProjections(); const payload={ name, createdAt:new Date().toISOString(), inputs:getInputsSnapshot(), incomeItems, expenseItems }; const idx=list.findIndex(p=>p.name.toLowerCase()===name.toLowerCase()); if(idx>=0) list[idx]=payload; else list.push(payload); saveProjections(list); refreshProjectionSelect(); $('loadProjectionSelect').value=encodeURIComponent(name); setInfo(`Saved projection "${name}"`); }
+    function onLoadProjection(){ const sel=$('loadProjectionSelect'); if(!sel.value){ setInfo('Select a projection to load.'); return; } const name=decodeURIComponent(sel.value); const list=loadProjections(); const found=list.find(p=>p.name===name); if(!found){ setInfo('Projection not found.'); return; } applyInputs(found.inputs||{}); incomeItems = Array.isArray(found.incomeItems)? found.incomeItems : []; expenseItems = Array.isArray(found.expenseItems)? found.expenseItems : []; saveLines(); renderLines(); const results=compute(); render(results); setInfo(`Loaded projection "${name}"`); }
+    function onDeleteProjection(){ const sel=$('loadProjectionSelect'); if(!sel.value){ setInfo('Select a projection to delete.'); return; } const name=decodeURIComponent(sel.value); const list=loadProjections().filter(p=>p.name!==name); saveProjections(list); refreshProjectionSelect(); sel.value=''; setInfo(`Deleted projection "${name}"`); }
+
+    // ---------- Status Helpers ----------
+    function setStatus(msg,isError=false){ $('statusBar').textContent=msg; $('statusBar').style.color=isError? '#ffb3c2' : 'var(--sub)'; }
+    function setInfo(msg){ const el=document.getElementById('statusBar'); el.textContent=msg; el.style.color='var(--sub)'; }
+
+    // ---------- Init ----------
+    function seedPlaceholders(){ for(const id of inputIds){ if(!inputs[id].placeholder) inputs[id].placeholder=String(defaults[id]??0); } }
+
+    function initialLoad(){
+      seedPlaceholders();
+      const restored = loadLastInputs();
+      if(!restored){ for(const id of inputIds){ if(inputs[id].value==='') inputs[id].value=defaults[id]; } }
+      loadLines(); renderLines(); refreshProjectionSelect();
+      const results = compute(); render(results);
+      setStatus('Ready');
+    }
+
+    function bindActions(){
+      attachInputAutosave();
+      $('calcBtn').addEventListener('click', ()=>{ const results=compute(); render(results); setStatus('Calculated'); });
+      $('calcBtn2').addEventListener('click', ()=>{ const results=compute(); render(results); setStatus('Calculated'); });
+      $('saveProjectionBtn').addEventListener('click', ()=>{ onSaveProjection(); });
+      $('saveProjectionBtn2').addEventListener('click', ()=>{ onSaveProjection(); });
+      $('loadProjectionSelect').addEventListener('change', onLoadProjection);
+      $('deleteProjectionBtn').addEventListener('click', onDeleteProjection);
+      $('addIncomeBtn').addEventListener('click', ()=>{ incomeItems.push({label:'New income', amount:0, period:'monthly', growthPct:0}); saveLines(); renderLines(); setStatus('Income line added'); });
+      $('addExpenseBtn').addEventListener('click', ()=>{ expenseItems.push({label:'New expense', amount:0, period:'monthly', growthPct:0}); saveLines(); renderLines(); setStatus('Expense line added'); });
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{ initialLoad(); bindActions(); });
+  </script>
+</body>
+</html>

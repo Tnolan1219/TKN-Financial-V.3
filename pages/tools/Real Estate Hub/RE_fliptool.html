@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Flip Deal Calculator — Hard Money vs All Cash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <a class="btn" href="Re_home.html">Back</a>
+  <link rel="stylesheet" href="/style.css" />
+
+
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111831; --muted:#1a2244; --text:#e8ecff; --sub:#b7c2ff; --accent:#7aa2ff; --good:#3ddc97; --warn:#ffd166; --bad:#ef476f; --card:#121a36;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      background:linear-gradient(180deg,#0a0f1e 0%,#0b1020 100%);
+      color:var(--text)
+    }
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1200px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 0deg,#6ea8ff,#7aa2ff,#c6f5d4);box-shadow:0 8px 24px rgba(122,162,255,.25)}
+    h1{font-size:clamp(20px,2.2vw,28px);margin:0;font-weight:700;letter-spacing:.2px}
+    .subtitle{color:var(--sub);font-size:14px}
+
+    nav{display:flex;flex-wrap:wrap;gap:8px;background:rgba(255,255,255,.03);padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    .tab{padding:10px 14px;border-radius:12px;font-weight:600;background:transparent;border:1px solid transparent;color:var(--sub);cursor:pointer}
+    .tab[aria-selected="true"]{background:var(--panel);border-color:#24306b;color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 8px 18px rgba(0,0,0,.25)}
+
+    .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    .muted{color:var(--sub);font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .chip{background:var(--muted);border:1px solid rgba(255,255,255,.08);padding:6px 10px;border-radius:999px;font-size:12px}
+
+    .field{display:grid;gap:6px;margin:10px 0;min-width:220px;flex:1}
+    .field label{font-size:13px;color:var(--sub)}
+    .field input,.field select{
+      width:100%;padding:10px 12px;background:#0d1330;border:1px solid #26306a;border-radius:12px;color:var(--text);outline:none
+    }
+    .field input:focus,.field select:focus{border-color:var(--accent)}
+
+    .btn {
+      display:inline-block;margin-top:12px;padding:.7rem 1.1rem;border-radius:999px;
+      background:var(--accent-gradient, linear-gradient(90deg,#60a5fa 0%,#818cf8 100%));
+      color:#0a0a0a;font-weight:800;text-decoration:none;text-align:center;font-size:1.01em;
+      box-shadow:0 6px 20px rgba(96,165,250,.26);transition:background .18s, box-shadow .18s, color .18s;border:none;
+    }
+    .btn:hover{background:linear-gradient(90deg,#818cf8 0%,#60a5fa 100%);color:#fff;box-shadow:0 10px 32px rgba(96,165,250,.18)}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid #2b3a7a}
+    .btn.ghost:hover{background:var(--accent);color:#0a0a0a;border-color:var(--accent)}
+
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+    .kpi .label{font-size:12px;color:var(--sub)}
+    .kpi .value{font-size:22px;font-weight:800}
+
+    .divider{height:1px;background:linear-gradient(90deg,transparent,#27306a,transparent);margin:10px 0}
+    .inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .right{margin-left:auto}
+
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th{font-size:12px;color:var(--sub);text-align:left}
+    td,th{padding:8px 10px}
+    tr{background:#0f1633;border:1px solid #26306a}
+    tr td:first-child,tr th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+    tr td:last-child,tr th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+    footer{margin:28px 0 10px;color:var(--sub);font-size:12px}
+    .warn{color:var(--warn)}
+    .good{color:var(--good)}
+    .bad{color:var(--bad)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+        <div class="app-title">House Flip Tool</div>
+          <div class="subtitle">Hard money or all cash. Full expense focus, reliable returns.</div>
+        </div>
+      </div>
+      <nav aria-label="Quick actions">
+        <button id="calcBtnTop" class="tab" aria-selected="true">Calculate</button>
+        <button id="resetBtnTop" class="tab">Reset</button>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <!-- Inputs -->
+      <section class="card">
+        <h2>Inputs</h2>
+        <div class="row">
+          <div class="field">
+            <label for="address">Property label</label>
+            <input id="address" placeholder="123 Main St, Philly (optional)" />
+          </div>
+          <div class="field">
+            <label for="financingType">Financing type</label>
+            <select id="financingType">
+              <option value="hard">Hard money loan</option>
+              <option value="cash">All cash</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="holdingMonths">Project length (months)</label>
+            <input id="holdingMonths" type="number" value="6" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h3 class="muted">Property & resale</h3>
+        <div class="row">
+          <div class="field">
+            <label for="purchasePrice">Purchase price</label>
+            <input id="purchasePrice" type="number" value="250000" />
+          </div>
+          <div class="field">
+            <label for="salePrice">Expected sale price (ARV)</label>
+            <input id="salePrice" type="number" value="380000" />
+          </div>
+          <div class="field">
+            <label for="purchaseClosingPct">Buyer closing costs % (purchase)</label>
+            <input id="purchaseClosingPct" type="number" value="2.0" />
+          </div>
+          <div class="field">
+            <label for="saleCommissionPct">Agent commission % (sale)</label>
+            <input id="saleCommissionPct" type="number" value="5.5" />
+          </div>
+          <div class="field">
+            <label for="saleClosingPct">Seller closing costs % (sale)</label>
+            <input id="saleClosingPct" type="number" value="1.5" />
+          </div>
+          <div class="field">
+            <label for="buyerConcessionsPct">Buyer concessions % (sale)</label>
+            <input id="buyerConcessionsPct" type="number" value="0.5" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h3 class="muted">Rehab & project costs</h3>
+        <div class="row">
+          <div class="field">
+            <label for="rehabBudget">Rehab budget</label>
+            <input id="rehabBudget" type="number" value="65000" />
+          </div>
+          <div class="field">
+            <label for="contingencyPct">Contingency % of rehab</label>
+            <input id="contingencyPct" type="number" value="10" />
+          </div>
+          <div class="field">
+            <label for="permitsCost">Permits/inspections</label>
+            <input id="permitsCost" type="number" value="1500" />
+          </div>
+          <div class="field">
+            <label for="stagingCost">Staging</label>
+            <input id="stagingCost" type="number" value="1200" />
+          </div>
+          <div class="field">
+            <label for="marketingCost">Marketing/photos</label>
+            <input id="marketingCost" type="number" value="800" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h3 class="muted">Holding costs (per month)</h3>
+        <div class="row">
+          <div class="field"><label for="taxesMo">Property tax</label><input id="taxesMo" type="number" value="250" /></div>
+          <div class="field"><label for="insuranceMo">Insurance</label><input id="insuranceMo" type="number" value="120" /></div>
+          <div class="field"><label for="utilitiesMo">Utilities</label><input id="utilitiesMo" type="number" value="160" /></div>
+          <div class="field"><label for="hoaMo">HOA</label><input id="hoaMo" type="number" value="0" /></div>
+          <div class="field"><label for="otherHoldingMo">Other holding</label><input id="otherHoldingMo" type="number" value="0" /></div>
+        </div>
+
+        <div id="hardMoneyBlock">
+          <div class="divider"></div>
+          <h3 class="muted">Hard money loan</h3>
+          <div class="row">
+            <div class="field">
+              <label for="ratePct">Interest rate % (annual, IO)</label>
+              <input id="ratePct" type="number" value="11.5" />
+            </div>
+            <div class="field">
+              <label for="pointsPct">Points % (upfront)</label>
+              <input id="pointsPct" type="number" value="2.0" />
+            </div>
+            <div class="field">
+              <label for="originationFee">Origination/underwriting (flat)</label>
+              <input id="originationFee" type="number" value="1200" />
+            </div>
+            <div class="field">
+              <label for="ltvPct">Max LTV % (purchase)</label>
+              <input id="ltvPct" type="number" value="80" />
+            </div>
+            <div class="field">
+              <label for="ltcPct">Max LTC % (purchase + rehab)</label>
+              <input id="ltcPct" type="number" value="85" />
+            </div>
+            <div class="field">
+              <label for="financeRehab">Finance rehab within loan?</label>
+              <select id="financeRehab">
+                <option value="yes">Yes (draws)</option>
+                <option value="no" selected>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="inline">
+          <button id="calcBtn" class="btn">Calculate</button>
+          <button id="resetBtn" class="btn ghost">Reset</button>
+          <span id="status" class="muted right">Ready</span>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="card">
+        <h2>Results</h2>
+
+
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="label">Total cash required</div>
+            <div id="kpiCashNeeded" class="value">$0</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Total project cost</div>
+            <div id="kpiProjectCost" class="value">$0</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Net profit</div>
+            <div id="kpiProfit" class="value">$0</div>
+          </div>
+          <div class="kpi">
+            <div class="label">ROI / Annualized</div>
+            <div id="kpiROI" class="value">—</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h3 class="muted">Finance breakdown</h3>
+        <table aria-label="Finance breakdown">
+          <tbody id="financeTbody"></tbody>
+        </table>
+
+        <div class="divider"></div>
+        <h3 class="muted">Income statement to net cash</h3>
+        <table aria-label="Income statement">
+          <tbody id="statementTbody"></tbody>
+        </table>
+
+        <div class="divider"></div>
+        <h3 class="muted">Breakeven and offer guidance</h3>
+        <table aria-label="Guidance">
+          <tbody id="guidanceTbody"></tbody>
+        </table>
+
+        <div class="inline savebox">
+            <button id="saveProjectionBtn" class="btn ghost">Save Projection</button>
+            <select id="loadProjectionSelect" class="field" style="max-width:220px">
+                <option value="">Load projection…</option>
+            </select>
+            <button id="deleteProjectionBtn" class="btn ghost">Delete</button>
+            </div>
+            <div class="divider"></div>
+
+        <footer>Notes: Interest assumed interest-only on average outstanding loan balance (simplified at full amount). Sale costs scale with sale price. ROI is profit divided by total cash required; annualized uses project months.</footer>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const cur = n => new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n||0);
+    const cur2 = n => new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n||0);
+    const pct = n => (n===null||n===undefined||!isFinite(n)) ? '—' : (n*100).toFixed(1)+'%';
+    const num = (id, def=0) => {
+      const v = +($(id).value || 0);
+      return isFinite(v) ? v : def;
+    };
+
+    function toggleHardMoneyBlock(){
+      const type = $('financingType').value;
+      $('hardMoneyBlock').style.display = (type==='hard') ? 'block' : 'none';
+    }
+
+    function compute(){
+      // Inputs
+      const type = $('financingType').value; // 'hard' | 'cash'
+      const months = Math.max(1, num('holdingMonths', 6));
+
+      const purchasePrice = Math.max(0, num('purchasePrice'));
+      const salePrice     = Math.max(0, num('salePrice'));
+
+      const purchaseClosingPct = Math.max(0, num('purchaseClosingPct'))/100;
+      const saleCommissionPct  = Math.max(0, num('saleCommissionPct'))/100;
+      const saleClosingPct     = Math.max(0, num('saleClosingPct'))/100;
+      const buyerConcessionsPct= Math.max(0, num('buyerConcessionsPct'))/100;
+
+      const rehabBudget    = Math.max(0, num('rehabBudget'));
+      const contingencyPct = Math.max(0, num('contingencyPct'))/100;
+      const contingency    = rehabBudget * contingencyPct;
+
+      const permitsCost    = Math.max(0, num('permitsCost'));
+      const stagingCost    = Math.max(0, num('stagingCost'));
+      const marketingCost  = Math.max(0, num('marketingCost'));
+
+      const taxesMo        = Math.max(0, num('taxesMo'));
+      const insuranceMo    = Math.max(0, num('insuranceMo'));
+      const utilitiesMo    = Math.max(0, num('utilitiesMo'));
+      const hoaMo          = Math.max(0, num('hoaMo'));
+      const otherHoldingMo = Math.max(0, num('otherHoldingMo'));
+      const holdingFixedMo = taxesMo + insuranceMo + utilitiesMo + hoaMo + otherHoldingMo;
+      const holdingFixed   = holdingFixedMo * months;
+
+      // Financing (hard money)
+      const ratePct     = Math.max(0, num('ratePct'))/100;
+      const pointsPct   = Math.max(0, num('pointsPct'))/100;
+      const origination = Math.max(0, num('originationFee'));
+      const ltvPct      = Math.max(0, num('ltvPct'))/100;
+      const ltcPct      = Math.max(0, num('ltcPct'))/100;
+      const financeRehab= $('financeRehab').value === 'yes';
+
+      // Purchase closing costs
+      const purchaseClosing = purchasePrice * purchaseClosingPct;
+
+      // Determine loan amount if hard money
+      let loanByLTV = purchasePrice * ltvPct;
+      const totalProjectForLTC = purchasePrice + rehabBudget;
+      let loanByLTC = totalProjectForLTC * ltcPct;
+      let baseLoanCap = Math.min(loanByLTV, loanByLTC);
+
+      // How much of rehab is financed (if any)
+      let financedRehab = 0;
+      if (financeRehab) {
+        // amount above purchase that loan can cover
+        financedRehab = Math.max(0, baseLoanCap - purchasePrice);
+        financedRehab = Math.min(financedRehab, rehabBudget);
+      }
+
+      // Final loan amount
+      const loanAmount = (type==='hard') ? Math.min(baseLoanCap, purchasePrice + financedRehab) : 0;
+
+      // Points and interest (hard money only)
+      const pointsFee = (type==='hard') ? (loanAmount * pointsPct) : 0;
+      const monthlyRate = ratePct/12;
+      const interestTotal = (type==='hard') ? (loanAmount * monthlyRate * months) : 0;
+
+      // Cash components
+      const downPayment = (type==='hard') ? Math.max(0, purchasePrice - loanAmount) : purchasePrice;
+      const cashRehab   = (type==='hard') ? Math.max(0, rehabBudget - financedRehab) : rehabBudget;
+
+      // Sale transaction costs
+      const saleCostRate = saleCommissionPct + saleClosingPct + buyerConcessionsPct;
+      const saleCosts    = salePrice * saleCostRate;
+
+      // Total project cost (economic, not timing)
+      const economicProjectCost =
+        purchasePrice + purchaseClosing +
+        rehabBudget + contingency + permitsCost + stagingCost + marketingCost +
+        holdingFixed +
+        (type==='hard' ? (pointsFee + origination + interestTotal) : 0);
+
+      // Total cash required (out of pocket before sale)
+      const cashRequired =
+        downPayment + purchaseClosing +
+        cashRehab + contingency + permitsCost + stagingCost + marketingCost +
+        holdingFixed +
+        (type==='hard' ? (pointsFee + origination + interestTotal) : 0);
+
+      // Payoff at sale (principal)
+      const payoffPrincipal = loanAmount;
+
+      // Net proceeds at sale
+      const netProceeds = salePrice - saleCosts - payoffPrincipal;
+
+      // Net profit (project)
+      const profit = netProceeds - (cashRequired - (type==='hard' ? interestTotal : 0) + (type==='hard' ? interestTotal : 0));
+      // (the +/- interest collapses; shown expanded for clarity)
+
+      // ROI
+      const roi = cashRequired > 0 ? (profit / cashRequired) : null;
+      const annualized = (roi!=null && months>0) ? (Math.pow(1+roi, 12/months) - 1) : null;
+
+      // Breakeven sale price: P such that profit=0
+      // 0 = P - k*P - payoff - cashOutExSale
+      // => P = (payoff + cashOutExSale) / (1 - k)
+      const k = saleCostRate;
+      const cashOutExSale = cashRequired; // everything paid before sale
+      const breakevenPrice = (1 - k) > 0 ? (payoffPrincipal + cashOutExSale)/(1 - k) : null;
+
+      // MAO (all-cash approximation, target profit)
+      const targetProfit = Math.max(0, Math.round(salePrice * 0.08)); // heuristic default 8% of sale
+      const maoAllCash =
+        salePrice * (1 - k) -
+        (rehabBudget + contingency + permitsCost + stagingCost + marketingCost + holdingFixed) -
+        targetProfit;
+
+      return {
+        type, months,
+        purchasePrice, salePrice, purchaseClosingPct, purchaseClosing, saleCommissionPct, saleClosingPct, buyerConcessionsPct,
+        rehabBudget, contingencyPct, contingency, permitsCost, stagingCost, marketingCost,
+        holdingFixedMo, holdingFixed, taxesMo, insuranceMo, utilitiesMo, hoaMo, otherHoldingMo,
+        ratePct, pointsPct, origination, ltvPct, ltcPct, financeRehab,
+        loanAmount, financedRehab, pointsFee, interestTotal,
+        downPayment, cashRehab,
+        saleCostRate, saleCosts,
+        economicProjectCost,
+        cashRequired,
+        payoffPrincipal,
+        netProceeds,
+        profit, roi, annualized,
+        breakevenPrice,
+        maoAllCash, targetProfit
+      };
+    }
+
+    function render(){
+      const r = compute();
+
+      // KPIs
+      $('kpiCashNeeded').textContent = cur(r.cashRequired);
+      $('kpiProjectCost').textContent = cur(r.economicProjectCost);
+      $('kpiProfit').textContent = cur(r.profit);
+      $('kpiROI').textContent = (r.roi==null?'—':( (r.annualized!=null) ? `${(r.roi*100).toFixed(1)}% / ${(r.annualized*100).toFixed(1)}%` : `${(r.roi*100).toFixed(1)}%` ));
+
+      // Finance breakdown
+      const fb = [];
+      const push = (label, val, cls='') => fb.push(`<tr><td>${label}</td><td class="${cls}" style="text-align:right">${cur2(val)}</td></tr>`);
+      push('Purchase price', r.purchasePrice);
+      push('Buyer closing costs (purchase)', r.purchaseClosing);
+      if (r.type==='hard'){
+        push('Loan amount (hard money)', r.loanAmount);
+        push('Points (upfront)', r.pointsFee);
+        push('Origination/underwriting', r.origination);
+        push('Interest (project total)', r.interestTotal);
+      } else {
+        push('All-cash financing', 0);
+      }
+      push('Rehab budget', r.rehabBudget);
+      push('Contingency', r.contingency);
+      push('Permits/inspections', r.permitsCost);
+      push('Staging', r.stagingCost);
+      push('Marketing/photos', r.marketingCost);
+      push(`Holding costs (${r.months} mo)`, r.holdingFixed);
+      fb.push(`<tr><td><strong>Total cash required (pre-sale)</strong></td><td style="text-align:right"><strong>${cur2(r.cashRequired)}</strong></td></tr>`);
+      $('financeTbody').innerHTML = fb.join('');
+
+      // Income statement style (from sale price down to net cash)
+      const st = [];
+      const add = (label, val, cls='') => st.push(`<tr><td>${label}</td><td class="${cls}" style="text-align:right">${cur2(val)}</td></tr>`);
+      add('Sale price', r.salePrice);
+      add('Agent commission + seller costs + concessions', -r.saleCosts);
+      add('Loan payoff (principal)', -r.payoffPrincipal);
+      add('Net proceeds after sale', r.netProceeds, 'good');
+      add('Less: Total cash required (pre-sale)', -r.cashRequired);
+      add('Net profit', r.profit, r.profit>=0?'good':'bad');
+      $('statementTbody').innerHTML = st.join('');
+
+      // Guidance
+      const gd = [];
+      const saleCostPct = (r.saleCostRate*100).toFixed(1)+'%';
+      gd.push(`<tr><td>Sale cost rate (total)</td><td style="text-align:right">${saleCostPct}</td></tr>`);
+      gd.push(`<tr><td>Breakeven sale price</td><td style="text-align:right">${r.breakevenPrice?cur2(r.breakevenPrice):'—'}</td></tr>`);
+      gd.push(`<tr><td>Target profit (heuristic 8% of sale)</td><td style="text-align:right">${cur2(r.targetProfit)}</td></tr>`);
+      gd.push(`<tr><td>Maximum Allowable Offer (all-cash approximation)</td><td style="text-align:right">${cur2(r.maoAllCash)}</td></tr>`);
+      $('guidanceTbody').innerHTML = gd.join('');
+
+      $('status').textContent = 'Calculated';
+    }
+
+    function reset(){
+      const defaults = {
+        address: '', financingType:'hard', holdingMonths:6,
+        purchasePrice:250000, salePrice:380000, purchaseClosingPct:2.0, saleCommissionPct:5.5, saleClosingPct:1.5, buyerConcessionsPct:0.5,
+        rehabBudget:65000, contingencyPct:10, permitsCost:1500, stagingCost:1200, marketingCost:800,
+        taxesMo:250, insuranceMo:120, utilitiesMo:160, hoaMo:0, otherHoldingMo:0,
+        ratePct:11.5, pointsPct:2.0, originationFee:1200, ltvPct:80, ltcPct:85, financeRehab:'no'
+      };
+      Object.entries(defaults).forEach(([id,val])=>{
+        const el = $(id);
+        if (!el) return;
+        if (el.tagName==='SELECT') el.value = String(val);
+        else el.value = String(val);
+      });
+      toggleHardMoneyBlock();
+      render();
+      $('status').textContent = 'Reset';
+    }
+
+    // Wire up
+    document.addEventListener('DOMContentLoaded', ()=>{
+      toggleHardMoneyBlock();
+      render();
+
+      // Change handlers
+      ['financingType','holdingMonths','purchasePrice','salePrice','purchaseClosingPct','saleCommissionPct','saleClosingPct','buyerConcessionsPct','rehabBudget','contingencyPct','permitsCost','stagingCost','marketingCost','taxesMo','insuranceMo','utilitiesMo','hoaMo','otherHoldingMo','ratePct','pointsPct','originationFee','ltvPct','ltcPct','financeRehab'].forEach(id=>{
+        const el=$(id); if(!el) return;
+        el.addEventListener('change', ()=>{ if(id==='financingType') toggleHardMoneyBlock(); render(); });
+        el.addEventListener('input', ()=>{ /* live typing noop */ });
+      });
+
+      $('calcBtn').addEventListener('click', render);
+      $('calcBtnTop').addEventListener('click', render);
+      $('resetBtn').addEventListener('click', reset);
+      $('resetBtnTop').addEventListener('click', reset);
+    });
+    
+    /* =========================
+   Projections Save/Load
+   ========================= */
+const PROJ_KEY = 'flip_calc_projections_v1';
+
+function loadProjections(){
+  try { return JSON.parse(localStorage.getItem(PROJ_KEY)) || []; }
+  catch(e){ return []; }
+}
+function saveProjections(list){
+  localStorage.setItem(PROJ_KEY, JSON.stringify(list));
+}
+function refreshProjectionSelect(){
+  const sel = $('loadProjectionSelect');
+  const list = loadProjections();
+  sel.innerHTML = '<option value="">Load projection…</option>' +
+    list.map(p=>`<option value="${encodeURIComponent(p.name)}">${p.name}</option>`).join('');
+}
+
+function onSaveProjection(){
+  const name = prompt('Name this projection:');
+  if(!name) return;
+  const results = compute();
+  const inputs = {};
+  document.querySelectorAll('input,select').forEach(el=>{
+    inputs[el.id] = el.value;
+  });
+  const payload = { name, createdAt:new Date().toISOString(), inputs, results };
+  let list = loadProjections();
+  const idx = list.findIndex(p=>p.name.toLowerCase()===name.toLowerCase());
+  if(idx>=0) list[idx]=payload; else list.push(payload);
+  saveProjections(list);
+  refreshProjectionSelect();
+  $('loadProjectionSelect').value = encodeURIComponent(name);
+  $('status').textContent = `Saved "${name}"`;
+}
+
+function onLoadProjection(){
+  const sel = $('loadProjectionSelect');
+  if(!sel.value) return;
+  const name = decodeURIComponent(sel.value);
+  const list = loadProjections();
+  const proj = list.find(p=>p.name===name);
+  if(!proj) return;
+  Object.entries(proj.inputs).forEach(([id,val])=>{
+    const el=$(id); if(el) el.value=val;
+  });
+  toggleHardMoneyBlock();
+  render();
+  $('status').textContent = `Loaded "${name}"`;
+}
+
+function onDeleteProjection(){
+  const sel = $('loadProjectionSelect');
+  if(!sel.value) return;
+  const name = decodeURIComponent(sel.value);
+  let list = loadProjections().filter(p=>p.name!==name);
+  saveProjections(list);
+  refreshProjectionSelect();
+  sel.value='';
+  $('status').textContent = `Deleted "${name}"`;
+}
+
+// Wire up
+document.addEventListener('DOMContentLoaded', ()=>{
+  refreshProjectionSelect();
+  $('saveProjectionBtn').addEventListener('click', onSaveProjection);
+  $('loadProjectionSelect').addEventListener('change', onLoadProjection);
+  $('deleteProjectionBtn').addEventListener('click', onDeleteProjection);
+});
+
+  </script>
+
+</body>
+</html>

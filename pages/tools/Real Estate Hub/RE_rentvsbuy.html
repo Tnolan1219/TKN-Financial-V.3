@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rent vs Buy</title>
+  <a class="btn" href="Re_home.html">Back</a>
+  <meta name="description" content="Guide for military members to decide whether to buy or rent based on duty station and timeline, with quick link to send specs via Google Form." />
+
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111831; --muted:#1a2244; --text:#e8ecff; --sub:#b7c2ff; --accent:#7aa2ff; --good:#3ddc97; --warn:#ffd166; --bad:#ef476f; --card:#121a36;
+      --rad:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#0a0f1e 0%,#0b1020 100%);color:var(--text)}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 0deg,#6ea8ff,#7aa2ff,#c6f5d4);box-shadow:0 8px 24px rgba(122,162,255,.25)}
+    h1{font-size:clamp(20px,2.2vw,28px);margin:0;font-weight:700;letter-spacing:.2px}
+    .subtitle{color:var(--sub);font-size:14px}
+
+    nav{display:flex;flex-wrap:wrap;gap:8px;background:rgba(255,255,255,.03);padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    .tab{padding:10px 14px;border-radius:12px;font-weight:600;background:transparent;border:1px solid transparent;color:var(--sub);cursor:pointer}
+    .tab[aria-current="page"]{background:var(--panel);border-color:#24306b;color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 8px 18px rgba(0,0,0,.25)}
+
+    .hero{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:calc(var(--rad) + 2px);padding:18px;box-shadow:var(--shadow)}
+    .hero h2{margin:0 0 6px}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+
+    .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:18px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--rad);padding:16px;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:transform .18s, box-shadow .18s, border-color .18s, background .18s}
+    .card:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 16px 48px rgba(60,100,200,.18);border-color:var(--accent);background:linear-gradient(120deg, rgba(96,165,250,.08) 0%, var(--card) 100%)}
+    .card h3{margin:0 0 10px}
+
+    .field{display:grid;gap:6px;margin:8px 0}
+    .field label{font-size:13px;color:var(--sub)}
+    .field input,.field select,.field textarea{width:100%;padding:10px 12px;background:#0d1330;border:1px solid #26306a;border-radius:12px;color:var(--text);outline:none}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+
+    .btn{display:inline-block;margin-top:8px;padding:.6rem 1rem;border-radius:999px;background:linear-gradient(90deg,#60a5fa 0%,#818cf8 100%);color:#0a0a0a;font-weight:800;text-align:center;font-size:.98em;box-shadow:0 6px 20px rgba(96,165,250,.26);border:none;cursor:pointer}
+    .btn:hover{filter:brightness(1.06)}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid #2b3a7a}
+
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,.08);background:var(--muted)}
+
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th{font-size:12px;color:var(--sub);text-align:left}
+    td,th{padding:8px 10px}
+    tr{background:#0f1633;border:1px solid #26306a}
+    tr td:first-child,tr th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+    tr td:last-child,tr th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+
+    footer{margin:28px 0 10px;color:var(--sub);font-size:12px}
+
+    /* Accessibility */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    #recSummary[aria-live]{min-height:1.2em}
+  </style>
+</head>
+<body>
+  <a href="#main" class="sr-only">Skip to content</a>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Looking to Buy or Rent</h1>
+          <a class="btn" href="https://forms.gle/AjncTfs8BSL6Rxav8">Contact a Local Agent</a>
+
+          <div class="subtitle">Quick, objective guidance for service members based on your duty station and timeline.</div>
+        </div>
+      </div>
+
+    </header>
+
+    <section class="hero" id="hero">
+      <h2>Should you buy or rent at your next station?</h2>
+      <p class="subtitle">Answer a few inputs. We’ll compare the effective cost of renting vs. buying with simple, transparent assumptions.</p>
+      <div class="card" style="margin-top:12px">
+  <h3>Understanding Buy vs. Rent</h3>
+  <p>
+    Buying and renting both have trade-offs. The right choice often depends on your <strong>time on station, PCS risk, and local housing market</strong>.
+  </p>
+  <ul>
+    <li><strong>Buying:</strong> Builds equity over time and can take advantage of VA Loan benefits with little or no down payment. Best suited for longer duty assignments or strong rental demand if you PCS.</li>
+    <li><strong>Renting:</strong> Offers maximum flexibility and lower upfront costs. Ideal if your assignment is short, your PCS risk is high, or if the housing market looks uncertain.</li>
+    <li><strong>Key Considerations:</strong> Expected length of stay, monthly BAH versus market rents, and your willingness to manage a property after PCS.</li>
+  </ul>
+  <p class="subtitle">
+    Use the calculator below with your BAH, rent, and station details to see how the numbers compare for you.
+  </p>
+</div>
+
+      <div class="cta">
+        <a class="btn" href="#tool">Get Started</a>
+        <a class="btn ghost" href="#guidance">How we decide</a>
+      </div>
+    </section>
+
+    <main id="main" class="grid" role="main">
+      <!-- Left: Inputs -->
+      <section id="tool" class="card" aria-labelledby="inputs-title">
+        <h3 id="inputs-title">Inputs</h3>
+        <div class="row">
+          <div class="field" style="flex:1 1 280px">
+            <label for="station">Duty station</label>
+            <select id="station"></select>
+          </div>
+          <div class="field" style="flex:1 1 200px">
+            <label for="months">Expected time on station (months)</label>
+            <select id="months">
+              <option value="12">12</option>
+              <option value="24">24</option>
+              <option value="36" selected>36</option>
+              <option value="48">48+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1 1 200px">
+            <label for="bah">Monthly BAH (post-tax)</label>
+            <input id="bah" type="number" inputmode="decimal" placeholder="e.g., 3200" />
+          </div>
+          <div class="field" style="flex:1 1 200px">
+            <label for="rent">Expected monthly rent</label>
+            <input id="rent" type="number" inputmode="decimal" placeholder="e.g., 2800" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1 1 220px">
+            <label for="price">Target home price</label>
+            <input id="price" type="number" inputmode="decimal" placeholder="e.g., 550000" />
+          </div>
+          <div class="field" style="flex:1 1 160px">
+            <label for="downPct">Down payment (%)</label>
+            <input id="downPct" type="number" inputmode="decimal" placeholder="e.g., 0" />
+            <button class="btn" id="setVA0" type="button" aria-label="Set 0 percent VA">0% VA</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1 1 160px">
+            <label for="rate">Mortgage rate (%)</label>
+            <input id="rate" type="number" inputmode="decimal" placeholder="e.g., 6.5" />
+          </div>
+          <div class="field" style="flex:1 1 160px">
+            <label for="taxPct">Property tax (% of value)</label>
+            <input id="taxPct" type="number" inputmode="decimal" placeholder="e.g., 1.1" />
+          </div>
+          <div class="field" style="flex:1 1 180px">
+            <label for="insHoa">Insurance + HOA (monthly)</label>
+            <input id="insHoa" type="number" inputmode="decimal" placeholder="e.g., 220" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1 1 180px">
+            <label for="pcs">PCS likelihood (12 mo)</label>
+            <select id="pcs">
+              <option>Low</option><option selected>Medium</option><option>High</option>
+            </select>
+          </div>
+          <div class="field" style="flex:1 1 200px">
+            <label for="vacancy">Vacancy risk if renting it out</label>
+            <select id="vacancy">
+              <option>Low</option><option selected>Medium</option><option>High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" style="flex:1 1 220px">
+            <label for="appreciation">Annual appreciation (%)</label>
+            <input id="appreciation" type="number" inputmode="decimal" value="2" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:8px">
+          <div class="pill" id="autosave">Autosaved</div>
+        </div>
+      </section>
+
+      <!-- Right: Results -->
+      <section class="card" aria-labelledby="results-title">
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <h3 id="results-title" style="margin:0">Results</h3>
+          <span class="pill" id="recChip">—</span>
+        </div>
+        <div id="recSummary" aria-live="polite" style="margin:6px 0 10px" class="subtitle"></div>
+
+        <h4 style="margin:8px 0 4px">12‑month comparison</h4>
+        <table>
+          <thead><tr><th>Item</th><th>Rent</th><th>Buy</th></tr></thead>
+          <tbody id="t12"></tbody>
+        </table>
+
+        <h4 style="margin:12px 0 4px">36‑month comparison</h4>
+        <table>
+          <thead><tr><th>Item</th><th>Rent</th><th>Buy</th></tr></thead>
+          <tbody id="t36"></tbody>
+        </table>
+
+        <div class="subtitle" style="margin-top:8px">Assumptions: 6% sell cost at month 36; appreciation default 2%/yr; simple tax shield approximation (interest × 22%). Edit inputs to see changes.</div>
+      </section>
+    </main>
+
+        <section id="resources" class="card" style="margin-top:12px" aria-labelledby="resources-title">
+      <h3 id="resources-title">Helpful Military Resources</h3>
+      <ul>
+        <li>
+          <a href="https://www.militaryonesource.mil/moving-housing/moving/pcs-and-moves/" target="_blank" rel="noopener">
+            PCS (Permanent Change of Station) Overview
+          </a> — Official guidance on PCS moves, entitlements, timelines, and checklists.
+        </li>
+        <li>
+          <a href="https://www.defensetravel.dod.mil/site/bah.cfm" target="_blank" rel="noopener">
+            Basic Allowance for Housing (BAH) — Policy & Rates
+          </a> — DoD’s hub for BAH policies, updates, and reference materials.
+        </li>
+        <li>
+          <a href="https://www.defensetravel.dod.mil/site/bahCalc.cfm" target="_blank" rel="noopener">
+            Duty Station BAH Calculator
+          </a> — Enter ZIP/duty station and paygrade to view current BAH amounts.
+        </li>
+      </ul>
+    </section>
+
+    
+    <section id="guidance" class="card" style="margin-top:12px" aria-labelledby="guide-title">
+      <h3 id="guide-title">Guidance</h3>
+      <div class="row">
+        <div style="flex:1 1 380px">
+          <h4>When it leans Buy</h4>
+          <ul>
+            <li>Time on station ≥ 36 months and effective buy cost ≤ ~92% of rent.</li>
+            <li>VA Loan available; plan to hold or rent out after PCS.</li>
+            <li>Reasonable property taxes/insurance and solid rental demand.</li>
+          </ul>
+        </div>
+        <div style="flex:1 1 380px">
+          <h4>When it leans Rent</h4>
+          <ul>
+            <li>Time on station &lt; 24 months or high PCS probability.</li>
+            <li>High sell costs vs. modest expected appreciation.</li>
+            <li>Uncertain vacancy risk if converting to rental.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2025 Real Estate Hub. Educational only; not financial, tax, or legal advice.</footer>
+  </div>
+
+  <script>
+    // ----------------------
+    // Config
+    // ----------------------
+    const LS_KEY = 'rehub_buy_or_rent_v1';
+    const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/YOUR_FORM_ID/viewform'; // TODO: replace with your form
+    // TODO: Map your Google Form field IDs here
+    const FORM_MAP = {
+      station: 'entry.111111',
+      months: 'entry.222222',
+      bah: 'entry.333333',
+      rent: 'entry.444444',
+      price: 'entry.555555',
+      downPct: 'entry.666666',
+      rate: 'entry.777777',
+      taxPct: 'entry.888888',
+      insHoa: 'entry.999999',
+      pcs: 'entry.101010',
+      vacancy: 'entry.111213',
+      appreciation: 'entry.121314'
+    };
+
+    // Duty-station presets (hints; user can override)
+    const PRESETS = [
+      { id:'Annapolis, MD', rentToPrice:0.0050, taxPct:1.1, insHoa:220 },
+      { id:'Camp Lejeune, NC', rentToPrice:0.0060, taxPct:0.8, insHoa:180 },
+      { id:'Camp Pendleton, CA', rentToPrice:0.0042, taxPct:1.2, insHoa:260 },
+      { id:'Quantico, VA', rentToPrice:0.0048, taxPct:1.0, insHoa:210 },
+      { id:'Norfolk, VA', rentToPrice:0.0052, taxPct:1.0, insHoa:200 },
+      { id:'San Diego, CA', rentToPrice:0.0040, taxPct:1.2, insHoa:280 },
+      { id:'Fort Liberty, NC', rentToPrice:0.0065, taxPct:0.9, insHoa:170 },
+      { id:'JBLM, WA', rentToPrice:0.0046, taxPct:1.1, insHoa:230 },
+      { id:'Pearl Harbor, HI', rentToPrice:0.0035, taxPct:0.9, insHoa:300 },
+      { id:'Tampa, FL', rentToPrice:0.0050, taxPct:1.0, insHoa:220 },
+      { id:'Other', rentToPrice:0.0050, taxPct:1.0, insHoa:200 }
+    ];
+
+    // ----------------------
+    // DOM
+    // ----------------------
+    const $ = (id) => document.getElementById(id);
+    const el = {
+      station: $('station'), months: $('months'), bah: $('bah'), rent: $('rent'), price: $('price'),
+      downPct: $('downPct'), rate: $('rate'), taxPct: $('taxPct'), insHoa: $('insHoa'), pcs: $('pcs'),
+      vacancy: $('vacancy'), appreciation: $('appreciation'),
+      t12: $('t12'), t36: $('t36'), recChip: $('recChip'), recSummary: $('recSummary'), autosave: $('autosave'),
+      setVA0: $('setVA0'), sendSpecs: $('sendSpecs')
+    };
+
+    // Populate station options
+    PRESETS.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p.id; o.textContent = p.id; el.station.appendChild(o);
+    });
+    el.station.value = 'Annapolis, MD';
+
+    // Helpers
+    const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+    const num = (x, d=0) => { const n = parseFloat(x); return isFinite(n) ? n : d; };
+    const money = (v) => v.toLocaleString(undefined, { style:'currency', currency:'USD', maximumFractionDigits:0 });
+
+    function pmts(principal, rateAnnualPct) {
+      // 30y fixed monthly payment
+      const r = num(rateAnnualPct)/100/12;
+      const n = 360;
+      if (r <= 0) return principal/n;
+      return principal * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+    }
+
+    function taxShieldEst(interestPaidAnnual){
+      // simple 22% bracket assumption
+      return 0.22 * interestPaidAnnual / 12;
+    }
+
+    function pcsPenaltyPct(months, pcs) {
+      // Flexibility penalty: higher for short tours/high PCS risk
+      let base = months < 24 ? 0.08 : months < 36 ? 0.05 : 0.03;
+      if (pcs === 'High') base += 0.02; else if (pcs === 'Low') base -= 0.01;
+      return clamp(base, 0.02, 0.12);
+    }
+
+    function vacancyAdj(vacancy) {
+      if (vacancy === 'High') return 0.08; if (vacancy === 'Low') return 0.02; return 0.05;
+    }
+
+    function calc() {
+      const s = PRESETS.find(p => p.id === el.station.value) || PRESETS[PRESETS.length-1];
+      // Prefill hints if empty
+      if (!el.rent.value && el.price.value) el.rent.value = Math.round(num(el.price.value) * s.rentToPrice);
+      if (!el.taxPct.value) el.taxPct.value = s.taxPct;
+      if (!el.insHoa.value) el.insHoa.value = s.insHoa;
+
+      const months = parseInt(el.months.value,10) || 36;
+      const rent = num(el.rent.value);
+      const price = num(el.price.value);
+      const downPct = clamp(num(el.downPct.value), 0, 100);
+      const rate = num(el.rate.value);
+      const bah = num(el.bah.value);
+      const taxPct = num(el.taxPct.value);
+      const insHoa = num(el.insHoa.value);
+      const pcs = el.pcs.value;
+      const vacancy = el.vacancy.value;
+      const appr = num(el.appreciation.value);
+
+      // Buy math
+      const down = price * (downPct/100);
+      const loan = Math.max(0, price - down);
+      const pmt = pmts(loan, rate); // monthly P&I
+      const annualInterestApprox = loan * (rate/100); // crude but fine for a quick model
+      const taxMonthly = (price * (taxPct/100)) / 12;
+      const insHoaMonthly = insHoa;
+      const principalPaidYear1 = Math.max(0, pmt*12 - annualInterestApprox);
+      const taxShieldMonthly = taxShieldEst(annualInterestApprox);
+
+      // Effective monthly buy cost (12m): P&I + taxes + ins/HOA − principal − tax shield
+      const effBuyMonthly = (pmt + taxMonthly + insHoaMonthly) - (principalPaidYear1/12) - taxShieldMonthly;
+
+      // Flex/PCS penalty
+      const flexPenalty = pcsPenaltyPct(months, pcs) * (pmt + taxMonthly + insHoaMonthly);
+
+      // Compare to rent
+      const effRentMonthly = rent; // keep simple; BAH is a budget input, not a cost reducer per se
+      const buyVsRentMonthly = effBuyMonthly + flexPenalty;
+
+      // 12-month table
+      const rent12 = effRentMonthly * 12;
+      const buy12 = buyVsRentMonthly * 12;
+
+      // 36-month table with sale
+      const rent36 = effRentMonthly * 36;
+      // value at sale
+      const price36 = price * Math.pow(1 + appr/100, 3);
+      const sellCost = price36 * 0.06;
+      // principal after 3 years (rough: 36 × (pmt - interest))
+      const interest3yr = annualInterestApprox * 3; // rough
+      const principal3yr = Math.max(0, pmt*36 - interest3yr);
+      const equity36 = down + principal3yr + (price36 - price);
+      const buy36Gross = (pmt + taxMonthly + insHoaMonthly) * 36 + sellCost;
+      const buy36Net = buy36Gross - equity36 - taxShieldMonthly*36; // subtract equity and shields
+
+      // Recommendation logic
+      let rec = '—', reason = '';
+      const ratio = buyVsRentMonthly / Math.max(1, effRentMonthly);
+      if (ratio <= 0.92 && months >= 36) {
+        rec = 'Likely Buy'; reason = 'Cost advantage vs rent and long enough time on station.';
+      } else if (ratio <= 1.05 && months >= 24) {
+        rec = 'Borderline — Lean Buy'; reason = 'Close costs; consider holding or renting after PCS.';
+      } else {
+        rec = 'Likely Rent'; reason = 'Flexibility and transaction costs outweigh buy benefits for now.';
+      }
+
+      // Update UI
+      el.recChip.textContent = rec;
+      el.recChip.style.background = rec.includes('Buy') ? 'linear-gradient(90deg,#9ef6d0,#3ddc97)' : 'linear-gradient(90deg,#ffd166,#ffb86b)';
+      el.recSummary.textContent = `${rec}: Monthly buy≈${money(buyVsRentMonthly)} vs rent≈${money(effRentMonthly)}. ${reason}`;
+
+      // Tables
+      el.t12.innerHTML = [
+        ['Out-of-pocket (12m)', money(rent12), money(buy12)],
+        ['Principal paid (12m)', money(0), money(principalPaidYear1)],
+        ['Tax shield est. (12m)', money(0), money(taxShieldMonthly*12)],
+        ['Net effective (12m)', money(rent12), money(buy12 - principalPaidYear1 - taxShieldMonthly*12)],
+      ].map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+      el.t36.innerHTML = [
+        ['Out-of-pocket (36m)', money(rent36), money(buy36Gross)],
+        ['Equity & gain (36m)', money(0), money(equity36)],
+        ['Tax shield est. (36m)', money(0), money(taxShieldMonthly*36)],
+        ['Net effective (36m)', money(rent36), money(buy36Net)],
+      ].map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+      // Autosave
+      const state = {
+        station: el.station.value, months, bah, rent, price, downPct, rate, taxPct, insHoa, pcs, vacancy, appreciation: appr
+      };
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      el.autosave.textContent = 'Autosaved';
+    }
+
+    // Restore state
+    (function restore(){
+      try{
+        const s = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+        if(s.station) el.station.value = s.station;
+        ['months','bah','rent','price','downPct','rate','taxPct','insHoa','pcs','vacancy','appreciation'].forEach(k=>{
+          if (s[k] !== undefined && s[k] !== null && s[k] !== '') el[k].value = s[k];
+        });
+      }catch{}
+    })();
+
+    // Listeners
+    ['station','months','bah','rent','price','downPct','rate','taxPct','insHoa','pcs','vacancy','appreciation']
+      .forEach(id => {
+        document.getElementById(id).addEventListener('input', debounce(calc, 120));
+        document.getElementById(id).addEventListener('change', debounce(calc, 120));
+      });
+
+    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); } }
+
+    // Quick VA 0% toggle
+    el.setVA0.addEventListener('click', ()=>{ el.downPct.value = 0; calc(); });
+
+    // First run
+    calc();
+
+    // Google Form serialization
+    el.sendSpecs.addEventListener('click', () => {
+      const params = new URLSearchParams();
+      const data = {
+        station: el.station.value,
+        months: el.months.value,
+        bah: el.bah.value,
+        rent: el.rent.value,
+        price: el.price.value,
+        downPct: el.downPct.value,
+        rate: el.rate.value,
+        taxPct: el.taxPct.value,
+        insHoa: el.insHoa.value,
+        pcs: el.pcs.value,
+        vacancy: el.vacancy.value,
+        appreciation: el.appreciation.value
+      };
+      Object.entries(data).forEach(([k,v]) => {
+        const field = FORM_MAP[k];
+        if (field) params.append(field, String(v));
+      });
+      const url = GOOGLE_FORM_URL + '?' + params.toString();
+      window.open(url, '_blank', 'noopener');
+    });
+  </script>
+</body>
+</html>

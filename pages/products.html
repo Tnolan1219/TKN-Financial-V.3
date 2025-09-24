@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Global styles -->
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Page-specific (minimal) styles -->
+  <style>
+    .filters { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+    .filters .group { display:flex; gap:10px; align-items:center; }
+    .filters .label { color: var(--muted); font-weight:600; }
+
+    .product-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    @media (max-width: 1080px){ .product-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media (max-width: 720px){ .product-grid{ grid-template-columns:1fr; } }
+
+    .product-card{ overflow:hidden; }
+    .product-figure{
+      display:block; border-radius:14px; overflow:hidden;
+      aspect-ratio: 16 / 10; border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s;
+    }
+    .product-figure:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 48px rgba(60,100,200,.18), var(--shadow);
+      border-color: var(--accent);
+    }
+    .product-figure img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .product-body{ margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+    .product-title{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+    .badge-row{ display:flex; gap:6px; flex-wrap:wrap; }
+    .badge-new{ background: rgba(158,246,208,.12); border-color: rgba(158,246,208,.6); color:#d8fff1; }
+    .badge-sale{ background: rgba(255,107,107,.12); border-color: rgba(255,107,107,.6); color:#ffd8de; }
+    .badge-free{ background: rgba(110,168,255,.12); border-color: rgba(110,168,255,.6); color:#d9e7ff; }
+    .badge-re{ background: rgba(255,184,107,.12); border-color: rgba(255,184,107,.6); color:#ffe9c9; }
+    .badge-etsy{ background: rgba(163,123,255,.12); border-color: rgba(163,123,255,.6); color:#e8ddff; }
+
+    .hidden{ display:none !important; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner container">
+      <div class="title">
+        <h1>Products</h1>
+        <span class="pill">Tools & Templates</span>
+      </div>
+      <div class="muted" id="resultCount" aria-live="polite">Showing all products</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Filters -->
+    <section class="card">
+      <div class="section-title">
+        <h2>Browse</h2>
+        <button id="resetFilters" class="btn ghost small">Reset filters</button>
+      </div>
+
+      <div class="filters mt-12">
+        <span class="label small">Show:</span>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="filterNew" /></label>
+          <span class="small">New</span>
+        </div>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="filterSale" /></label>
+          <span class="small">On sale</span>
+        </div>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="filterFree" /></label>
+          <span class="small">Free</span>
+        </div>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="filterRE" /></label>
+          <span class="small">Real estate</span>
+        </div>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="filterEtsy" /></label>
+          <span class="small">Etsy</span>
+        </div>
+      </div>
+      <div class="hint">Select any combination; results show items matching any selected toggle.</div>
+    </section>
+
+    <!-- Products -->
+    <section class="card">
+      <h2>All Products</h2>
+      <div class="product-grid mt-12" id="productGrid">
+        <!-- 1. Budget Calculator -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="true" data-re="false" data-etsy="false">
+          <a class="product-figure" href="tools/Investing Hub/BudgetFire_2.html">
+            <img src="/img/budget.jpg" alt="Budget Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Budget Calculator</h3>
+              <div class="badge-row">
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">Zero-based and 50/30/20 views, category controls, and monthly rollup.</p>
+            <div><a class="btn" href="tools/Investing Hub/BudgetFire_2.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 2. Retirement FIRE Calculator -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="true" data-re="false" data-etsy="false">
+          <a class="product-figure" href="tools/Investing Hub/BudgetFire_2.html">
+            <img src="/img/fire.jpg" alt="Retirement FIRE Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Retirement FIRE Calculator</h3>
+              <div class="badge-row"><span class="pill badge-free small">Free</span></div>
+            </div>
+            <p class="hint">FI target, safe withdrawal, and time-to-FI with savings rate/return bands.</p>
+            <div><a class="btn" href="tools/Investing Hub/BudgetFire_2.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 3. TSP Calculator -->
+        <article class="card product-card"
+                 data-new="true" data-sale="false" data-free="true" data-re="false" data-etsy="false">
+          <a class="product-figure" href="tools/Investing Hub/TSP_CSL_Calc.html">
+            <img src="/img/tsp.jpg" alt="TSP Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">TSP Calculator</h3>
+              <div class="badge-row">
+                <span class="pill badge-new small">New</span>
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">Federal TSP growth, match modeling, and allocation scenarios.</p>
+            <div><a class="btn" href="tools/Investing Hub/TSP_CSL_Calc.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 4. Career Starter Loan Calculator -->
+        <article class="card product-card"
+                 data-new="true" data-sale="false" data-free="true" data-re="false" data-etsy="false">
+          <a class="product-figure" href="tools/Investing Hub/TSP_CSL_Calc.html">
+            <img src="/img/career-loan.jpg" alt="Career Starter Loan Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Career Starter Loan</h3>
+              <div class="badge-row">
+                <span class="pill badge-new small">New</span>
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">Loan amortization, deferred interest, and payoff planning for new grads.</p>
+            <div><a class="btn" href="tools/Investing Hub/TSP_CSL_Calc.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 5. All-in-One Finance Toolkit -->
+        <article class="card product-card"
+                 data-new="true" data-sale="false" data-free="false" data-re="false" data-etsy="false">
+          <a class="product-figure" href="tools/Investing Hub/milfi_toolkit.html">
+            <img src="/img/toolkit.jpg" alt="All-in-One Finance Toolkit" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">All-in-One Finance Toolkit</h3>
+              <div class="badge-row"><span class="pill badge-new small">New</span></div>
+            </div>
+            <p class="hint">Bundle: budgeting, FIRE, debt, savings, and goals in one interface.</p>
+            <div><a class="btn" href="tools/Investing Hub/milfi_toolkit.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 6. Rental Property Calculator -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="true" data-re="true" data-etsy="false">
+          <a class="product-figure" href="tools/Real Estate Hub/RE_rentalcalc.html">
+            <img src="/img/rental.jpg" alt="Rental Property Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Rental Property Calculator</h3>
+              <div class="badge-row">
+                <span class="pill badge-re small">RE</span>
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">Buy-and-hold cash flow, NOI, and multi-year growth projections.</p>
+            <div><a class="btn" href="tools/Real Estate Hub/RE_rentalcalc.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 7. House Flip Calculator -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="true" data-re="true" data-etsy="false">
+          <a class="product-figure" href="tools/Real Estate Hub/RE_fliptool.html">
+            <img src="/img/flip.jpg" alt="House Flip Calculator" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">House Flip Calculator</h3>
+              <div class="badge-row">
+                <span class="pill badge-re small">RE</span>
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">ARV, rehab budget, holding costs, and profit sensitivity.</p>
+            <div><a class="btn" href="tools/Real Estate Hub/RE_fliptool.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 8. Rent or Buy Tool -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="true" data-re="true" data-etsy="false">
+          <a class="product-figure" href="tools/Real Estate Hub/RE_rentvsbuy.html">
+            <img src="/img/rent-or-buy.jpg" alt="Rent or Buy Tool" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Rent or Buy Tool</h3>
+              <div class="badge-row">
+                <span class="pill badge-re small">RE</span>
+                <span class="pill badge-free small">Free</span>
+              </div>
+            </div>
+            <p class="hint">Compare renting vs. buying with price growth and opportunity cost.</p>
+            <div><a class="btn" href="tools/Real Estate Hub/RE_rentvsbuy.html">Open tool</a></div>
+          </div>
+        </article>
+
+        <!-- 9. (Etsy) Premium RE Rental Property Financial Model -->
+        <article class="card product-card"
+                 data-new="false" data-sale="true" data-free="false" data-re="true" data-etsy="true">
+          <a class="product-figure" href="https://tknfinance.etsy.com/listing/1834815283" target="_blank" rel="noopener">
+            <img src="/img/premium-re-model.jpg" alt="Premium RE Rental Property Financial Model (Etsy)" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Premium RE Financial Model</h3>
+              <div class="badge-row">
+                <span class="pill badge-re small">RE</span>
+                <span class="pill badge-etsy small">Etsy</span>
+                <span class="pill badge-sale small">Sale</span>
+              </div>
+            </div>
+            <p class="hint">Full underwriting in a polished spreadsheet: scenarios, debt, returns.</p>
+            <div><a class="btn" href="https://tknfinance.etsy.com/listing/1834815283" target="_blank" rel="noopener">View on Etsy</a></div>
+          </div>
+        </article>
+
+        <!-- 10. (Etsy) Monthly Budget Tool -->
+        <article class="card product-card"
+                 data-new="false" data-sale="true" data-free="false" data-re="false" data-etsy="true">
+          <a class="product-figure" href="https://tknfinance.etsy.com/listing/1853186647" target="_blank" rel="noopener">
+            <img src="/img/monthly-budget-etsy.jpg" alt="Monthly Budget Tool (Etsy)" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Monthly Budget Tool</h3>
+              <div class="badge-row">
+                <span class="pill badge-etsy small">Etsy</span>
+                <span class="pill badge-sale small">Sale</span>
+              </div>
+            </div>
+            <p class="hint">Clean monthly budget spreadsheet with categories and dashboards.</p>
+            <div><a class="btn" href="https://tknfinance.etsy.com/listing/1853186647" target="_blank" rel="noopener">View on Etsy</a></div>
+          </div>
+        </article>
+
+        <!-- 11. (Etsy) Portfolio Tracker -->
+        <article class="card product-card"
+                 data-new="false" data-sale="false" data-free="false" data-re="false" data-etsy="true">
+          <a class="product-figure" href="https://tknfinance.etsy.com/listing/1762514612" target="_blank" rel="noopener">
+            <img src="/img/portfolio-tracker.jpg" alt="Portfolio Tracker (Etsy)" />
+          </a>
+          <div class="product-body">
+            <div class="product-title">
+              <h3 class="text">Portfolio Tracker</h3>
+              <div class="badge-row">
+                <span class="pill badge-etsy small">Etsy</span>
+              </div>
+            </div>
+            <p class="hint">Track holdings, performance, allocations, and dividends over time.</p>
+            <div><a class="btn" href="https://tknfinance.etsy.com/listing/1762514612" target="_blank" rel="noopener">View on Etsy</a></div>
+          </div>
+        </article>
+      </div>
+
+
+
+      <!-- Empty state -->
+      <div id="emptyState" class="muted mt-12 hidden">No products match your filters.</div>
+    </section>
+  </main>
+
+  <script>
+    // Query helpers
+    const q = (sel, root=document) => root.querySelector(sel);
+    const qa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const grid = q('#productGrid');
+    const empty = q('#emptyState');
+    const countLabel = q('#resultCount');
+
+    const toggles = {
+      new:  q('#filterNew'),
+      sale: q('#filterSale'),
+      free: q('#filterFree'),
+      re:   q('#filterRE'),
+      etsy: q('#filterEtsy')
+    };
+
+    function applyFilters(){
+      const state = {
+        new:  toggles.new.checked,
+        sale: toggles.sale.checked,
+        free: toggles.free.checked,
+        re:   toggles.re.checked,
+        etsy: toggles.etsy.checked
+      };
+      const any = Object.values(state).some(Boolean);
+      let shown = 0;
+
+      qa('.product-card', grid).forEach(card => {
+        const flags = {
+          new:  card.dataset.new  === 'true',
+          sale: card.dataset.sale === 'true',
+          free: card.dataset.free === 'true',
+          re:   card.dataset.re   === 'true',
+          etsy: card.dataset.etsy === 'true'
+        };
+
+        const matches = !any || (
+          (state.new  && flags.new)  ||
+          (state.sale && flags.sale) ||
+          (state.free && flags.free) ||
+          (state.re   && flags.re)   ||
+          (state.etsy && flags.etsy)
+        );
+
+        card.classList.toggle('hidden', !matches);
+        if (matches) shown++;
+      });
+
+      empty.classList.toggle('hidden', shown !== 0);
+      countLabel.textContent = any
+        ? `Showing ${shown} product${shown===1?'':'s'} (filtered)`
+        : 'Showing all products';
+    }
+
+    Object.values(toggles).forEach(t => t.addEventListener('change', applyFilters));
+    q('#resetFilters').addEventListener('click', () => {
+      Object.values(toggles).forEach(t => t.checked = false);
+      applyFilters();
+    });
+
+    // Initial
+    applyFilters();
+  </script>
+</body>
+</html>

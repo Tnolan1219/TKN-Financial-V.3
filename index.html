@@ -220,7 +220,124 @@
       html{scroll-behavior:auto}
       .reveal{transition:none}
     }
+
+      /* Chat Toggle Button */
+#chat-toggle {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border-radius: 6px 0 0 6px;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 20px;
+}
+
+
+/* Chat Panel */
+#chat-panel {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 420px;
+  height: 100%;
+  background-color: #132c4d;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+  transition: right 0.3s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+#chat-panel.open {
+  right: 0;
+}
+
+.chat-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e0f0ff;
+  margin-bottom: 10px;
+}
+
+#chat-box {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #1a3b5f;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #2a4d7c;
+}
+
+.message {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+.message-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #a8cfff;
+}
+
+.message-body p {
+  margin: 6px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+.user-message {
+  background-color: #2a4d7c;
+  color: #ffffff;
+  text-align: right;
+}
+
+.bot-message {
+  background-color: #0f2a4f;
+  color: #cce6ff;
+  text-align: left;
+}
+
+#user-input {
+  height: 60px;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #1a3b5f;
+  color: #e0f0ff;
+  margin-bottom: 10px;
+}
+
+#send-button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#send-button:hover {
+  background-color: #005bb5;
+}
+
+    
   </style>
+
+
+
+
+  
   <script type="module">
   import { initState, getPlan } from "./js/entitlements.js";
   function updateStatusBadge() {
@@ -306,6 +423,22 @@
         <div style="font-size:.97rem;color:var(--muted);margin-top:10px;">Check back for updates and new features!</div>
       </div> -->
 
+      
+        <!-- 🔹 Chat Toggle Button -->
+        <div id="chat-toggle">🤖</div>
+
+        <!-- 🔹 Chat Panel -->
+        <div id="chat-panel">
+          <!-- Modern font: Inter (clean, readable, professional) -->
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+          <div class="chat-header">Major Money AI Advisor</div>
+          <div id="chat-box"></div>
+          <textarea id="user-input" placeholder="Ask me questions about military finance"></textarea>
+          <button id="send-button">Send</button>
+        </div>
+      
+      
     </section>
     <!-- HERO -->
     <section class="hero" id="home">
@@ -885,6 +1018,82 @@
       updateProgress();
     })();
   </script>
+
+            <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatPanel = document.getElementById("chat-panel");
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const sendButton = document.getElementById("send-button");
+
+    // Toggle chat panel
+    chatToggle.addEventListener("click", function () {
+      chatPanel.classList.toggle("open");
+    });
+
+    // OpenAI API Key
+    const OPENAI_API_KEY = "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";
+
+    let messages = [
+      { role: "system", content: "You are a military personal finance advisor. Be direct, modular, and mission-ready." }
+    ];
+
+    sendButton.addEventListener("click", async function () {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendMessage("You", message, "user-message");
+      userInput.value = "";
+      messages.push({ role: "user", content: message });
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: messages
+        })
+      });
+
+
+
+
+      const data = await response.json();
+      const reply = data.choices[0].message.content;
+      messages.push({ role: "assistant", content: reply });
+
+      appendMessage("Major Money", reply, "bot-message");
+    });
+
+    function appendMessage(sender, text, className) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", className);
+  messageDiv.innerHTML = `
+    <div class="message-header"><strong>${sender}</strong></div>
+    <div class="message-body">${formatText(text)}</div>
+  `;
+  chatBox.appendChild(messageDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function formatText(text) {
+  // Break into paragraphs and add spacing
+  return text
+    .split("\n")
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => `<p>${line}</p>`)
+    .join("");
+}
+  });
+
+
+
+          
 </body>
 </html>
         });

@@ -1092,7 +1092,16 @@ function formatText(text) {
   });
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatPanel = document.getElementById("chat-panel");
+    const chatToggle = document.getElementById("chat-toggle");
 
+    chatToggle.addEventListener("click", function () {
+      chatPanel.classList.toggle("open");
+    });
+  });
+</script>
           
 </body>
 </html>

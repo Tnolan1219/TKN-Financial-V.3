@@ -423,8 +423,9 @@
         <div style="font-size:.97rem;color:var(--muted);margin-top:10px;">Check back for updates and new features!</div>
       </div> -->
 
+
       
-        <!-- 🔹 Chat Toggle Button -->
+      <!-- 🔹 Chat Toggle Button -->
         <div id="chat-toggle">🤖</div>
 
         <!-- 🔹 Chat Panel -->
@@ -1019,7 +1020,7 @@
     })();
   </script>
 
-            <script>
+<script>
   document.addEventListener("DOMContentLoaded", function () {
     const chatPanel = document.getElementById("chat-panel");
     const chatToggle = document.getElementById("chat-toggle");
@@ -1027,88 +1028,54 @@
     const userInput = document.getElementById("user-input");
     const sendButton = document.getElementById("send-button");
 
-    // Toggle chat panel
-    chatToggle.addEventListener("click", function () {
-      chatPanel.classList.toggle("open");
-    });
+    chatToggle.addEventListener("click", () => chatPanel.classList.toggle("open"));
 
-    // OpenAI API Key
-    const OPENAI_API_KEY = "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";
+    const FIREBASE_FUNCTION_URL = "https://us-central1-tkn-financial.cloudfunctions.net/chatWithGPT";
 
-    let messages = [
-      { role: "system", content: "You are a military personal finance advisor. Be direct, modular, and mission-ready." }
-    ];
-
-    sendButton.addEventListener("click", async function () {
+    sendButton.addEventListener("click", async () => {
       const message = userInput.value.trim();
       if (!message) return;
 
       appendMessage("You", message, "user-message");
       userInput.value = "";
-      messages.push({ role: "user", content: message });
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: messages
-        })
-      });
+      try {
+        const response = await fetch(FIREBASE_FUNCTION_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
 
-
-
-
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
-      messages.push({ role: "assistant", content: reply });
-
-      appendMessage("Major Money", reply, "bot-message");
+        const data = await response.json();
+        appendMessage("Major Money", data.reply, "bot-message");
+      } catch (error) {
+        appendMessage("System", "⚠️ Server error. Try again later.", "bot-message");
+        console.error("Chatbot error:", error);
+      }
     });
 
     function appendMessage(sender, text, className) {
-  const messageDiv = document.createElement("div");
-  messageDiv.classList.add("message", className);
-  messageDiv.innerHTML = `
-    <div class="message-header"><strong>${sender}</strong></div>
-    <div class="message-body">${formatText(text)}</div>
-  `;
-  chatBox.appendChild(messageDiv);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message", className);
+      messageDiv.innerHTML = `
+        <div class="message-header"><strong>${sender}</strong></div>
+        <div class="message-body">${formatText(text)}</div>
+      `;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-function formatText(text) {
-  // Break into paragraphs and add spacing
-  return text
-    .split("\n")
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => `<p>${line}</p>`)
-    .join("");
-}
-  });
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const chatPanel = document.getElementById("chat-panel");
-    const chatToggle = document.getElementById("chat-toggle");
-
-    chatToggle.addEventListener("click", function () {
-      chatPanel.classList.toggle("open");
-    });
+    function formatText(text) {
+      return text
+        .split("\n")
+        .map(line => `<p>${line.trim()}</p>`)
+        .join("");
+    }
   });
 </script>
-          
 </body>
 </html>
-        });
-      });
-      updateProgress();
-    })();
+
   </script>
 </body>
 </html>

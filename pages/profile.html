@@ -254,6 +254,43 @@
         </select>
       </div>
       <div class="row">
+          <label for="paygrade"><strong>Rank / Paygrade:</strong></label>
+          <select id="paygrade">
+            <option value="">Select your rank</option>
+            <optgroup label="Enlisted">
+              <option value="E-1">E-1</option>
+              <option value="E-2">E-2</option>
+              <option value="E-3">E-3</option>
+              <option value="E-4">E-4</option>
+              <option value="E-5">E-5</option>
+              <option value="E-6">E-6</option>
+              <option value="E-7">E-7</option>
+              <option value="E-8">E-8</option>
+              <option value="E-9">E-9</option>
+            </optgroup>
+            <optgroup label="Warrant Officer">
+              <option value="W-1">W-1</option>
+              <option value="W-2">W-2</option>
+              <option value="W-3">W-3</option>
+              <option value="W-4">W-4</option>
+              <option value="W-5">W-5</option>
+            </optgroup>
+            <optgroup label="Commissioned Officer">
+              <option value="O-1">O-1</option>
+              <option value="O-2">O-2</option>
+              <option value="O-3">O-3</option>
+              <option value="O-4">O-4</option>
+              <option value="O-5">O-5</option>
+              <option value="O-6">O-6</option>
+              <option value="O-7">O-7</option>
+              <option value="O-8">O-8</option>
+              <option value="O-9">O-9</option>
+              <option value="O-10">O-10</option>
+            </optgroup>
+          </select>
+        </div>
+
+      <div class="row">
         <button class="btn" id="saveProfile">Save Profile</button>
         <span id="status" style="margin-left:8px; color:#0a0;"></span>
       </div>
@@ -579,6 +616,7 @@ document.addEventListener('DOMContentLoaded', updateDashboardUsage);
   </script>
 </body>
 </html>
+
 
 
 

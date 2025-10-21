@@ -425,19 +425,20 @@
 
 
       
-      <!-- 🔹 Chat Toggle Button -->
-        <div id="chat-toggle">🤖</div>
+<!-- 🔹 Chat Toggle Button -->
+<div id="chat-toggle">🤖</div>
 
-        <!-- 🔹 Chat Panel -->
-        <div id="chat-panel">
-          <!-- Modern font: Inter (clean, readable, professional) -->
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- 🔹 Chat Panel -->
+<div id="chat-panel">
+  <!-- Modern font: Inter (clean, readable, professional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-          <div class="chat-header">Major Money AI Advisor</div>
-          <div id="chat-box"></div>
-          <textarea id="user-input" placeholder="Ask me questions about military finance"></textarea>
-          <button id="send-button">Send</button>
-        </div>
+  <div class="chat-header">Major Money AI Advisor</div>
+  <div id="chat-box"></div>
+  <textarea id="user-input" placeholder="Ask me questions about military finance"></textarea>
+  <button id="send-button">Send</button>
+</div>
+
       
       
     </section>
@@ -1022,16 +1023,22 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    // 🔧 DOM Elements
     const chatPanel = document.getElementById("chat-panel");
     const chatToggle = document.getElementById("chat-toggle");
     const chatBox = document.getElementById("chat-box");
     const userInput = document.getElementById("user-input");
     const sendButton = document.getElementById("send-button");
 
-    chatToggle.addEventListener("click", () => chatPanel.classList.toggle("open"));
+    // 🔄 Toggle Chat Panel
+    chatToggle.addEventListener("click", () => {
+      chatPanel.classList.toggle("open");
+    });
 
+    // 🔗 Firebase Function Endpoint
     const FIREBASE_FUNCTION_URL = "https://us-central1-tkn-financial.cloudfunctions.net/chatWithGPT";
 
+    // 🚀 Send Message to Backend
     sendButton.addEventListener("click", async () => {
       const message = userInput.value.trim();
       if (!message) return;
@@ -1047,13 +1054,18 @@
         });
 
         const data = await response.json();
-        appendMessage("Major Money", data.reply, "bot-message");
+        if (data.reply) {
+          appendMessage("Major Money", data.reply, "bot-message");
+        } else {
+          appendMessage("System", "⚠️ No response received.", "bot-message");
+        }
       } catch (error) {
         appendMessage("System", "⚠️ Server error. Try again later.", "bot-message");
         console.error("Chatbot error:", error);
       }
     });
 
+    // 💬 Append Message to Chat Box
     function appendMessage(sender, text, className) {
       const messageDiv = document.createElement("div");
       messageDiv.classList.add("message", className);
@@ -1065,6 +1077,7 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    // 🧹 Format Text into Paragraphs
     function formatText(text) {
       return text
         .split("\n")
@@ -1073,6 +1086,7 @@
     }
   });
 </script>
+
 </body>
 </html>
 

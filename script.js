@@ -8,7 +8,7 @@ function toggleChatPanel() {
 }
 
 // ✅ OpenAI API Key
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "";
 
 // ✅ Session memory
 let messages = [

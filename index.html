@@ -227,7 +227,7 @@
       .reveal{transition:none}
     }
 
-      /* Chat Toggle Button */
+/* Chat Toggle Button */
 #chat-toggle {
   position: fixed;
   top: 50%;
@@ -235,13 +235,19 @@
   transform: translateY(-50%);
   background-color: #007bff;
   color: white;
-  padding: 12px;
-  border-radius: 6px 0 0 6px;
+  padding: 14px 16px;
+  border-radius: 8px 0 0 8px;
   cursor: pointer;
   z-index: 1000;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.3s ease;
 }
 
+#chat-toggle:hover {
+  background-color: #005bb5;
+}
 
 /* Chat Panel */
 #chat-panel {
@@ -251,12 +257,13 @@
   width: 420px;
   height: 100%;
   background-color: #132c4d;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.3);
-  transition: right 0.3s ease;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+  transition: right 0.4s ease;
   z-index: 999;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
 }
 
 #chat-panel.open {
@@ -264,31 +271,40 @@
 }
 
 .chat-header {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
   color: #e0f0ff;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2a4d7c;
+  padding-bottom: 8px;
 }
 
+/* Chat Box */
 #chat-box {
   flex: 1;
   overflow-y: auto;
   background-color: #1a3b5f;
-  border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 12px;
   border: 1px solid #2a4d7c;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Messages */
 .message {
-  margin-bottom: 12px;
-  padding: 10px 12px;
-  border-radius: 6px;
-  line-height: 1.4;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  line-height: 1.5;
+  max-width: 90%;
+  word-wrap: break-word;
+  animation: fadeIn 0.3s ease-in-out;
 }
+
 .message-header {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 6px;
   color: #a8cfff;
 }
@@ -299,45 +315,58 @@
   line-height: 1.6;
 }
 
-
+/* User Message */
 .user-message {
   background-color: #2a4d7c;
   color: #ffffff;
   text-align: right;
+  margin-left: auto;
 }
 
+/* Bot Message */
 .bot-message {
   background-color: #0f2a4f;
   color: #cce6ff;
   text-align: left;
+  margin-right: auto;
 }
 
+/* Input Field */
 #user-input {
   height: 60px;
   border: none;
-  border-radius: 6px;
-  padding: 10px;
-  font-size: 14px;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
   background-color: #1a3b5f;
   color: #e0f0ff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
+/* Send Button */
 #send-button {
-  padding: 12px;
+  padding: 14px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 #send-button:hover {
   background-color: #005bb5;
 }
 
-    
+/* Fade-in animation for messages */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
   </style>
 
 
@@ -363,6 +392,8 @@
   window.addEventListener("milfi:planChanged", updateStatusBadge);
   </script>
 </head>
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1039930282091803"
+     crossorigin="anonymous"></script>
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
@@ -1048,6 +1079,15 @@
     sendButton.addEventListener("click", async () => {
       const message = userInput.value.trim();
       if (!message) return;
+     
+      // ⌨️ Ctrl + Enter to Send
+    userInput.addEventListener("keydown", async (e) => {
+      if (e.ctrlKey && e.key === "Enter") {
+        sendButton.click();
+      }
+    });
+
+      
 
       appendMessage("You", message, "user-message");
       userInput.value = "";

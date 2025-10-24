@@ -335,33 +335,38 @@
   margin-right: auto;
 }
 
-/* Input Field */
-#user-input {
-  height: 60px;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 15px;
-  background-color: #1a3b5f;
-  color: #e0f0ff;
-  margin-bottom: 12px;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
 }
 
-/* Send Button */
+#user-input {
+  flex: 1;
+  resize: none;
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: #1a3b5f;
+  color: #e0f0ff;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Inter', sans-serif;
+}
+
 #send-button {
-  padding: 14px;
+  padding: 14px 18px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-#send-button:hover {
-  background-color: #005bb5;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
 }
 
 /* Fade-in animation for messages */
@@ -494,32 +499,30 @@
       
 <!-- 🔹 Chat Toggle Button -->
 <div id="chat-toggle" title="Open chat">
-  <span style="font-size: 24px;">💬</span>
+  <span style="font-size: 24px;">🤖</span>
 </div>
 
 <!-- 🔹 Chat Panel -->
 <div id="chat-panel">
   <!-- ✅ Font already loaded in <head>, no need to repeat here -->
 
-  <!-- 💬 Chat Header -->
-  <div class="chat-header">
-    <img src="https://yourdomain.com/avatar.png" alt="Major Money" style="width:28px;height:28px;border-radius:50%;margin-right:8px;vertical-align:middle;">
-    <strong>Major Money</strong> — Your Financial Wingman
-  </div>
+<div class="chat-header">
+  <strong>Major Money</strong> — Your Financial Wingman
+</div>
+
 
   <!-- 💬 Chat Box -->
   <div id="chat-box" aria-live="polite" role="log"></div>
 
-  <!-- 💬 Input Area -->
-  <div class="chat-input-group">
-    <textarea
-      id="user-input"
-      placeholder="Ask me anything about military finance..."
-      rows="3"
-      aria-label="Type your message"
-    ></textarea>
-    <button id="send-button" aria-label="Send message">Send</button>
-  </div>
+<!-- 💬 Input Area -->
+<div class="chat-input-wrapper">
+  <textarea
+    id="user-input"
+    placeholder="Ask me anything about military finance..."
+    rows="3"
+    aria-label="Type your message"
+  ></textarea>
+  <button id="send-button" aria-label="Send message">➤</button>
 </div>
 
 

@@ -493,18 +493,35 @@
 
       
 <!-- 🔹 Chat Toggle Button -->
-<div id="chat-toggle">🤖</div>
+<div id="chat-toggle" title="Open chat">
+  <span style="font-size: 24px;">💬</span>
+</div>
 
 <!-- 🔹 Chat Panel -->
 <div id="chat-panel">
-  <!-- Modern font: Inter (clean, readable, professional) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- ✅ Font already loaded in <head>, no need to repeat here -->
 
-  <div class="chat-header">Major Money AI Advisor</div>
-  <div id="chat-box"></div>
-  <textarea id="user-input" placeholder="Ask me questions about military finance"></textarea>
-  <button id="send-button">Send</button>
+  <!-- 💬 Chat Header -->
+  <div class="chat-header">
+    <img src="https://yourdomain.com/avatar.png" alt="Major Money" style="width:28px;height:28px;border-radius:50%;margin-right:8px;vertical-align:middle;">
+    <strong>Major Money</strong> — Your Financial Wingman
+  </div>
+
+  <!-- 💬 Chat Box -->
+  <div id="chat-box" aria-live="polite" role="log"></div>
+
+  <!-- 💬 Input Area -->
+  <div class="chat-input-group">
+    <textarea
+      id="user-input"
+      placeholder="Ask me anything about military finance..."
+      rows="3"
+      aria-label="Type your message"
+    ></textarea>
+    <button id="send-button" aria-label="Send message">Send</button>
+  </div>
 </div>
+
 
       
       

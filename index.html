@@ -821,14 +821,6 @@
         </div></article>
       </div>
 
-      <!-- GLOSSARY (expanded accordion) -->
-      <h3 style="margin-top:28px">Glossary</h3>
-      <div class="accordion" role="tablist">
-        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Entitlement</button><div class="acc-panel">Amount of VA guaranty you have available. Drives down payment requirements and reuse rules.</div></div>
-        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">Funding Fee</button><div class="acc-panel">Fee charged by VA (unless waived) based on service, usage count, and down payment; can be financed.</div></div>
-        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">MPR (Minimum Property Requirements)</button><div class="acc-panel">VA standards the property must meet for safety, soundness, and sanitation; can affect fixer-uppers.</div></div>
-        <div class="acc-item"><button class="acc-btn" onclick="toggleAcc(this)" aria-expanded="false">MSRRA</button><div class="acc-panel">Military Spouses Residency Relief Act — governs state tax/residency treatment for spouses.</div></div>
-      </div>
 
       <!-- GET STARTED CHECKLIST -->
       <h3 style="margin-top:28px">Get Started Checklist</h3>
@@ -844,6 +836,168 @@
         </div>
       </div>
     </section>
+
+      <!-- Interactive Jargon Glossary (Modern Glow Edition) -->
+<section id="glossary" class="edu-section" style="margin:0 auto;max-width:1000px;padding:60px 25px;">
+  <style>
+    /* ===== Glossary Styling ===== */
+    #glossary {
+      color: #dbe7ff;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #glossary h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #6ba8ff, #93c5fd, #7aa2ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(122, 162, 255, 0.5);
+      margin-bottom: 0.3em;
+      letter-spacing: 0.5px;
+    }
+
+    #glossary .section-sub {
+      color: #b0c9ff;
+      font-size: 1rem;
+      margin-bottom: 1.8rem;
+      opacity: 0.9;
+    }
+
+    .glossary-container {
+      display: grid;
+      gap: 14px;
+    }
+
+    details {
+      background: rgba(15, 24, 48, 0.8);
+      border: 1px solid rgba(122, 162, 255, 0.3);
+      border-radius: 14px;
+      padding: 14px 18px;
+      text-align: left;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+    }
+
+    details:hover {
+      border-color: #7aa2ff;
+      box-shadow: 0 0 15px rgba(122, 162, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    summary {
+      font-weight: 600;
+      color: #dbe7ff;
+      font-size: 1rem;
+      cursor: pointer;
+      position: relative;
+      padding-right: 20px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 1.2rem;
+      color: #7aa2ff;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    details[open] summary::after {
+      content: '–';
+      color: #93c5fd;
+    }
+
+    details p {
+      margin: 10px 0 0 0;
+      color: #cddcff;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      padding-left: 6px;
+    }
+
+    details b {
+      color: #7aa2ff;
+      font-weight: 600;
+    }
+
+    /* Responsive 2-column layout for desktop */
+    @media (min-width: 768px) {
+      .glossary-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Subtle glow animation when opening */
+    details[open] {
+      animation: glowOpen 0.35s ease forwards;
+    }
+
+    @keyframes glowOpen {
+      from {
+        box-shadow: 0 0 0 rgba(122, 162, 255, 0);
+      }
+      to {
+        box-shadow: 0 0 18px rgba(122, 162, 255, 0.25);
+      }
+    }
+  </style>
+
+  <h2>Military Finance Jargon Glossary</h2>
+  <p class="section-sub">Quick definitions of key military and financial terms.</p>
+
+  <div class="glossary-container">
+
+    <details><summary>BAH</summary><p><b>Basic Allowance for Housing</b> — Monthly stipend to help cover housing costs for eligible service members.</p></details>
+    <details><summary>BAS</summary><p><b>Basic Allowance for Subsistence</b> — Monthly allowance for food/subsistence for service members.</p></details>
+    <details><summary>BRS</summary><p><b>Blended Retirement System</b> — Modern military pension system combining defined benefit and TSP matching.</p></details>
+    <details><summary>COE</summary><p><b>Certificate of Eligibility</b> — Document from VA proving entitlement for benefits (e.g., VA Loan, GI Bill).</p></details>
+    <details><summary>CZTE</summary><p><b>Combat Zone Tax Exclusion</b> — Federal tax exclusion for pay earned in designated combat zones.</p></details>
+    <details><summary>DLA</summary><p><b>Dislocation Allowance</b> — Lump sum to help with moving costs during PCS.</p></details>
+    <details><summary>DSST/CLEP</summary><p><b>Standardized Exams</b> — Tests for earning college credit by exam (DANTES Subject Standardized Tests / College Level Examination Program).</p></details>
+    <details><summary>EFMP</summary><p><b>Exceptional Family Member Program</b> — Support for dependents with special medical/educational needs.</p></details>
+    <details><summary>FSA</summary><p><b>Family Separation Allowance</b> — Pay for service members separated from dependents due to duty.</p></details>
+    <details><summary>FSGLI</summary><p><b>Family Servicemembers’ Group Life Insurance</b> — Life insurance for spouses and children of service members.</p></details>
+    <details><summary>GI Bill</summary><p><b>Education Benefit</b> — VA program providing tuition, housing, and other support for education.</p></details>
+    <details><summary>HHG</summary><p><b>Household Goods</b> — Personal property moved during PCS.</p></details>
+    <details><summary>HFP/IDP</summary><p><b>Hostile Fire Pay / Imminent Danger Pay</b> — Extra pay for duty in hazardous areas.</p></details>
+    <details><summary>IRRRL</summary><p><b>Interest Rate Reduction Refinance Loan</b> — VA streamline refinance for existing VA loans.</p></details>
+    <details><summary>LES</summary><p><b>Leave and Earnings Statement</b> — Monthly pay statement for service members.</p></details>
+    <details><summary>L Funds</summary><p><b>Lifecycle Funds</b> — TSP target-date funds that auto-rebalance as retirement approaches.</p></details>
+    <details><summary>MLA</summary><p><b>Military Lending Act</b> — Law capping interest rates and fees for service members on certain loans.</p></details>
+    <details><summary>MLA/SCRA</summary><p><b>Military Lending Act / Servicemembers Civil Relief Act</b> — Federal laws providing financial protections for service members.</p></details>
+    <details><summary>MHA</summary><p><b>Monthly Housing Allowance</b> — GI Bill housing stipend based on school ZIP code.</p></details>
+    <details><summary>MOS/AFSC/Rating</summary><p><b>Military Occupational Specialty / Air Force Specialty Code / Rating</b> — Job classification codes for service members.</p></details>
+    <details><summary>MCCYN</summary><p><b>Military Child Care in Your Neighborhood</b> — DoD program for child care fee assistance.</p></details>
+    <details><summary>OHA</summary><p><b>Overseas Housing Allowance</b> — Housing allowance for service members stationed overseas.</p></details>
+    <details><summary>PCS</summary><p><b>Permanent Change of Station</b> — Relocation orders for service members.</p></details>
+    <details><summary>PPM/DITY</summary><p><b>Personally Procured Move / Do-It-Yourself Move</b> — Option to move household goods yourself for reimbursement.</p></details>
+    <details><summary>Prime/Select</summary><p><b>TRICARE Plan Types</b> — Prime (managed care), Select (PPO-style flexibility).</p></details>
+    <details><summary>SBP</summary><p><b>Survivor Benefit Plan</b> — Retirement annuity for survivors of retired service members.</p></details>
+    <details><summary>SGLI</summary><p><b>Servicemembers’ Group Life Insurance</b> — Life insurance for service members.</p></details>
+    <details><summary>SCRA</summary><p><b>Servicemembers Civil Relief Act</b> — Law providing financial and legal protections for service members.</p></details>
+    <details><summary>TA</summary><p><b>Tuition Assistance</b> — Service-funded tuition support for active duty and eligible Guard/Reserve.</p></details>
+    <details><summary>TDP</summary><p><b>TRICARE Dental Program</b> — Dental insurance for eligible service members and families.</p></details>
+    <details><summary>TLA/TLE</summary><p><b>Temporary Lodging Allowance / Temporary Lodging Expense</b> — Reimbursement for lodging during PCS.</p></details>
+    <details><summary>TSP</summary><p><b>Thrift Savings Plan</b> — Federal government retirement savings plan with low-cost investment options.</p></details>
+    <details><summary>TRICARE</summary><p><b>Military Health Care</b> — DoD health insurance program for service members, retirees, and families.</p></details>
+    <details><summary>TSGLI</summary><p><b>Traumatic Servicemembers’ Group Life Insurance</b> — One-time payment for qualifying traumatic injuries.</p></details>
+    <details><summary>USERRA</summary><p><b>Uniformed Services Employment and Reemployment Rights Act</b> — Law protecting civilian job rights after military service.</p></details>
+    <details><summary>VA</summary><p><b>Department of Veterans Affairs</b> — Federal agency providing benefits and services to veterans.</p></details>
+    <details><summary>VGLI</summary><p><b>Veterans’ Group Life Insurance</b> — Life insurance for veterans after separation from service.</p></details>
+    <details><summary>VHIC</summary><p><b>Veteran Health Identification Card</b> — ID card for eligible veterans for base access and benefits.</p></details>
+    <details><summary>Yellow Ribbon</summary><p><b>Yellow Ribbon Program</b> — GI Bill supplement for tuition above the VA cap at participating schools.</p></details>
+    <details><summary>YOS</summary><p><b>Years of Service</b> — Used in retirement and pension calculations.</p></details>
+
+  </div>
+</section>
+
 
     <!-- NEWSLETTER -->
     <section id="newsletter" class="reveal">

@@ -1,57 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1039930282091803"
-     crossorigin="anonymous"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Newly Commissioned Officers — First-Year Money Plan | TKN Financial</title>
-  <meta name="description" content="Step‑by‑step setup guide for brand‑new officers: pay accounts, TSP under BRS, SGLI/FSGLI, banking & credit, Career Starter Loan, VA loan basics, SCRA protections, and a simple first‑year plan." />
+  <title>Newly Commissioned Officers — First-Year Money Plan | Valentor Financial</title>
+  <meta name="description" content="Simple first-year money plan for new officers: pay setup, TSP, insurance, banking, Career Starter Loan, VA basics, and legal protections in clear steps." />
+  
   <!-- Match education pages stylesheet -->
   <link rel="stylesheet" href="edustyle.css" />
-  <a class="btn" href="Military_Benefits.html"> Back</a>
+
   <style>
-    /* Local components that layer on top of edustyle.css */
+    /* Brighter, friendlier overlay on top of edustyle.css */
     :root{
-      --edu-panel:#0b1428;
-      --edu-card:#0c1a33;
-      --edu-muted:#93a7d6;
+      --edu-panel:#101a33;
+      --edu-card:#141f3d;
+      --edu-muted:#9fb3e0;
       --edu-accent:#5fa8ff;
-      --edu-callout:#071329;
-      --edu-pill-bg:#10203a;
-      --edu-text:#eaf0ff;
-      --edu-muted-text:#9fb0d9;
+      --edu-pill-bg:#18284a;
+      --edu-text:#f3f5ff;
+      --edu-muted-text:#a9b8d7;
     }
-    .pill { display:inline-block; padding:.4rem .7rem; border-radius:999px; background:var(--edu-pill-bg); color:var(--edu-text); font-weight:600; font-size:.9rem; border:1px solid rgba(255,255,255,.04) }
-    .checklist { display:grid; gap:12px; margin:12px 0 }
-    .step { border:1px solid rgba(255,255,255,.04); border-radius:12px; background:var(--edu-card); overflow:hidden; color:var(--edu-text) }
-    .step h3 { margin:0; padding:14px 16px; font-size:1.05rem; display:flex; align-items:center; gap:.6rem; cursor:pointer; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); color:var(--edu-text); font-weight:700 }
-    .step .panel { display:none; padding:14px 16px; background:var(--edu-panel); color:var(--edu-text) }
-    .step.open .panel { display:block }
-    .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0 }
-    .kpi { background:var(--edu-panel); border:1px solid rgba(255,255,255,.04); border-radius:10px; padding:10px; color:var(--edu-text) }
-    .kpi .label { font-size:.8rem; color:var(--edu-muted-text) }
-    .kpi .value { font-weight:800; color:var(--edu-text) }
-    .callout { border-left:4px solid var(--edu-accent); background:linear-gradient(180deg, rgba(95,168,255,.04), rgba(7,19,41,.06)); padding:10px 12px; border-radius:8px; color:var(--edu-text) }
-    .links { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px }
-    .links .btn { padding:.55rem .9rem; border-radius:10px; background:#0f2446; color:var(--edu-text); border:1px solid rgba(95,148,220,.12) }
-    .tiny { font-size:.9rem; color:#667; }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px }
-    @media (max-width: 920px){ .kpis{grid-template-columns:1fr} .grid-2{grid-template-columns:1fr} }
+
+    body.page-rotc{
+      background:radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 1px) 0 0/26px 26px,
+                 linear-gradient(180deg,#0b1326,#0c1428);
+      color:var(--edu-text);
+    }
+
+    .site-header{
+      background:rgba(7,14,32,0.9);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      box-shadow:0 8px 24px rgba(0,0,0,0.35);
+    }
+
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      padding:.8rem 0;
+    }
+
+    .site-header .brand{
+      font-size:1rem;
+      font-weight:700;
+      text-decoration:none;
+      color:var(--edu-text);
+      padding:.25rem .75rem;
+      border-radius:999px;
+      background:rgba(15,23,42,0.8);
+      border:1px solid rgba(148,163,233,0.35);
+      box-shadow:0 4px 12px rgba(15,23,42,0.6);
+    }
+
+    .edu-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.4rem;
+      font-size:.8rem;
+    }
+
+    .edu-nav .tab{
+      padding:.3rem .65rem;
+      border-radius:999px;
+      text-decoration:none;
+      color:var(--edu-muted-text);
+      border:1px solid transparent;
+      background:transparent;
+      transition:background .15s ease,color .15s ease,box-shadow .15s ease,border-color .15s ease;
+      white-space:nowrap;
+    }
+
+    .edu-nav .tab:hover{
+      background:rgba(37,99,235,0.18);
+      color:var(--edu-text);
+      border-color:rgba(129,140,248,0.55);
+      box-shadow:0 4px 14px rgba(59,130,246,0.35);
+    }
+
+    .edu-nav .tab.active{
+      background:linear-gradient(180deg,#93c5fd,#60a5fa);
+      color:#020617;
+      border-color:rgba(255,255,255,0.2);
+      box-shadow:0 6px 16px rgba(37,99,235,0.6);
+      font-weight:600;
+    }
+
+    main.container{
+      max-width:800px;
+      margin:0 auto;
+      padding:24px 16px 60px;
+    }
+
+    .breadcrumbs{
+      font-size:.85rem;
+      color:var(--edu-muted-text);
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      gap:.4rem;
+    }
+
+    .breadcrumbs .btn.secondary{
+      padding:.25rem .6rem;
+      font-size:.8rem;
+      border-radius:999px;
+    }
+
+    .page-head{
+      background:var(--edu-card);
+      border-radius:18px;
+      padding:18px 18px 16px;
+      box-shadow:0 10px 28px rgba(0,0,0,0.4);
+      border:1px solid rgba(255,255,255,0.08);
+      margin-bottom:20px;
+    }
+
+    .page-head h1{
+      margin:0 0 8px;
+      font-size:1.4rem;
+    }
+
+    .page-head .lede{
+      margin:0 0 10px;
+      color:var(--edu-muted);
+      font-size:.94rem;
+    }
+
+    .page-head .meta{
+      margin:0;
+      font-size:.8rem;
+      color:var(--edu-muted-text);
+    }
+
+    .pill-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:.8rem;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:.3rem .8rem;
+      border-radius:999px;
+      background:var(--edu-pill-bg);
+      color:var(--edu-text);
+      font-weight:600;
+      font-size:.8rem;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .intro-note{
+      margin:18px 0 22px;
+      font-size:.9rem;
+      color:var(--edu-muted-text);
+    }
+
+    .step-card{
+      background:var(--edu-card);
+      border-radius:16px;
+      padding:16px 16px 14px;
+      border:1px solid rgba(255,255,255,0.07);
+      box-shadow:0 12px 30px rgba(0,0,0,0.45);
+      margin-bottom:16px;
+      transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease;
+    }
+
+    .step-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 36px rgba(15,23,42,0.8);
+      border-color:rgba(129,140,248,0.6);
+      background:#16254a;
+    }
+
+    .step-label{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--edu-muted-text);
+      margin-bottom:4px;
+    }
+
+    .step-title{
+      margin:0 0 8px;
+      font-size:1.05rem;
+      font-weight:700;
+    }
+
+    .step-card ul{
+      margin:6px 0 0 18px;
+      padding:0;
+      font-size:.93rem;
+    }
+
+    .step-card li{
+      margin:5px 0;
+    }
+
+    .callout{
+      margin-top:10px;
+      border-radius:10px;
+      padding:9px 11px;
+      background:linear-gradient(180deg,rgba(96,165,250,0.14),rgba(15,23,42,0.9));
+      border-left:3px solid var(--edu-accent);
+      font-size:.87rem;
+      color:var(--edu-text);
+    }
+
+    .section-title{
+      margin:26px 0 10px;
+      font-size:1.1rem;
+    }
+
+    .simple-list{
+      margin:8px 0 0 18px;
+      font-size:.93rem;
+    }
+
+    .btn,
+    .btn.secondary{
+      cursor:pointer;
+      transition:background .15s ease,box-shadow .15s ease,transform .12s ease,border-color .15s ease,color .15s ease;
+    }
+
+    .btn:hover,
+    .btn.secondary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 20px rgba(37,99,235,0.45);
+      border-color:rgba(129,140,248,0.7);
+    }
+
+    .quick-links-row{
+      margin:10px 0 20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .quick-links-row .btn.secondary{
+      font-size:.8rem;
+      padding:.4rem .8rem;
+      border-radius:999px;
+    }
+
+    .mini-glossary{
+      font-size:.85rem;
+      color:var(--edu-muted-text);
+      line-height:1.5;
+    }
+
+    .next-prev{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .next-prev .btn{
+      font-size:.85rem;
+      padding:.45rem .9rem;
+      border-radius:999px;
+    }
+
+    .page-foot{
+      margin-top:26px;
+      font-size:.85rem;
+      color:var(--edu-muted-text);
+    }
+
+    .page-foot details{
+      margin-top:10px;
+    }
+
+    @media (max-width:720px){
+      .header-inner{flex-direction:column;align-items:flex-start}
+      main.container{padding:20px 14px 50px}
+    }
   </style>
 </head>
+
 <body class="page-rotc">
   <!-- Header / Top Nav -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="https://tnolan1219.github.io/TKN-Financial-V.3/">🛡️ TKN Financial</a>
+      <a class="brand" href="https://valentorfinancial.org/#home">Valentor Financial</a>
       <nav class="edu-nav">
-        <a class="tab" href="Pay.html">Pay & Compensation</a>
-        <a class="tab" href="housingedu.html">Housing & VA Loan</a>
-        <a class="tab" href="edufunding.html">Education Funding</a>
-        <a class="tab" href="retierment.html">TSP & Retirement</a>
+        <a class="tab" href="Pay.html">Pay</a>
+        <a class="tab" href="housingedu.html">Housing & VA</a>
+        <a class="tab" href="edufunding.html">Education</a>
+        <a class="tab" href="retierment.html">Retirement</a>
         <a class="tab" href="loans_debt_credit.html">Credit & Banking</a>
-        <a class="tab" href="medical_insurance.html">Insurance/Medical</a>
+        <a class="tab" href="medical_insurance.html">Insurance</a>
         <a class="tab" href="guard_reserves.html">Guard/Reserves</a>
         <a class="tab" href="taxes_FamTransition.html">Taxes & Family</a>
         <a class="tab active" aria-current="page" href="comissioning.html">New Officers</a>
@@ -60,326 +301,209 @@
   </header>
 
   <main class="container">
-    <!-- Local TOC -->
+    <!-- Local TOC / Back -->
     <nav class="breadcrumbs">
+      <a class="btn secondary" href="Military_Benefits.html">← Back</a>
+      <span>/</span>
       <a href="education-index.html">Education</a>
-      ›
+      <span>›</span>
       <strong>Newly Commissioned Officers</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Newly Commissioned Officers — First‑Year Money Plan</h1>
-      <p class="lede">A simple checklist for your first 90 days and year: make sure you get paid correctly, protect yourself with the right insurance, start retirement savings, set up good bank and credit habits, and use loans wisely. Acronyms are explained inline.</p>
-      <p class="meta">Last updated: <time datetime="2025-10-18">October 18, 2025</time></p>
-      <div class="kpis">
-        <div class="kpi"><div class="label">BRS / TSP quick note</div><div class="value">Put in 5% now — get DoD match later</div></div>
-        <div class="kpi"><div class="label">SGLI (life insurance)</div><div class="value">$500,000 typical max</div></div>
-        <div class="kpi"><div class="label">SCRA protection</div><div class="value">6% cap on some pre-service interest</div></div>
+      <h1>Newly Commissioned Officers — First-Year Money Plan</h1>
+      <p class="lede">
+        This is a simple walkthrough, not a firehose. Start at Step 1 and work down.  
+        The goal: get paid correctly, build a safety net, start TSP, use your benefits, and avoid common pitfalls.
+      </p>
+      <p class="meta">
+        Last updated:
+        <time datetime="2025-10-18">October 18, 2025</time>
+      </p>
+      <div class="pill-row">
+        <span class="pill">Step-by-step checklist</span>
+        <span class="pill">Built for new O-1s</span>
+        <span class="pill">Real actions, not theory</span>
       </div>
-      <div class="tiny">Short glossary: LES = pay stub; BAH = housing money; BAS = meal money; TSP = retirement account; BRS = military retirement system.</div>
     </header>
 
+    <p class="intro-note">
+      Work through these steps over your first 3–12 months. You do not need to finish everything in week one.
+      Each card tells you <strong>what to do</strong> and <strong>how to do it</strong> in plain language.
+    </p>
 
-
-    <h2>Step‑by‑Step Setup</h2>
-    <div class="checklist" id="steps">
-      <!-- 1. Get paid correctly -->
-      <section class="step open">
-        <h3><span>1️⃣</span> Set up pay & check your pay stub (LES)</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>Direct deposit:</strong> Put your bank routing and account into the finance system so your pay goes into your account automatically.</li>
-            <li><strong>W‑4 & state tax:</strong> Fill out federal and state tax withholding forms so the right taxes are taken out.</li>
-            <li><strong>Check your first LES (pay stub):</strong> Make sure the numbers make sense — Basic Pay, BAH (housing money), BAS (meal money). If something is wrong, contact finance right away.</li>
-            <li><strong>Automatic savings:</strong> Set small allotments from your pay for emergency savings and TSP so you pay yourself first.</li>
-          </ul>
-          <div class="callout">Tip: Save a screenshot or PDF of each LES so you have a record if something needs to be fixed.</div>
-        </div>
-      </section>
-
-      <!-- 2. Build your safety net -->
-      <section class="step">
-        <h3><span>2️⃣</span> Build a quick emergency fund</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>Starter $1,000:</strong> Save $1,000 as soon as you can — this covers small surprises and keeps you out of high‑interest debt.</li>
-            <li><strong>One month then 3–6 months:</strong> Aim for 1 month of expenses in 90 days, then 3–6 months by the end of year for bigger safety.</li>
-            <li><strong>SCRA explained:</strong> If you had loans or credit before you started active duty, SCRA (Servicemembers Civil Relief Act) may cap interest at 6% — ask your lender and keep copies of your orders.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- 3. Insurance -->
-      <section class="step">
-        <h3><span>3️⃣</span> Important insurance basics (easy words)</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>SGLI — life insurance:</strong> Military life insurance. Typical max is $500,000. Set your beneficiary (who gets the money).</li>
-            <li><strong>FSGLI — family life insurance:</strong> Optional life insurance for a spouse or family member.</li>
-            <li><strong>Renters insurance:</strong> Covers your stuff and liability if you rent — inexpensive and useful.</li>
-            <li><strong>Car insurance:</strong> Make sure your coverage fits your car and driving; ask about military discounts.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- 4. TSP under BRS -->
-      <section class="step">
-        <h3><span>4️⃣</span> Start your retirement account (TSP) — simple steps</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>Put in 5% now:</strong> TSP is like a 401(k). Put at least 5% of your pay so you will catch the DoD match later. (DoD gives 1% automatically after ~60 days, then may match more after 2 years.)</li>
-            <li><strong>Roth vs Traditional:</strong> Roth means you pay taxes now and take tax-free money later — often good when you are early in your career. Traditional means you pay taxes later.</li>
-            <li><strong>Simple fund choice:</strong> L‑Fund is a one-click mix that gets safer as you near retirement. Good default.</li>
-            <li><strong>Watch the yearly limit:</strong> Don’t accidentally put in the annual max too early in the year and miss matching opportunities later.</li>
-          </ul>
-          <div class="links">
-            <a class="btn" href="pages/tools/tsp/Investing Hub/TSP_CSL_Calc.html">Open TSP Planner</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. Banking & credit hygiene -->
-      <section class="step">
-        <h3><span>5️⃣</span> Set up good bank and credit habits</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>Choose a main bank:</strong> Examples: USAA or Navy Federal. Look for low fees and a good mobile app.</li>
-            <li><strong>One credit card to build credit:</strong> No annual fee, pay the full balance each month, keep usage under 10% of the limit.</li>
-            <li><strong>Protect your credit:</strong> You can freeze or monitor your credit if worried about identity theft.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- 6. Career Starter Loan -->
-      <section class="step">
-        <h3><span>6️⃣</span> Career Starter Loan — when it makes sense</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>What it is:</strong> A small personal loan (banks like Navy Federal or USAA offer them) to help with start‑up costs (uniforms, car for work, moving).</li>
-            <li><strong>Use it for needs, not wants:</strong> Good for things you must have to do your job; avoid using it for luxury items.</li>
-            <li><strong>Plan to pay it off:</strong> Model monthly payments so they fit your budget; avoid long terms that cost more interest.</li>
-          </ul>
-          <div class="links">
-            <a class="btn" href="pages/tools/career_starter/index.html">Run the Loan Model</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- 7. Housing & VA loan basics -->
-      <section class="step">
-        <h3><span>7️⃣</span> Renting now vs buying with the VA loan (plain talk)</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>VA loan simple:</strong> A home loan for eligible veterans/service members that often requires no down payment and does not need private mortgage insurance (PMI). There is an upfront "funding fee" you may finance into the loan (sometimes waived for certain disabilities).</li>
-            <li><strong>When to rent:</strong> If your job or location might change soon, or you don’t have 3–6 months of savings, rent until things are stable.</li>
-            <li><strong>House‑hack idea:</strong> Buy a property with up to 4 units, live in one and rent the others — but run numbers conservatively and keep money set aside for repairs.</li>
-          </ul>
-          <div class="links">
-            <a class="btn" href="pages/tools/va_loan/index.html">Estimate Payment</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- 8. Protect your time & rights -->
-      <section class="step">
-        <h3><span>8️⃣</span> Know simple legal protections</h3>
-        <div class="panel">
-          <ul>
-            <li><strong>SCRA (simple):</strong> If you had loans before you joined, SCRA can lower some interest rates to 6% while you are on active duty. Send your orders to the lender and ask them to apply it in writing.</li>
-            <li><strong>Leases & contracts:</strong> If you get orders to move, some leases or phone contracts can be ended early — keep your orders and ask base legal if unsure.</li>
-            <li><strong>Use base legal help:</strong> Free legal aid on base can help with landlord or contract questions.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- 9. First‑year milestones -->
-      <section class="step">
-        <h3><span>9️⃣</span> Easy milestones for year one</h3>
-        <div class="panel grid-2">
-          <ul>
-            <li><strong>Month 1:</strong> Check your LES (pay stub); put 5% into TSP; set SGLI beneficiaries; save $1,000.</li>
-            <li><strong>Month 2–3:</strong> Make a budget; check renters/auto insurance; request SCRA if needed.</li>
-            <li><strong>Month 4–6:</strong> Increase emergency fund to 1–2 months; consider a Roth IRA if you can.</li>
-            <li><strong>End of Year:</strong> Aim for 3–6 months savings; TSP on track; tax documents organized.</li>
-          </ul>
-          <div>
-            <div class="callout"><strong>Quick rule:</strong> Try to save about 20% of your base pay + BAS/BAH if possible. If not, increase contributions a little each pay period.</div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Quickstart Path -->
-    <section aria-label="Quickstart" class="quickstart">
-      <h2>Quickstart: Your 30/60/90 + 12‑Month Path</h2>
-      <div class="grid-2">
-        <div>
-          <ol>
-            <li><strong>Days 1–30:</strong> Verify LES, set <b>5% TSP</b> (Roth), save <b>$1,000</b>, set SGLI/beneficiaries, request SCRA if applicable.</li>
-            <li><strong>Days 31–60:</strong> Build to <b>1 month</b> expenses; open 1 no‑fee credit card (autopay in full); get renters & proper auto coverage.</li>
-            <li><strong>Days 61–90:</strong> Automate bills/savings; map debt strategy (snowball/avalanche); price out cell/internet/insurance; track spending.</li>
-            <li><strong>Month 12:</strong> Emergency fund at <b>3–6 months</b>; contributions on pace for TSP annual goal; evaluate housing (renew lease vs. VA pre‑approval); review insurance and credit.</li>
-          </ol>
-        </div>
-        <div>
-          <div class="callout"><strong>Rule:</strong> Pay yourself first. Put savings on autopay the day you get paid.</div>
-          <div class="callout" style="margin-top:10px"><strong>Target Savings:</strong> If you can, save 20% of your base pay plus BAS/BAH. If not yet possible, add 1–2% each pay period until you reach your goal.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Your First Budget -->
-    <section aria-label="Budget" class="budget">
-      <h2>Your First Budget (Military‑Tuned 50/30/20)</h2>
-      <div class="grid-2">
-        <div>
-          <ul>
-            <li><strong>50% Needs:</strong> rent/mortgage (aim ≤30–35% gross), groceries, utilities, insurance, transport, minimum debt payments.</li>
-            <li><strong>30% Wants:</strong> restaurants, travel, hobbies, subscriptions—trim here first during tight months/TDY.</li>
-            <li><strong>20% Saving/Investing:</strong> emergency fund, TSP/IRA, sinking funds (car repair, gear, travel), extra debt paydown.</li>
-          </ul>
-          <div class="callout">Use BAH/BAS to <em>cover needs</em> and route most of Base Pay toward savings/investing when possible.</div>
-        </div>
-        <div>
-          <h3 class="tiny" style="margin:0 0 6px">Example per-pay (every 2 weeks)</h3>
-          <div class="kpis">
-            <div class="kpi"><div class="label">Emergency Fund</div><div class="value">$150</div></div>
-            <div class="kpi"><div class="label">TSP (Roth)</div><div class="value">5–10%</div></div>
-            <div class="kpi"><div class="label">Sinking Funds</div><div class="value">$100</div></div>
-          </div>
-          <p class="tiny">Adjust to your BAH and pay grade. Automate transfers so saving happens without thinking about it.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TSP Cheat Sheet -->
-    <section aria-label="TSP" class="tsp">
-      <h2>TSP (retirement savings) — plain guide</h2>
-      <div class="grid-2">
-        <div>
-          <ul>
-            <li><strong>What is TSP?</strong> A retirement account similar to a 401(k). You choose how much of your pay to save.</li>
-            <li><strong>Roth vs Traditional:</strong> Roth = pay taxes now, money comes out tax-free later (good when taxes are low). Traditional = tax now later.</li>
-            <li><strong>Simple pick:</strong> L‑Fund is an easy default mix that gets more conservative as you near retirement.</li>
-            <li><strong>Don't max out too early:</strong> Spreading contributions through the year helps make sure you get employer match every month.</li>
-          </ul>
-        </div>
-        <div>
-          <div class="callout"><strong>Minimum to get match:</strong> Set at least 5% now so you won't miss out when DoD starts matching your contributions.</div>
-          <div class="links" style="margin-top:8px">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Career Starter Guardrails -->
-    <section aria-label="Career Starter" class="career-starter">
-      <h2>Career Starter Loan — Guardrails</h2>
-      <div class="grid-2">
-        <div>
-          <ul>
-            <li><strong>Acceptable uses:</strong> uniforms/PCS costs, reliable vehicle (needs‑based), moving deposits, high‑interest debt refinance.</li>
-            <li><strong>Red flags:</strong> luxury purchases, investing borrowed funds without risk plan, long loan term that outlasts the car.</li>
-            <li><strong>Decision checks:</strong> Monthly payment ≤10% of take‑home; cash reserve ≥1 month after taking the loan; insurance affordable.</li>
-          </ul>
-        </div>
-        <div>
-          <div class="links">
-          </div>
-          <div class="callout" style="margin-top:10px"><strong>Pro move:</strong> If refinancing pre‑service debt under SCRA (6% cap), compare the total interest saved before consolidating.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Housing Decision -->
-    <section aria-label="Housing" class="housing">
-      <h2>Rent Now or VA Loan?</h2>
-      <div class="grid-2">
-        <div>
-          <ul>
-            <li><strong>Rent when:</strong> training pipeline/PCS uncertain, short tour length, or you lack a 3–6 month reserve.</li>
-            <li><strong>Buy (VA) when:</strong> stable billet ≥2–3 years, total housing costs ≤35% gross, and you can cash‑flow repairs.</li>
-            <li><strong>House‑hack idea:</strong> buy up to a 4‑plex, live in one unit, rent others; model vacancy/CapEx conservatively.</li>
-          </ul>
-        </div>
-        <div>
-          <div class="links">
-            <a class="btn" href="housingedu.html">VA Loan Guide</a>
-          </div>
-          <div class="callout" style="margin-top:10px">Remember the <strong>funding fee</strong> (unless waived). VA = no PMI and $0 down with entitlement.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tax Time Checklist -->
-    <section aria-label="Taxes" class="taxes">
-      <h2>Tax‑Time Checklist</h2>
-      <ul class="checklist">
-        <li class="step open"><h3>📁 Documents to save</h3><div class="panel"><ul><li>Save LES (pay stub), W‑2, and any 1099 forms. Keep PCS orders and receipts if you get reimbursed.</li><li>These documents help you file taxes and prove expenses later.</li></ul></div></li>
-        <li class="step"><h3>🏷️ State residency & withholdings</h3><div class="panel"><ul><li>Confirm state of legal residence on LES; update for PCS if needed.</li><li>Adjust W‑4 when pay/BAH changes.</li></ul></div></li>
-        <li class="step"><h3>🎯 Contributions review</h3><div class="panel"><ul><li>Ensure TSP pace will reach, but not exceed too early, the IRS annual limit.</li><li>Consider IRA (Roth/Traditional) if eligible.</li></ul></div></li>
-      </ul>
-    </section>
-
-    <!-- Common Mistakes & Fixes -->
-    <section aria-label="Mistakes" class="mistakes">
-      <h2>Common money mistakes — how to fix them</h2>
+    <!-- STEP 1 -->
+    <section class="step-card">
+      <div class="step-label">Step 1</div>
+      <h2 class="step-title">First paychecks: make sure money hits right</h2>
       <ul>
-        <li><strong>Ignore LES errors:</strong> If money is wrong, tell finance now. Small errors add up.</li>
-        <li><strong>No emergency fund:</strong> Start with $1,000. Set up automatic monthly transfers into savings.</li>
-        <li><strong>Missing TSP match later:</strong> Keep contributing at least 5% so you don’t miss free DoD money later.</li>
-        <li><strong>Over‑car:</strong> Buying a car you can’t afford breaks the budget. Buy reliable with affordable payments.</li>
-        <li><strong>Subscription creep:</strong> Review subscriptions every 3 months and cancel what you don’t use.</li>
+        <li><strong>Direct deposit:</strong> Set up your bank routing and account so pay goes in automatically.</li>
+        <li><strong>Taxes:</strong> Complete your federal and state W-4 so withholding is close to correct.</li>
+        <li><strong>Check your first LES:</strong> Confirm Basic Pay, BAH (housing), and BAS (meals). If anything looks wrong, go to finance quickly.</li>
+        <li><strong>Automatic savings:</strong> Set up an allotment or auto-transfer for savings every payday.</li>
+      </ul>
+      <div class="callout">
+        Save a PDF or screenshot of each LES. It makes fixing any future pay issues much easier.
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step-card">
+      <div class="step-label">Step 2</div>
+      <h2 class="step-title">Build a basic safety net</h2>
+      <ul>
+        <li><strong>Starter goal:</strong> Save your first $1,000 so small emergencies do not go on a credit card.</li>
+        <li><strong>Next goal:</strong> Work toward 1 month of bare-bones expenses, then build to 3–6 months over time.</li>
+        <li><strong>Use SCRA if you can:</strong> For loans and credit you had before service, SCRA can cap interest at 6%. Contact each lender in writing with your orders.</li>
+      </ul>
+      <div class="callout">
+        A small emergency fund is more important than paying off every dollar of low-interest debt on day one.
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step-card">
+      <div class="step-label">Step 3</div>
+      <h2 class="step-title">Insurance: protect yourself and your stuff</h2>
+      <ul>
+        <li><strong>SGLI:</strong> Confirm your Servicemembers’ Group Life Insurance amount (up to $500,000) and update your beneficiaries.</li>
+        <li><strong>Family coverage:</strong> Consider FSGLI if you have a spouse or children who rely on your income.</li>
+        <li><strong>Renters insurance:</strong> If you rent, get a small policy to protect your stuff and cover liability.</li>
+        <li><strong>Auto insurance:</strong> Make sure your coverage fits your car and driving. Ask about military discounts.</li>
       </ul>
     </section>
 
-    <!-- Micro Glossary -->
-    <section aria-label="Glossary" class="glossary">
-      <h2>Mini Glossary</h2>
-      <p class="tiny">
-        <strong>LES</strong> — Leave and Earnings Statement: your military pay stub that shows pay, allowances, and deductions.<br>
-        <strong>BAH</strong> — Basic Allowance for Housing: money to help pay for housing (rent or mortgage).<br>
-        <strong>BAS</strong> — Basic Allowance for Subsistence: money to help pay for food/meals.<br>
-        <strong>TSP</strong> — Thrift Savings Plan: your retirement account (like a 401(k)).<br>
-        <strong>BRS</strong> — Blended Retirement System: the military retirement system that includes automatic and matching TSP money.<br>
-        <strong>SGLI</strong> — Servicemembers' Group Life Insurance: low-cost life insurance for service members.<br>
-        <strong>TSGLI</strong> — Traumatic SGLI: extra payout if you suffer a severe injury.<br>
-        <strong>SCRA</strong> — Servicemembers Civil Relief Act: rules that can lower some interest rates and protect leases/contracts while you are on active duty.<br>
-        <strong>PMI</strong> — Private Mortgage Insurance: extra insurance usually required if you make a small down payment on a home (VA loans often avoid this).
-      </p>
+    <!-- STEP 4 -->
+    <section class="step-card">
+      <div class="step-label">Step 4</div>
+      <h2 class="step-title">Start your TSP the easy way</h2>
+      <ul>
+        <li><strong>Turn it on:</strong> Log into TSP and set a contribution of at least <strong>5% of basic pay</strong> so you are ready to capture matching under BRS.</li>
+        <li><strong>Roth vs Traditional:</strong> Early in your career, Roth TSP is usually a solid default because your tax rate is often lower now than later.</li>
+        <li><strong>Pick a simple fund:</strong> Choose an L-Fund close to your expected retirement year and leave it alone.</li>
+        <li><strong>Spread contributions:</strong> Contribute across the full year so you do not miss any future match months.</li>
+      </ul>
+      <div class="callout">
+        Bare minimum: flip on 5% to TSP and forget it. You can always tweak funds and amounts later.
+      </div>
     </section>
+
+    <!-- STEP 5 -->
+    <section class="step-card">
+      <div class="step-label">Step 5</div>
+      <h2 class="step-title">Set up smart banking and credit habits</h2>
+      <ul>
+        <li><strong>Pick one main bank:</strong> Choose a bank or credit union you like (USAA, Navy Federal, etc.) and use it as your home base.</li>
+        <li><strong>One simple credit card:</strong> No annual fee, autopay set to “pay statement balance,” and keep use under about 10% of your limit.</li>
+        <li><strong>Track your bills:</strong> Put rent, car, phone, and insurance on a simple bill list or calendar so nothing slips.</li>
+        <li><strong>Protect your credit:</strong> If you want extra security, explore a credit freeze or alerts with the bureaus.</li>
+      </ul>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="step-card">
+      <div class="step-label">Step 6</div>
+      <h2 class="step-title">Career Starter Loan — if you use it</h2>
+      <ul>
+        <li><strong>What it is:</strong> A low-rate personal loan for new officers from banks like USAA or Navy Federal.</li>
+        <li><strong>Good uses:</strong> Uniforms, reliable car, deposits, or PCS costs — not vacations or toys.</li>
+        <li><strong>Payment check:</strong> Keep the payment small enough that it fits easily in your budget.</li>
+        <li><strong>End date:</strong> Aim to pay it off well before the car or item is worn out.</li>
+      </ul>
+      <div class="callout">
+        Ask yourself: “If my pay dropped for a short time, would this payment still feel safe?” If not, scale it down.
+      </div>
+    </section>
+
+    <!-- STEP 7 -->
+    <section class="step-card">
+      <div class="step-label">Step 7</div>
+      <h2 class="step-title">Housing: rent now, buy later with VA</h2>
+      <ul>
+        <li><strong>Rent first:</strong> If your training pipeline or PCS timeline is uncertain, renting is usually safer your first tour.</li>
+        <li><strong>VA loan basics:</strong> VA loans often allow $0 down and no PMI, but there is a funding fee (sometimes waived for disabilities).</li>
+        <li><strong>When to buy:</strong> Stronger case if you expect to stay 2–3+ years, your total housing costs are under ~35% of gross pay, and you have savings for repairs.</li>
+        <li><strong>House-hack option:</strong> With VA you can buy up to a 4-plex you live in. Just be sure the numbers still work even with vacancy and repairs.</li>
+      </ul>
+    </section>
+
+    <!-- STEP 8 -->
+    <section class="step-card">
+      <div class="step-label">Step 8</div>
+      <h2 class="step-title">Know your legal protections</h2>
+      <ul>
+        <li><strong>SCRA:</strong> Can cap interest on pre-service loans and credit cards at 6% and protect you with some contracts.</li>
+        <li><strong>Orders and leases:</strong> PCS orders can sometimes help you end a lease early without penalties.</li>
+        <li><strong>Base legal:</strong> Use base legal for questions about landlords, contracts, or debt collectors. It is free — use it.</li>
+      </ul>
+    </section>
+
+    <!-- STEP 9 -->
+    <section class="step-card">
+      <div class="step-label">Step 9</div>
+      <h2 class="step-title">Your first-year checkpoints</h2>
+      <ul>
+        <li><strong>By Day 30:</strong> LES cleaned up, direct deposit working, 5% to TSP, SGLI set, first $1,000 saved.</li>
+        <li><strong>By Day 90:</strong> At least 1 month of expenses saved, one good credit card on autopay, basic insurance set.</li>
+        <li><strong>By Month 6:</strong> Savings headed toward 2–3 months; TSP steady; clear plan for any Career Starter Loan.</li>
+        <li><strong>By Month 12:</strong> 3–6 months of expenses saved, TSP and budget on autopilot, housing plan set for next orders.</li>
+      </ul>
+      <div class="callout">
+        Do not chase perfection. If you are moving in the right direction each month, you are winning.
+      </div>
+    </section>
+
+    <h2 class="section-title">Common mistakes to avoid</h2>
+    <ul class="simple-list">
+      <li>Ignoring LES errors and assuming pay will fix itself.</li>
+      <li>Buying a car that eats your whole paycheck.</li>
+      <li>Skipping TSP because “retirement is far away.”</li>
+      <li>Letting subscriptions and food delivery quietly drain your budget.</li>
+      <li>Waiting until an emergency to learn about SCRA or base legal.</li>
+    </ul>
+
+    <h2 class="section-title">Mini glossary (plain words)</h2>
+    <p class="mini-glossary">
+      <strong>LES</strong> — Leave and Earnings Statement, your pay stub.<br>
+      <strong>BAH</strong> — Basic Allowance for Housing, money for housing costs.<br>
+      <strong>BAS</strong> — Basic Allowance for Subsistence, money for food.<br>
+      <strong>TSP</strong> — Thrift Savings Plan, your main retirement account.<br>
+      <strong>BRS</strong> — Blended Retirement System, current retirement system that includes TSP.<br>
+      <strong>SGLI</strong> — Servicemembers’ Group Life Insurance, life insurance for you.<br>
+      <strong>SCRA</strong> — Servicemembers Civil Relief Act, interest-rate and contract protections.<br>
+      <strong>PCS</strong> — Permanent Change of Station, official move orders.<br>
+      <strong>VA loan</strong> — Home loan benefit backed by the Department of Veterans Affairs.
+    </p>
 
     <section class="page-foot">
-      <p class="disclaimer">Education only. Policies and rates change; verify with your finance office, TSP.gov, VA, and your lender/insurer.</p>
+      <p class="disclaimer">
+        This page is for education, not personal legal or financial advice. Always confirm details with your finance office, TSP.gov, VA, your lender, and base legal.
+      </p>
       <details>
         <summary>Sources & references</summary>
-        <ul class="tiny">
-          <li>BRS/TSP matching timeline & 1% automatic contributions — DoD/FINRED guidance.</li>
-          <li>SGLI $500k maximum; $0.05 per $1,000 premium + $1 TSGLI; FSGLI discount updates.</li>
-          <li>SCRA 6% cap on pre‑service debts and process overview.</li>
-          <li>VA loan: funding fee & closing costs; waiver criteria.</li>
-          <li>Navy Federal Career Kickoff program details; rates vary by program; USAA Career Starter overview.</li>
+        <ul class="mini-glossary">
+          <li>BRS and TSP information from official DoD and TSP.gov materials.</li>
+          <li>SGLI and FSGLI coverage details from VA and DFAS resources.</li>
+          <li>SCRA protections from official Servicemembers Civil Relief Act guidance.</li>
+          <li>VA loan basics and funding fee information from VA home loan resources.</li>
+          <li>Career Starter Loan examples based on common USAA and Navy Federal programs.</li>
         </ul>
       </details>
       <nav class="next-prev">
-        <a class="btn ghost" href="Military_Benefits.html">← Education Home</a>
-        <a class="btn" href="retierment.html">Next: TSP & Retirement →</a>
+        <a class="btn secondary" href="Military_Benefits.html">← Education Home</a>
+        <a class="btn" href="retierment.html">Next: TSP &amp; Retirement →</a>
       </nav>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year"></span> Mil‑Fi. Education resources for servicemembers and families.</p>
+      <p>© <span id="year"></span> Valentor Financial. Education resources for servicemembers and families.</p>
     </div>
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Accordion behavior
-    document.querySelectorAll('.step h3').forEach(btn => {
-      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'))
-    });
   </script>
 </body>
 </html>

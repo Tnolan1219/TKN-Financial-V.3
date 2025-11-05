@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valentor Financial Articles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand:#95baff;
+      --brand-strong:#6ea1ff;
+      --accent:#46e0a1;
+      --bg1:#0d1526;
+      --bg2:#111b33;
+      --ink:#f3f6ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .articles-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: transparent;
+      background: linear-gradient(90deg, var(--brand), var(--brand-strong), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-align: center;
+      text-shadow: 0 0 24px rgba(110,161,255,0.35);
+      margin-bottom: 40px;
+    }
+
+    .back-button {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+      color: #e5f0ff;
+      text-decoration: none;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #2563eb;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.7);
+    }
+
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .article-btn {
+      display: block;
+      padding: 20px 28px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #007bff, #005bb5);
+      color: #e5f0ff;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 18px rgba(0, 123, 255, 0.45);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .article-btn:hover {
+      background: #005bb5;
+      box-shadow: 0 0 24px rgba(0, 123, 255, 0.7);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Glowing Title -->
+  <div class="articles-title">📚 Articles</div>
+
+  <!-- Back Button -->
+  <a href="/index3.html" class="back-button">← Back to Home</a>
+
+  <!-- Article Buttons -->
+  <div class="article-list">
+    <a href="nl1.html" class="article-btn">Government Shutdown & Military Pay</a>
+    <a href="articleshome.html" class="article-btn">Articles Home Overview</a>
+    <a href="pages/articles/financial_readiness.html" class="article-btn">Building Financial Readiness</a>
+    <a href="pages/articles/tsp_strategy.html" class="article-btn">TSP Strategy for 2025</a>
+    <a href="pages/articles/housing_allowance.html" class="article-btn">Understanding Your BAH</a>
+    <!-- Add more articles as needed -->
+  </div>
+</body>
+</html>

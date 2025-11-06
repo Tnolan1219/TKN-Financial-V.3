@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valentor Financial Military Finance Newsletter — November 6, 2025</title>
+  <meta name="description" content="Pay raises, shutdown risk, and state tax updates for service members — November 2025." />
+  <link rel="stylesheet" href="nlstyle.css">
+</head>
+  <!-- 🔙 Back to Home Button -->
+  <div style="margin: 24px 0 0 24px;">
+    <a href="/pages/articles/articleshome.html" class="btn">← Back</a>
+  </div>
+<body>
+  <div class="wrap">
+    <div class="spotlight"></div>
+
+    <header class="tile">
+      <h1 class="title">
+        <svg class="title-icon" viewBox="0 0 24 24">
+          <defs>
+            <linearGradient id="g2" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#95baff"/>
+              <stop offset="100%" stop-color="#6ea1ff"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="url(#g2)" opacity="0.9"/>
+          <polyline points="6,14 10,10 13,12 18,7" fill="none" stroke="#0b1122" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Valentor Financial Military Finance Newsletter
+      </h1>
+      <p class="sub">November 6, 2025</p>
+      <p class="topic"><strong>Topic:</strong> Staying Ready Amid Pay Raises, Shutdown Risk, and State Tax Breaks</p>
+    </header>
+
+    <section class="tile" aria-labelledby="bluf">
+      <h2 id="bluf">BLUF: Bottom Line Up Front</h2>
+      <p>Your pay and benefits look stable on paper, but shutdown risk, delayed approvals, and changing state tax rules can still hit your take home pay. Now is the time to check your pay statements, confirm your tax status, and make sure your savings can handle a short disruption.</p>
+      <hr class="divider" />
+    </section>
+
+    <section class="tile" aria-labelledby="sitrep">
+      <h2 id="sitrep">Situation Report</h2>
+      <p>The planned 2026 cost of living adjustment for most military retirees and disabled veterans is set at 2.8 percent, slightly higher than last year but below the bigger active duty raises seen recently. This helps, but it may not fully keep up with the cost of housing, food, and everyday expenses in many duty stations. Source: <a href="https://www.military.com/daily-news/2025/10/24/here-2026-pay-raise-disabled-veterans-and-military-retirees.html">Military.com</a>.</p>
+      <p>Active duty pay raises and even normal pay cycles are still tied to the ongoing federal funding fight. Emergency funds have been shifted to keep checks going in the short term, but senior officials have warned that longer shutdown conditions could still delay future payments. That makes your own emergency fund and budget plan more important than ever. Source: <a href="https://time.com/7328810/government-shutdown-military-pay-trump-congress/">Time</a>.</p>
+      <p>At the same time, many states offer strong tax breaks for service members and retirees, including exclusions for military retirement pay, active duty income, or both. If you have moved, changed residency, or transitioned from active duty to retirement, you may be leaving money on the table if you have not updated your state filings. Source: <a href="https://www.military.com/money/personal-finance/state-tax-information.html">Military.com state tax guide</a>.</p>
+      <p>The bottom line is that you cannot control Congress, but you can control how prepared you are for small pay changes and delays, and how much of your income you keep after state taxes.</p>
+      <hr class="divider" />
+    </section>
+
+    <section class="tile" aria-labelledby="mission">
+      <h2 id="mission">Mission Plan: Do This Now</h2>
+      <ul>
+        <li>Review your LES or retiree account statement this week. Confirm base pay, BAH, BAS, and any special pays are correct and on time.</li>
+        <li>Check your state income tax status, especially if you moved duty stations, changed legal residence, or retired in the last year.</li>
+        <li>Make sure your emergency fund can cover at least one month of core expenses. If not, direct part of your next pay increase to savings before spending it.</li>
+        <li>Press pause on new big commitments like car loans or major home projects until you see two stable pay cycles in a row.</li>
+        <li>Schedule a quick session with your installation or branch financial counselor to walk through your budget, tax situation, and savings goals.</li>
+        <li>Talk with your spouse or family about the plan so everyone knows what happens if a check is late or smaller than expected.</li>
+      </ul>
+      <hr class="divider" />
+    </section>
+
+    <section class="tile" aria-labelledby="takeaways">
+      <h2 id="takeaways">Tactical Takeaways</h2>
+      <ul>
+        <li>Upcoming raises help, but they do not remove the need for a solid buffer and smart planning.</li>
+        <li>Shutdown risk is outside your control, so treat your emergency fund as essential equipment, not a nice to have.</li>
+        <li>State tax rules can quietly add or remove hundreds of dollars per month from your cash flow.</li>
+        <li>Using official financial counseling and planning tools now makes you more resilient when the next policy or budget fight shows up.</li>
+      </ul>
+    </section>
+
+    <section class="tile" aria-labelledby="cta">
+      <h2 id="cta">Call to Action</h2>
+      <div class="cta">
+        <a class="btn" href="https://www.valentorfinancial.org" target="_blank" rel="noopener">Visit valentorfinancial.org</a>
+        <a class="btn" href="https://www.etsy.com/shop/TKNfinance" target="_blank" rel="noopener">TKN Finance Etsy Store</a>
+      </div>
+      <p>Use these tools and guides to tighten your plan, track your progress, and brief your own Marines, sailors, soldiers, or airmen on how to stay financially ready.</p>
+    </section>
+
+    <footer class="tile">
+      <h2>References</h2>
+      <ul class="ref-list">
+        <li><a href="https://www.military.com/daily-news/2025/10/24/here-2026-pay-raise-disabled-veterans-and-military-retirees.html">Military.com: 2026 pay raise for disabled veterans and retirees</a></li>
+        <li><a href="https://time.com/7328810/government-shutdown-military-pay-trump-congress/">Time: How long troops will be paid amid shutdown risk</a></li>
+        <li><a href="https://www.military.com/money/personal-finance/state-tax-information.html">Military.com: State tax information for service members and retirees</a></li>
+        <li><a href="https://www.valentorfinancial.org">Valentor Financial</a></li>
+      </ul>
+      <p style="margin-top:10px;color:var(--muted)">© 2025 Valentor Financial. Educational content. Not individualized financial advice.</p>
+    </footer>
+  </div>
+</body>
+</html>

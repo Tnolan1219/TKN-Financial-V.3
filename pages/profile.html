@@ -486,155 +486,209 @@
       window.addEventListener("milfi:usageUpdated", renderProfile);
     });
   </script>
-</head>
-<body>
-  <div style="position:fixed;top:16px;left:16px;z-index:50;">
-  <a href="https://valentorfinancial.org/" class="btn" style="padding:6px 12px;font-size:0.8rem;">Home</a>
-  </div>
 
   
-  <div class="orb one"></div>
-  <div class="orb two"></div>
+</head>
+<body>
+  <main class="main">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="eyebrow">Profile</div>
+      <h1>Your account at a glance</h1>
+      <p class="page-subtitle">
+        Sign in, set your branch and rank, and keep an eye on how often you use the tools.
+        Upgrade later when you start to hit the limits.
+      </p>
+    </header>
 
-  <main class="container">
+    <!-- Top row: left + right cards -->
     <div class="grid two">
-
-      <!-- LEFT: Profile + Usage KPI (keeps integration with other pages) -->
+      <!-- LEFT: Profile summary -->
       <section class="card">
         <div class="head">
           <div class="avatar-wrap">
-            <div class="avatar" id="avatarBox"><span class="initial" id="avatarInitial">?</span></div>
+            <div class="avatar" id="avatarBox">
+              <span class="initial" id="avatarInitial">?</span>
+            </div>
             <div>
-              <div style="font-size:1.2rem;font-weight:900" id="nameLine">Your Name</div>
+              <div id="nameLine">Your Name</div>
               <div class="small" id="metaLine">Branch • Paygrade</div>
               <div class="small" id="stationLine">Duty: – • ETS: –</div>
             </div>
           </div>
-          <!-- Plan badge now always reflects entitlements.js status -->
           <span class="chip" id="planBadge" aria-live="polite">Plan: Free</span>
         </div>
+
         <div class="body">
-          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;">
             <div class="ring" aria-label="Monthly usage ring">
-              <svg width="120" height="120">
-                <circle cx="60" cy="60" r="52" stroke="#1f2a41" stroke-width="12" fill="none"></circle>
-                <circle id="ringFg" cx="60" cy="60" r="52" stroke="#60a5fa" stroke-width="12" stroke-linecap="round" fill="none" stroke-dasharray="0 999"></circle>
+              <svg width="110" height="110">
+                <circle cx="55" cy="55" r="48" stroke="#020617" stroke-width="11" fill="none"></circle>
+                <circle id="ringFg" cx="55" cy="55" r="48" stroke="#60a5fa" stroke-width="11" stroke-linecap="round" fill="none" stroke-dasharray="0 999"></circle>
               </svg>
               <div class="center" id="ringCenter">0%</div>
             </div>
+
             <div>
-              <div style="font-size:2rem;font-weight:900" id="usageBig">0 / 50</div>
+              <div class="usage-big" id="usageBig">0 / 50</div>
               <div class="small" id="usageNote">Free members can calculate up to 50 times per month.</div>
             </div>
           </div>
         </div>
       </section>
 
-
-
-
+      <!-- RIGHT: Account & preferences -->
       <section class="card">
-  <div class="head">Sign in & Preferences</div>
-  <div class="body">
-    <!-- Google Sign-In Controls (from app.js, unchanged) -->
-    <div class="row">
-      <button class="btn" id="signin">Login/Signup</button>
+        <div class="head">
+          <div class="head-title"><span>Account</span> & Preferences</div>
+        </div>
+        <div class="body">
+          <div class="btn-row">
+            <button class="btn" id="signin">Login / Signup</button>
+            <button class="btn ghost" id="signout" style="display:none;">Sign out</button>
+          </div>
 
-      <button class="btn" id="signout" style="display:none;">Sign out</button>
+          <div id="userBox" style="margin-top:10px;">
+            <div class="row">
+              <img id="avatar" class="avatar" alt="">
+              <div>
+                <strong id="displayName"></strong>
+                <div id="email" class="muted"></div>
+                <div id="uid" class="muted" style="font-size:11px;"></div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:6px;">
+              <input id="fullName" placeholder="Full name" />
+              <input id="nickname" placeholder="Nickname" />
+            </div>
+
+            <div class="row">
+              <input id="favoriteCity" placeholder="State" />
+              <select id="Service Branch">
+                <option value="">Branch</option>
+                <option value="Army">Army</option>
+                <option value="Navy">Navy</option>
+                <option value="Marine Corps">Marine Corps</option>
+                <option value="Air Force">Air Force</option>
+                <option value="Space Force">Space Force</option>
+                <option value="Coast Guard">Coast Guard</option>
+                <option value="Guard/Reserve">Guard/Reserve</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <select id="paygrade">
+                <option value="">Rank / Paygrade</option>
+                <optgroup label="Enlisted">
+                  <option value="E-1">E-1</option>
+                  <option value="E-2">E-2</option>
+                  <option value="E-3">E-3</option>
+                  <option value="E-4">E-4</option>
+                  <option value="E-5">E-5</option>
+                  <option value="E-6">E-6</option>
+                  <option value="E-7">E-7</option>
+                  <option value="E-8">E-8</option>
+                  <option value="E-9">E-9</option>
+                </optgroup>
+                <optgroup label="Warrant Officer">
+                  <option value="W-1">W-1</option>
+                  <option value="W-2">W-2</option>
+                  <option value="W-3">W-3</option>
+                  <option value="W-4">W-4</option>
+                  <option value="W-5">W-5</option>
+                </optgroup>
+                <optgroup label="Commissioned Officer">
+                  <option value="O-1">O-1</option>
+                  <option value="O-2">O-2</option>
+                  <option value="O-3">O-3</option>
+                  <option value="O-4">O-4</option>
+                  <option value="O-5">O-5</option>
+                  <option value="O-6">O-6</option>
+                  <option value="O-7">O-7</option>
+                  <option value="O-8">O-8</option>
+                  <option value="O-9">O-9</option>
+                  <option value="O-10">O-10</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="row">
+              <input type="file" id="avatarInput" accept="image/*" />
+              <button class="btn" id="saveProfile">Save Profile</button>
+            </div>
+
+            <div class="small" style="margin-top:4px;">Avatar stays on this device.</div>
+            <span id="status"></span>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <!-- User Info after sign in -->
-    <div id="userBox">
-      <div class="row">
-        <img id="avatar" class="avatar" alt="">
-        <div>
-          <div><strong id="displayName"></strong></div>
-          <div id="email" class="muted"></div>
-          <div id="uid" class="muted" style="font-size:12px; color:#666;"></div>
-        </div>
+    <!-- BOTTOM: single organized card -->
+    <section class="card bottom-card">
+      <div class="head">
+        <div class="head-title"><span>Usage</span>, plan & backup</div>
       </div>
+      <div class="body">
+        <div class="bottom-grid">
+          <!-- LEFT SIDE: usage -->
+          <div>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:170px;">
+                <div class="usage-big" id="usageBig2">0</div>
+                <div class="small" id="usageNote2">Free members can calculate up to 50 times per month.</div>
+              </div>
+              <div class="ring">
+                <svg width="110" height="110">
+                  <circle cx="55" cy="55" r="48" stroke="#020617" stroke-width="11" fill="none"></circle>
+                  <circle id="ringFg2" cx="55" cy="55" r="48" stroke="#60a5fa" stroke-width="11" stroke-linecap="round" fill="none" stroke-dasharray="0 999"></circle>
+                </svg>
+                <div class="center" id="ringCenter2">0%</div>
+              </div>
+            </div>
 
-      <!-- Preferences Section -->
-      <h3>Your Preferences</h3>
-      <div class="row">
-        <div>
-          <label for="fullName">Full name</label>
-          <input id="fullName" placeholder="e.g., Thomas Nolan" />
-        </div>
-      </div>
-     
-       
-        <div>
-          <label for="avatarInput">Avatar</label>
-          <input type="file" id="avatarInput" accept="image/*" />
-          <div class="small">Stays on this device.</div>
-        </div>
-      </div>
-      <div class="row">
-        <label for="nickname"><strong>Nickname:</strong></label>
-        <input id="nickname" type="text" placeholder="e.g., Thomas" />
-      </div>
-      <div class="row">
-        <label for="favoriteCity"><strong>State:</strong></label>
-        <input id="favoriteCity" type="text" placeholder="e.g., Maryland" />
-      </div>
-      <div class="row">
-        <label for="Service Branch"><strong>Service Branch:</strong></label>
-        <select id="Service Branch">
-          <option value="">Select your branch</option>
-          <option value="Army">Army</option>
-          <option value="Navy">Navy</option>
-          <option value="Marine Corps">Marine Corps</option>
-          <option value="Air Force">Air Force</option>
-          <option value="Space Force">Space Force</option>
-          <option value="Coast Guard">Coast Guard</option>
-          <option value="Guard/Reserve">Guard/Reserve</option>
-        </select>
-      </div>
-      <div class="row">
-          <label for="paygrade"><strong>Rank / Paygrade:</strong></label>
-          <select id="paygrade">
-            <option value="">Select your rank</option>
-            <optgroup label="Enlisted">
-              <option value="E-1">E-1</option>
-              <option value="E-2">E-2</option>
-              <option value="E-3">E-3</option>
-              <option value="E-4">E-4</option>
-              <option value="E-5">E-5</option>
-              <option value="E-6">E-6</option>
-              <option value="E-7">E-7</option>
-              <option value="E-8">E-8</option>
-              <option value="E-9">E-9</option>
-            </optgroup>
-            <optgroup label="Warrant Officer">
-              <option value="W-1">W-1</option>
-              <option value="W-2">W-2</option>
-              <option value="W-3">W-3</option>
-              <option value="W-4">W-4</option>
-              <option value="W-5">W-5</option>
-            </optgroup>
-            <optgroup label="Commissioned Officer">
-              <option value="O-1">O-1</option>
-              <option value="O-2">O-2</option>
-              <option value="O-3">O-3</option>
-              <option value="O-4">O-4</option>
-              <option value="O-5">O-5</option>
-              <option value="O-6">O-6</option>
-              <option value="O-7">O-7</option>
-              <option value="O-8">O-8</option>
-              <option value="O-9">O-9</option>
-              <option value="O-10">O-10</option>
-            </optgroup>
-          </select>
-        </div>
+            <div style="margin-top:10px;">
+              <b>Per-tool usage</b>
+              <div id="usageTable2"></div>
+            </div>
+          </div>
 
-      <div class="row">
-        <button class="btn" id="saveProfile">Save Profile</button>
-        <span id="status" style="margin-left:8px; color:#0a0;"></span>
+          <!-- RIGHT SIDE: plan + data tools -->
+          <div>
+            <p class="small">
+              Start on Free. Upgrade to Pro if you need higher monthly limits or more tools.
+            </p>
+            <div class="btn-row" style="margin-top:10px;">
+              <button class="btn ghost" id="downgrade">Stay on Free</button>
+              <button class="btn" id="upgrade">Go Pro</button>
+            </div>
+            <p class="small" style="margin-top:6px;">
+              You can also use your <b>TKN-Fi Pro</b> access in other Valentor tools.
+            </p>
+
+            <hr style="margin:14px 0;border:none;border-top:1px solid rgba(31,41,55,0.9);" />
+
+            <p class="small"><b>Data & backup</b></p>
+            <p class="small">
+              Export your settings to a JSON file, import them on another device,
+              or clear everything and start fresh.
+            </p>
+            <div class="data-tools-row">
+              <button class="btn-tiny" id="exportAll">Export JSON</button>
+              <label class="btn-tiny btn-tiny-label" for="importAll">Import JSON</label>
+              <input id="importAll" type="file" accept="application/json" style="display:none" />
+              <button class="btn-tiny" id="clearAll">Clear profile data</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
+
+    <footer>
+      Valentor Financial • Built for servicemembers learning to use their money well.
+    </footer>
+  </main>
 
 <!-- Keep app.js Firebase logic intact -->
 <script type="module" src="./app.js"></script>
@@ -724,6 +778,7 @@
     });
   </script>
   <script>
+    
     // ===== Keys shared across the site =====
     const PROFILE_KEY = 'milfi_profile_v1';
     const PLAN_KEY    = 'milfi_plan_v1';
@@ -952,6 +1007,7 @@ document.addEventListener('DOMContentLoaded', updateDashboardUsage);
   </script>
 </body>
 </html>
+
 
 
 

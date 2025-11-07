@@ -43,11 +43,16 @@
       min-height: 100vh;
     }
 
-    main.main {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 28px 18px 32px;
-    }
+main.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 40px;
+}
+
+.card {
+  margin: 0 auto;
+  max-width: 800px;
+}
 
     header.page-header {
       margin-bottom: 22px;
@@ -100,6 +105,8 @@
         box-shadow 0.15s ease,
         border-color 0.15s ease,
         background 0.15s ease;
+        margin: 0 auto;
+        max-width: 800px;
     }
 
     .card:hover {
@@ -487,6 +494,11 @@
   </script>
 </head>
 <body>
+  <div style="position:fixed;top:16px;left:16px;z-index:50;">
+  <a href="https://valentorfinancial.org/" class="btn" style="padding:6px 12px;font-size:0.8rem;">Home</a>
+  </div>
+
+  
   <div class="orb one"></div>
   <div class="orb two"></div>
 
@@ -954,6 +966,7 @@ document.addEventListener('DOMContentLoaded', updateDashboardUsage);
   </script>
 </body>
 </html>
+
 
 
 
